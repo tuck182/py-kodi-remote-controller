@@ -30,7 +30,7 @@ def call_api(server_params, command):
 
 def call_api_http(server_params, command):
     logger.debug('call call_api_http')
-    logger.debug('command: %s', command)
+    logger.info('command: %s', command)
     kodi_url = 'http://' + server_params['ip'] +  ':' + str(server_params['port']) + '/jsonrpc'
     headers = {'Content-Type': 'application/json'}
     r = requests.post(
