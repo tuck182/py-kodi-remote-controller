@@ -186,6 +186,8 @@ def get_audio_library_from_server(obj):
                     obj.songs[song['songid']]['title'] = song['title']
                     if song['artist']:
                         obj.songs[song['songid']]['artist'] = song['artist'][0]
+                    else:
+                        obj.songs[song['songid']]['artist'] = ''
                     obj.songs[song['songid']]['year'] = song['year']
                     obj.songs[song['songid']]['rating'] = song['rating']
                     obj.songs[song['songid']]['playcount'] = song['playcount']
@@ -239,6 +241,8 @@ def get_audio_library_from_server(obj):
                     obj.albums[album['albumid']]['title'] = album['title']
                     if album['artist']:
                         obj.albums[album['albumid']]['artist'] = album['artist'][0]
+                    else:
+                        obj.albums[album['albumid']]['artist'] = ''
                     obj.albums[album['albumid']]['year'] = album['year']
                 break
             except KeyError:
