@@ -130,6 +130,21 @@ def play_album(album_id, albums):
     print "Let's play the album \"%s\" by %s [%i]." % (
             albums[album_id]['title'], albums[album_id]['artist'], album_id)
 
+def add_album(album_id, albums):
+    '''Confirm add album'''
+    print "Let's add the album \"%s\" by %s [%i]." % (
+            albums[album_id]['title'], albums[album_id]['artist'], album_id)
+
+def play_song(song_id, songs):
+    '''Confirm play song'''
+    print "Let's play the song \"%s\" by %s [%i]." % (
+            songs[song_id]['title'], songs[song_id]['artist'], song_id)
+
+def add_song(song_id, songs):
+    '''Confirm add song'''
+    print "Let's add the song \"%s\" by %s [%i]." % (
+            songs[song_id]['title'], songs[song_id]['artist'], song_id)
+
 def echonest_read(song_data):
     '''Display echonest song data'''
     # clean display
