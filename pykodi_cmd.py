@@ -85,6 +85,7 @@ def display_banner():
 
 def set_friendly_name(self):
     '''Set Kodi friendly name in the cmd prompt'''
+    assert kodi.is_reachable(self.params)
     friendly_name = kodi.get_friendly_name(self.params)
     self.prompt = "(" + friendly_name + ") "
 
@@ -101,12 +102,6 @@ class KodiRemote(cmd.Cmd):
             return
         logger.debug('kodi params file found')
         self.params = read_params()
-        if not kodi.is_reachable(self.params):
-            print
-            print "The Kodi server is unreachable..."
-            print
-            return
-        logger.debug('the kodi server is reachable')
         set_friendly_name(self)
 
     # Kodi params file
