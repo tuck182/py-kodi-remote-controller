@@ -85,7 +85,6 @@ def display_banner():
 
 def set_friendly_name(self):
     '''Set Kodi friendly name in the cmd prompt'''
-    assert kodi.is_reachable(self.params)
     friendly_name = kodi.get_friendly_name(self.params)
     self.prompt = "(" + friendly_name + ") "
 
@@ -103,6 +102,7 @@ class KodiRemote(cmd.Cmd):
         logger.debug('kodi params file found')
         self.params = read_params()
         set_friendly_name(self)
+        self.songs = []
 
     # Kodi params file
 
@@ -135,6 +135,14 @@ class KodiRemote(cmd.Cmd):
         print
         print "Echonest API key: %s" % self.params['echonest_key']
         print
+
+    def do_songs_sync(self, line):
+        '''
+        Sync the Kodi songs library.
+        Usage: library_sync
+        '''
+
+        kodi.set_songs_sync(self)
 
     def do_EOF(self, line):
         '''Override end of file'''

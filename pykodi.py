@@ -47,6 +47,7 @@ def is_reachable(params):
 def get_friendly_name(params):
     '''Return Kodi server friendly name'''
     logger.debug('call function get_friendly_name')
+    assert is_reachable(params)
     friendly_name = pk_rpc.system_friendly_name(params)
     return friendly_name
 
@@ -146,6 +147,12 @@ def get_audio_library_from_files(obj):
     obj.albums = pickle.load(f)
     f.close()
     obj.nb_albums = len(obj.albums)
+
+
+def set_songs_sync(params):
+    '''Sync library songs to local'''
+    logger.debug('set_songs_sync')
+    assert is_reachable(self.params)
 
 def get_audio_library_from_server(obj):
     '''Load the library in memory from the Kodi server'''
@@ -331,7 +338,7 @@ def get_genre_search(search_string, songs):
     logger.debug('search result by genre: %s', search_result_genre)
     return sorted(list(search_result_genre))
 
-def set_songs_sync(server_params, songs):
+def set_songs_sync2(server_params, songs):
     '''Sync playcount and rating'''
     logger.debug('call set_songs_sync')
     print
