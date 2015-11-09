@@ -9,7 +9,7 @@
 Kodi remote controller based on HTTP/TCP transport, JSON and using the (cmd) interface.
 '''
 
-import jsonrpc
+import pykodi_rpc as pk_rpc
 import en_api
 import fancy_disp
 
@@ -41,7 +41,7 @@ SONG = 'songid'
 def is_reachable(params):
     '''Return true if the Kodi server is reachable'''
     logger.debug('call function is_reachable')
-    ping_reply = jsonrpc.jsonrpc_ping(params)
+    ping_reply = pk_rpc.jsonrpc_ping(params)
     return ping_reply
 
 # utility functions

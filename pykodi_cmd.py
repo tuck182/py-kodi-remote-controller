@@ -11,7 +11,7 @@ the echonest API for smart playlists generation.
 More info on the echonest API: http://developer.echonest.com/docs/v4
 '''
 
-import pykodi
+import pykodi as kodi
 
 import cmd
 import logging
@@ -95,7 +95,7 @@ class KodiRemote(cmd.Cmd):
             return
         logger.debug('kodi params file found')
         self.params = read_params()
-        if not pykodi.is_reachable(self.params):
+        if not kodi.is_reachable(self.params):
             print
             print "The Kodi server is unreachable..."
             print
