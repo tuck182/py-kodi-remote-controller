@@ -83,6 +83,12 @@ def display_banner():
     print "Read the API key on the Echonest account, it will be requested"
     print "later on. When you are ready, try params_create."
 
+def set_friendly_name(self):
+    '''Set Kodi friendly name in the cmd prompt'''
+    friendly_name = kodi.get_friendly_name(self.params)
+    self.prompt = "(" + friendly_name + ") "
+
+
 class KodiRemote(cmd.Cmd):
     
     def preloop(self):
@@ -101,6 +107,7 @@ class KodiRemote(cmd.Cmd):
             print
             return
         logger.debug('the kodi server is reachable')
+        set_friendly_name(self)
 
     # Kodi params file
 
@@ -114,6 +121,7 @@ class KodiRemote(cmd.Cmd):
         self.params = input_params()
         print
         save_params(self.params)
+        set_friendly_name(self)
 
     def do_params_display(self, line):
         '''

@@ -44,6 +44,12 @@ def is_reachable(params):
     ping_reply = pk_rpc.jsonrpc_ping(params)
     return ping_reply
 
+def get_friendly_name(params):
+    '''Return Kodi server friendly name'''
+    logger.debug('call function get_friendly_name')
+    friendly_name = pk_rpc.system_friendly_name(params)
+    return friendly_name
+
 # utility functions
 
 def get_pykodi_params():
