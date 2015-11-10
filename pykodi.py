@@ -159,7 +159,7 @@ def set_songs_sync(params, songs):
     slice = 0
     while True:
         start = slice * SONGS_SLICE_SIZE
-        end = (slice + 1) * SONGS_SLICE_SIZE - 1
+        end = (slice + 1) * SONGS_SLICE_SIZE
         logger.info('processing songs %i to %i', start, end)
         loop_songs = pk_rpc.audiolibrary_get_songs(params, start, end)
         for loop_song in loop_songs:
@@ -167,7 +167,9 @@ def set_songs_sync(params, songs):
             del songs[loop_song['songid']]['songid']
             songs[loop_song['songid']]['rating_en'] = 0
             songs[loop_song['songid']]['playcount_en'] = 0
-        if slice == 5:
+        print len(loop_songs)
+        if slice == 3:
+        #if not len(loop_songs) == SONGS_SLICE_SIZE:
             break
         slice += 1
     save_songs(songs)
