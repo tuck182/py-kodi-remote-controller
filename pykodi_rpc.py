@@ -97,6 +97,16 @@ def audiolibrary_get_songs(server_params, song_id_start, song_id_end):
     command = {"jsonrpc": "2.0",
             "method": "AudioLibrary.GetSongs",
             "params": {
+                "properties":
+                    [
+                        "title",
+                        "artist",
+                        "year",
+                        "rating",
+                        "playcount",
+                        "musicbrainztrackid",
+                        "genre"
+                    ],
                 "limits": {
                     "start": song_id_start,
                     "end": song_id_end }
@@ -104,7 +114,7 @@ def audiolibrary_get_songs(server_params, song_id_start, song_id_end):
             "id": 1}
     ret = call_api(server_params, command)
     display_result(ret)
-    return ret['result']
+    return ret['result']['songs']
 
 # playlist
 

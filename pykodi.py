@@ -29,6 +29,9 @@ from sys import exit
 logger = logging.getLogger(__name__)
 
 # global constants
+# number of songs by songs sync
+SONGS_SLICE_SIZE = 20
+
 BUFFER_SIZE = 1024
 DISPLAY_NB_LINES = 10
 PROFILE_NAME = 'Kodi library'
@@ -149,10 +152,25 @@ def get_audio_library_from_files(obj):
     obj.nb_albums = len(obj.albums)
 
 
-def set_songs_sync(params):
+def set_songs_sync(params, songs):
     '''Sync library songs to local'''
-    logger.debug('set_songs_sync')
-    assert is_reachable(self.params)
+    logger.debug('call function set_songs_sync')
+    assert is_reachable(params)
+    slice = 0
+    while True:
+        start = slice * SONGS_SLICE_SIZE
+        end = (slice + 1) * SONGS_SLICE_SIZE - 1
+        logger.info('processing songs %i to %i', start, end)
+        loop_songs = pk_rpc.audiolibrary_get_songs(params, start, end)
+        for loop_song in loop_songs:
+            songs[loop_song['songid']] = loop_song.copy()
+            del songs[loop_song['songid']]['songid']
+            songs[loop_song['songid']]['rating_en'] = 0
+            songs[loop_song['songid']]['playcount_en'] = 0
+        if slice == 5:
+            break
+        slice += 1
+    save_songs(songs)
 
 def get_audio_library_from_server(obj):
     '''Load the library in memory from the Kodi server'''
