@@ -74,7 +74,7 @@ def read_params():
     return params
 
 def display_banner():
-    '''Display initial banner'''
+    """Display initial banner"""
     logger.debug('call function display_banner')
     print "No Kodi params file found, this is probably the first launch. Check"
     print "your Kodi parameters (IP, port, user and password) and create an"
@@ -83,8 +83,17 @@ def display_banner():
     print "Read the API key on the Echonest account, it will be requested"
     print "later on. When you are ready, try params_create."
 
+def get_songs_from_file(fname):
+    """Load songs from pickle file"""
+    logger.debug('call function get_songs_from_file')
+    f = open(fname, 'rb')
+    songs = pickle.load(f)
+    f.close()
+    return songs
+
 def set_friendly_name(self):
-    '''Set Kodi friendly name in the cmd prompt'''
+    """Set Kodi friendly name in the cmd prompt"""
+    logger.debug('call function set_friendly_name')
     friendly_name = kodi.get_friendly_name(self.params)
     self.prompt = "(" + friendly_name + ") "
 
@@ -102,7 +111,10 @@ class KodiRemote(cmd.Cmd):
         logger.debug('kodi params file found')
         self.params = read_params()
         set_friendly_name(self)
-        self.songs = {}
+        if not is_file('songs.pickle'):
+            self.songs = {}
+        else:
+            self.songs = get_songs_from_file('songs.pickle')
 
     # Kodi params file
 
@@ -142,9 +154,6 @@ class KodiRemote(cmd.Cmd):
         Usage: library_sync
         '''
         kodi.set_songs_sync(self.params, self.songs)
-        print self.songs[42]
-        print len(self.songs)
-        print self.songs[len(self.songs)]
 
     def do_EOF(self, line):
         '''Override end of file'''
