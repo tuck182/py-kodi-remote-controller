@@ -143,6 +143,8 @@ class KodiRemote(cmd.Cmd):
         '''
         kodi.set_songs_sync(self.params, self.songs)
         print self.songs[42]
+        print len(self.songs)
+        print self.songs[len(self.songs)]
 
     def do_EOF(self, line):
         '''Override end of file'''
