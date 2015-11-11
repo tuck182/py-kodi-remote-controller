@@ -92,8 +92,8 @@ def audiolibrary_get_albums(server_params, album_id_start, album_id_end):
     display_result(ret)
     return ret['result']
 
-def audiolibrary_get_songs(server_params, song_id_start, song_id_end):
-    '''Retrieve all songs whithin limits'''
+def audiolibrary_get_songs_full(server_params, songid_start, songid_end):
+    """Retrieve all songs whithin limits"""
     command = {"jsonrpc": "2.0",
             "method": "AudioLibrary.GetSongs",
             "params": {
@@ -108,13 +108,46 @@ def audiolibrary_get_songs(server_params, song_id_start, song_id_end):
                         "genre"
                     ],
                 "limits": {
-                    "start": song_id_start,
-                    "end": song_id_end }
+                    "start": songid_start,
+                    "end": songid_end }
                 },
             "id": 1}
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result']['songs']
+
+def audiolibrary_get_songs_delta(server_params, songid_start, songid_end):
+    """Retrieve all songs whithin limits"""
+    command = {"jsonrpc": "2.0",
+            "method": "AudioLibrary.GetSongs",
+            "params": {
+                "properties":
+                    [
+                        "rating",
+                        "playcount",
+                    ],
+                "limits": {
+                    "start": songid_start,
+                    "end": songid_end }
+                },
+            "id": 1}
+    ret = call_api(server_params, command)
+    display_result(ret)
+    return ret['result']['songs']
+
+def audiolibrary_get_songs_limits(server_params, songid_start, songid_end):
+    """Retrieve all songs whithin limits"""
+    command = {"jsonrpc": "2.0",
+            "method": "AudioLibrary.GetSongs",
+            "params": {
+                "limits": {
+                    "start": songid_start,
+                    "end": songid_end }
+                },
+            "id": 1}
+    ret = call_api(server_params, command)
+    display_result(ret)
+    return ret['result']['limits']
 
 # playlist
 

@@ -156,22 +156,51 @@ def set_songs_sync(params, songs):
     '''Sync library songs to local'''
     logger.debug('call function set_songs_sync')
     assert is_reachable(params)
+    # get the number of songs
+    limits = pk_rpc.audiolibrary_get_songs_limits(params, 0, 1)
+    nb_songs = limits['total']
+    logger.debug('total number of songs: %i', nb_songs)
+    # select sync type
+    if len(songs) == nb_songs:
+        full_scan = False
+    else:
+        full_scan = True
+    logger.info('full scan: %s', full_scan)
+    # slicing and loop
     slice = 0
     while True:
         start = slice * SONGS_SLICE_SIZE
         end = (slice + 1) * SONGS_SLICE_SIZE
-        logger.info('processing slice %i (songs %i to %i)', slice, start, end)
-        loop_songs = pk_rpc.audiolibrary_get_songs(params, start, end)
+        logger.info(
+            'processing slice %i (songs %i to %i in %i)',
+            slice,
+            start,
+            end,
+            nb_songs)
+        # fetch songs slice data
+        if full_scan:
+            loop_songs = pk_rpc.audiolibrary_get_songs_full(params, start, end)
+        else:
+            loop_songs = pk_rpc.audiolibrary_get_songs_delta(params, start, end)
+        # update songs dataset
         for loop_song in loop_songs:
-            songs[loop_song['songid']] = loop_song.copy()
-            del songs[loop_song['songid']]['songid']
-            songs[loop_song['songid']]['rating_en'] = 0
-            songs[loop_song['songid']]['playcount_en'] = 0
-        #if slice == 3:
+            if full_scan:
+                songs[loop_song['songid']] = loop_song.copy()
+                del songs[loop_song['songid']]['songid']
+                songs[loop_song['songid']]['rating_en'] = 0
+                songs[loop_song['songid']]['playcount_en'] = 0
+            else:
+                if not songs[loop_song['songid']]['rating'] == loop_song['rating']:
+                    songs[loop_song['songid']]['rating'] = loop_song['rating']
+                    logger.info('rating updated for song: %i', loop_song['songid'])
+                if not songs[loop_song['songid']]['playcount'] == loop_song['playcount']:
+                    songs[loop_song['songid']]['playcount'] = loop_song['playcount']
+                    logger.info('playcount updated for song: %i', loop_song['songid'])
         if not len(loop_songs) == SONGS_SLICE_SIZE:
             break
         slice += 1
-    save_songs(songs)
+    # persist songs dataset
+    #save_songs(songs)
 
 def get_audio_library_from_server(obj):
     '''Load the library in memory from the Kodi server'''

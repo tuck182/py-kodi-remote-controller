@@ -47,7 +47,7 @@ def songs_details(songid, songs):
     print
     print ('"%s" by %s (%s)') % (
             songs[songid]['title'],
-            songs[songid]['artist'],
+            "/".join(songs[songid]['artist']),
             songs[songid]['year'])
     print "\tPlaycount: %i (%i)" % (
             songs[songid]['playcount'],
