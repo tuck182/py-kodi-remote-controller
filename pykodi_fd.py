@@ -45,17 +45,17 @@ def song_details(songid, songs):
     """Display song details from song id"""
     logger.debug('call disp_songs_details')
     print
-    print ("%s by %s (%s)") % (
+    print ('"%s" by %s (%s)') % (
             songs[songid]['title'],
             songs[songid]['artist'],
             songs[songid]['year'])
-    print "   Playcount: %i (%i)" % (
+    print "\tPlaycount: %i (%i)" % (
             songs[songid]['playcount'],
             songs[songid]['playcount_en'])
-    print "   Rating: %i (%i)" % (
+    print "\tRating: %i (%i)" % (
             songs[songid]['rating'],
             songs[songid]['rating_en'])
-    print "   MusicBrainz ID: %s" % songs[songid]['musicbrainztrackid']
+    print "\tMusicBrainz ID: %s" % songs[songid]['musicbrainztrackid']
     print
 
 def playlist(properties, song_ids, songs):
