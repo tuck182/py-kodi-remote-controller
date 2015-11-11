@@ -5,11 +5,11 @@
 # distribution and at
 # https://github.com/Arn-O/py-kodi-remote-controller/blob/master/LICENSE.
 
-'''
+"""
 Kodi remote controller in command lines based on (cmd). Integrated with
 the echonest API for smart playlists generation.
 More info on the echonest API: http://developer.echonest.com/docs/v4
-'''
+"""
 
 import pykodi as kodi
 
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 # utility functions
 
 def get_params():
-    '''Get the run parameters'''
+    """Get the run parameters"""
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbosity",
             action="count",
@@ -39,7 +39,7 @@ def get_params():
     return 
 
 def is_file(fname):
-    '''Return true if the file does exist'''
+    """Return true if the file does exist"""
     logger.debug('call function is_file')
     try:
         open(fname)
@@ -48,7 +48,7 @@ def is_file(fname):
     return True
 
 def input_params():
-    '''Request the user for params input'''
+    """Request the user for params input"""
     logger.debug('call function input_params')
     params = {}
     params['ip'] = raw_input("Kodi server IP: ")
@@ -59,14 +59,14 @@ def input_params():
     return params
 
 def save_params(params):
-    '''Save the Kodi parameters to a local file'''
+    """Save the Kodi parameters to a local file"""
     logger.debug('call function save_params')
     f = open('params.pickle', 'wb')
     pickle.dump(params, f)
     f.close()
 
 def read_params():
-    '''Read the Kodi params from the local file'''
+    """Read the Kodi params from the local file"""
     logger.debug('call function read_params')
     f = open('params.pickle', 'rb')
     params = pickle.load(f)
@@ -119,10 +119,10 @@ class KodiRemote(cmd.Cmd):
     # Kodi params file
 
     def do_params_create(self, line):
-        '''
+        """
         Create the Kodi params file.
         Usage: params_create
-        '''
+        """
         logger.debug('call function do_params_create')
         print
         self.params = input_params()
@@ -131,10 +131,10 @@ class KodiRemote(cmd.Cmd):
         set_friendly_name(self)
 
     def do_params_display(self, line):
-        '''
+        """
         Display the Kodi params file.
         Usage: params_display
-        '''
+        """
         logger.debug('call function do_params_display')
         print
         print "Kodi parameters:"
@@ -149,10 +149,10 @@ class KodiRemote(cmd.Cmd):
         print
 
     def do_songs_sync(self, line):
-        '''
+        """
         Sync the Kodi songs library.
         Usage: library_sync
-        '''
+        """
         kodi.set_songs_sync(self.params, self.songs)
 
     def do_EOF(self, line):
@@ -162,7 +162,7 @@ class KodiRemote(cmd.Cmd):
         return True
 
 def main():
-    '''Where everything starts'''
+    """Where everything starts"""
 
     remote_controller = KodiRemote()
     remote_controller.cmdloop()
