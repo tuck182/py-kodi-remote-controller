@@ -158,7 +158,7 @@ class KodiRemote(cmd.Cmd):
         """
         logger.debug('call function do_songs_display')
         songid = int(line)
-        pk_fd.song_details(songid, self.songs)
+        pk_fd.songs_details(songid, self.songs)
 
     def do_songs_sync(self, line):
         """

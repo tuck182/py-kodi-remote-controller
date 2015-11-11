@@ -41,7 +41,7 @@ def songs_index(songs_id, kodi_songs):
                 kodi_songs[song_id]['year'],
                 song_id )
 
-def song_details(songid, songs):
+def songs_details(songid, songs):
     """Display song details from song id"""
     logger.debug('call disp_songs_details')
     print
