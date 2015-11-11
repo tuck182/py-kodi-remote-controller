@@ -5,9 +5,9 @@
 # distribution and at
 # https://github.com/Arn-O/py-kodi-remote-controller/blob/master/LICENSE.
 
-'''
+"""
 Module of display function for PyKodi.
-'''
+"""
 
 import logging
 logger = logging.getLogger(__name__)
@@ -41,21 +41,21 @@ def songs_index(songs_id, kodi_songs):
                 kodi_songs[song_id]['year'],
                 song_id )
 
-def songs_details(song_id, kodi_songs):
-    '''Display song details from song id'''
+def song_details(songid, songs):
+    """Display song details from song id"""
     logger.debug('call disp_songs_details')
     print
     print ("%s by %s (%s)") % (
-            kodi_songs[song_id]['title'],
-            kodi_songs[song_id]['artist'],
-            kodi_songs[song_id]['year'])
+            songs[songid]['title'],
+            songs[songid]['artist'],
+            songs[songid]['year'])
     print "   Playcount: %i (%i)" % (
-            kodi_songs[song_id]['playcount'],
-            kodi_songs[song_id]['playcount_en'])
+            songs[songid]['playcount'],
+            songs[songid]['playcount_en'])
     print "   Rating: %i (%i)" % (
-            kodi_songs[song_id]['rating'],
-            kodi_songs[song_id]['rating_en'])
-    print "   MusicBrainz ID: %s" % kodi_songs[song_id]['musicbrainztrackid']
+            songs[songid]['rating'],
+            songs[songid]['rating_en'])
+    print "   MusicBrainz ID: %s" % songs[songid]['musicbrainztrackid']
     print
 
 def playlist(properties, song_ids, songs):

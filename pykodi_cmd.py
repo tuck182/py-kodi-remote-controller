@@ -12,6 +12,7 @@ More info on the echonest API: http://developer.echonest.com/docs/v4
 """
 
 import pykodi as kodi
+import pykodi_fd as pk_fd
 
 import cmd
 import logging
@@ -147,6 +148,17 @@ class KodiRemote(cmd.Cmd):
         print
         print "Echonest API key: %s" % self.params['echonest_key']
         print
+
+    def do_songs_display(self, line):
+        """
+        Display details for a given song
+        Usage songs_display id
+            Display all information about a given song like the playcount
+            or the rating.
+        """
+        logger.debug('call function do_songs_display')
+        songid = int(line)
+        pk_fd.song_details(songid, self.songs)
 
     def do_songs_sync(self, line):
         """

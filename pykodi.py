@@ -11,7 +11,7 @@ Kodi remote controller based on HTTP/TCP transport, JSON and using the (cmd) int
 
 import pykodi_rpc as pk_rpc
 import en_api
-import fancy_disp
+#import fancy_disp
 
 import socket
 import requests
