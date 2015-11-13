@@ -160,6 +160,23 @@ class KodiRemote(cmd.Cmd):
         songid = int(line)
         pk_fd.songs_details(songid, self.songs)
 
+    def do_songs_page(self, line):
+        """
+        Display a given page of the songs library
+        Usage: songs_page [page]
+            The page is optional, a random page is displayed without it.
+        """
+        #TODO: make this working even without connection
+        logger.debug('call function do_songs_page')
+        page = int(line)
+        if not page:
+            logger.info('no page number provided')
+            page = random.randrange(len(self.songs) / DISPLAY_NB_LINES + 1)
+        songids = range(
+                (page - 1) * DISPLAY_NB_LINES + 1,
+                page * DISPLAY_NB_LINES + 1)
+        pk_fd.songs_index(songids, self.songs)
+
     def do_songs_sync(self, line):
         """
         Sync the Kodi songs library.
