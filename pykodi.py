@@ -253,6 +253,8 @@ def get_audio_library_from_server(obj):
                     obj.songs[song['songid']]['title'] = song['title']
                     if song['artist']:
                         obj.songs[song['songid']]['artist'] = song['artist'][0]
+                    else:
+                        obj.songs[song['songid']]['artist'] = ''
                     obj.songs[song['songid']]['year'] = song['year']
                     obj.songs[song['songid']]['rating'] = song['rating']
                     obj.songs[song['songid']]['playcount'] = song['playcount']
@@ -304,7 +306,10 @@ def get_audio_library_from_server(obj):
                 for album in ret['result']['albums']:
                     obj.albums[album['albumid']] = {}
                     obj.albums[album['albumid']]['title'] = album['title']
-                    obj.albums[album['albumid']]['artist'] = album['artist'][0]
+                    if album['artist']:
+                        obj.albums[album['albumid']]['artist'] = album['artist'][0]
+                    else:
+                        obj.albums[album['albumid']]['artist'] = ''
                     obj.albums[album['albumid']]['year'] = album['year']
                 break
             except KeyError:
@@ -910,6 +915,68 @@ class KodiRemote(cmd.Cmd):
         kodi_api.player_open(self.kodi_params)
         print
         fancy_disp.play_album(album_id, self.albums)
+        print
+
+    def do_add_album(self, line):
+        '''
+        Add a single album to the playlist
+        Usage: add_album [id]
+            Add the album behind the id.
+            Use the albums function to find the id.
+            The id is optional, an album is randomly selected without it.
+        '''
+        logger.debug('call function do_play_album')
+        album_id = parse_single_int(line)
+        if not album_id:
+            logger.info('no album id provided')
+            album_index = random.randrange(self.nb_albums)
+            logger.debug('random album index: %i', album_index)
+            album_id = self.albums.keys()[album_index]
+        kodi_api.playlist_add(ALBUM, album_id, self.kodi_params)
+        print
+        fancy_disp.add_album(album_id, self.albums)
+        print
+
+    def do_play_song(self, line):
+        '''
+        Play a single song
+        Usage: play_song [id]
+            Play the song behind the id.
+            Use the search functions to find the id.
+            The id is optional, a song is randomly selected without it.
+        '''
+        logger.debug('call function do_play_song')
+        song_id = parse_single_int(line)
+        if not song_id:
+            logger.info('no song id provided')
+            song_index = random.randrange(self.nb_songs)
+            logger.debug('random song index: %i', song_index)
+            album_id = self.albums.keys()[album_index]
+        kodi_api.playlist_clear(self.kodi_params)
+        kodi_api.playlist_add(SONG, song_id, self.kodi_params)
+        kodi_api.player_open(self.kodi_params)
+        print
+        fancy_disp.play_song(song_id, self.songs)
+        print
+
+    def do_add_song(self, line):
+        '''
+        Add a single song to the playlist
+        Usage: add_song [id]
+            Add the song behind the id.
+            Use the search functions to find the id.
+            The id is optional, a song is randomly selected without it.
+        '''
+        logger.debug('call function do_add_song')
+        song_id = parse_single_int(line)
+        if not song_id:
+            logger.info('no song id provided')
+            song_index = random.randrange(self.nb_songs)
+            logger.debug('random song index: %i', song_index)
+            album_id = self.albums.keys()[album_index]
+        kodi_api.playlist_add(SONG, song_id, self.kodi_params)
+        print
+        fancy_disp.add_song(song_id, self.songs)
         print
 
     def do_play_party(self, line):
