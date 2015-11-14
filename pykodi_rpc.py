@@ -102,6 +102,7 @@ def audiolibrary_get_songs_full(server_params, songid_start, songid_end):
                         "title",
                         "artist",
                         "year",
+                        "duration",
                         "rating",
                         "playcount",
                         "musicbrainztrackid",

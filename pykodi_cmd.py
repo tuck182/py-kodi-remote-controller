@@ -16,8 +16,13 @@ import pykodi_fd as pk_fd
 
 import cmd
 import logging
+import random
 import argparse
 import pickle
+
+# global constants
+
+DISPLAY_NB_LINES = 10
 
 logger = logging.getLogger(__name__)
 
@@ -139,10 +144,10 @@ class KodiRemote(cmd.Cmd):
         logger.debug('call function do_params_display')
         print
         print "Kodi parameters:"
-        print "   Network:    %s/%s" % (
+        print "\tNetwork:    %s/%s" % (
                 self.params['ip'], 
                 self.params['port'])
-        print "   Credential: %s (%s)" % (
+        print "\tCredential: %s (%s)" % (
                 self.params['user'], 
                 self.params['password'])
         print
@@ -159,6 +164,18 @@ class KodiRemote(cmd.Cmd):
         logger.debug('call function do_songs_display')
         songid = int(line)
         pk_fd.songs_details(songid, self.songs)
+        print
+
+    def do_songs_info(self, line):
+        """
+        Display information on the song set
+        Usage songs_info
+            Display info on the songs set like the number of songs
+            or the total duration.
+        """
+        logger.debug('call function do_songs_info')
+        pk_fd.songs_info(self.songs)
+        print
 
     def do_songs_page(self, line):
         """
@@ -166,16 +183,17 @@ class KodiRemote(cmd.Cmd):
         Usage: songs_page [page]
             The page is optional, a random page is displayed without it.
         """
-        #TODO: make this working even without connection
         logger.debug('call function do_songs_page')
-        page = int(line)
-        if not page:
+        if not line:
             logger.info('no page number provided')
             page = random.randrange(len(self.songs) / DISPLAY_NB_LINES + 1)
+        else:
+            page = int(line)
         songids = range(
                 (page - 1) * DISPLAY_NB_LINES + 1,
                 page * DISPLAY_NB_LINES + 1)
         pk_fd.songs_index(songids, self.songs)
+        print
 
     def do_songs_sync(self, line):
         """

@@ -29,17 +29,17 @@ def albums_index(albums_id, kodi_albums):
     print "Total number of albums: %i" % len(kodi_albums)
     print
 
-def songs_index(songs_id, kodi_songs):
+def songs_index(songids, songs):
     '''Display songs list from internal index'''
     logger.debug('call disp_songs_index')
     print
-    for i, song_id in enumerate(songs_id):
+    for i, songid in enumerate(songids):
         print ("%02i. \"%s\" by %s (%s) [%i]") % (
                 i + 1,
-                kodi_songs[song_id]['title'],
-                kodi_songs[song_id]['artist'],
-                kodi_songs[song_id]['year'],
-                song_id )
+                songs[songid]['title'],
+                songs[songid]['artist'],
+                songs[songid]['year'],
+                songid )
 
 def songs_details(songid, songs):
     """Display song details from song id"""
@@ -56,7 +56,12 @@ def songs_details(songid, songs):
             songs[songid]['rating'],
             songs[songid]['rating_en'])
     print "\tMusicBrainz ID: %s" % songs[songid]['musicbrainztrackid']
+
+def songs_info(songs):
+    """Display song details from song id"""
+    logger.debug('call disp_songs_info')
     print
+    print "Total number of songs: %i" % len(songs)
 
 def playlist(properties, song_ids, songs):
     '''Display playlist'''

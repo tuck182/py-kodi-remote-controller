@@ -200,7 +200,7 @@ def set_songs_sync(params, songs):
             break
         slice += 1
     # persist songs dataset
-    #save_songs(songs)
+    save_songs(songs)
 
 def get_audio_library_from_server(obj):
     '''Load the library in memory from the Kodi server'''
