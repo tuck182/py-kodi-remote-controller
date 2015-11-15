@@ -39,7 +39,7 @@ def songs_index(songids, songs):
         print ("%02i. \"%s\" by %s (%s) [%i]") % (
                 i + 1,
                 songs[songid]['title'],
-                songs[songid]['artist'],
+                 "/".join(songs[songid]['artist']),
                 songs[songid]['year'],
                 songid )
 
