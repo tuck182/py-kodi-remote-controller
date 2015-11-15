@@ -51,6 +51,8 @@ def songs_details(songid, songs):
             songs[songid]['title'],
             "/".join(songs[songid]['artist']),
             songs[songid]['year'])
+    print "\tDuration: %s" % (
+        str(datetime.timedelta(seconds=songs[songid]['duration'])))
     print "\tPlaycount: %i (%i)" % (
             songs[songid]['playcount'],
             songs[songid]['playcount_en'])
