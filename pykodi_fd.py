@@ -9,7 +9,9 @@
 Module of display function for PyKodi.
 """
 
+import datetime
 import logging
+
 logger = logging.getLogger(__name__)
 
 
@@ -62,6 +64,11 @@ def songs_info(songs):
     logger.debug('call disp_songs_info')
     print
     print "Total number of songs: %i" % len(songs)
+    total_duration = 0
+    for songid in songs:
+        total_duration += songs[songid]['duration']
+    duration_str = str(datetime.timedelta(seconds=total_duration))
+    print "Total duration: %s" % duration_str
 
 def playlist(properties, song_ids, songs):
     '''Display playlist'''
