@@ -152,9 +152,8 @@ def get_audio_library_from_files(obj):
     f.close()
     obj.nb_albums = len(obj.albums)
 
-
-def set_songs_sync(params, songs):
-    '''Sync library songs to local'''
+def set_songs_sync(params, songs, p_bar):
+    """Sync library songs to local"""
     logger.debug('call function set_songs_sync')
     assert is_reachable(params)
     # get the number of songs
@@ -167,6 +166,14 @@ def set_songs_sync(params, songs):
     else:
         full_scan = True
     logger.info('full scan: %s', full_scan)
+    if p_bar:
+        widgets = [
+            'Songs: ', Percentage(),
+            ' ', Bar(marker='#',left='[',right=']'),
+            ' (', Counter(), ' in ' + str(nb_songs) + ') ',
+            ETA()]
+        pbar = ProgressBar(widgets=widgets, maxval=nb_songs)
+        pbar.start()
     # dicts for delta sync
     rating_up_songids = []
     playcount_up_songids = []
@@ -181,6 +188,8 @@ def set_songs_sync(params, songs):
             start,
             end,
             nb_songs)
+        if p_bar:
+            pbar.update(start)
         # fetch songs slice data
         if full_scan:
             loop_songs = pk_rpc.audiolibrary_get_songs_full(params, start, end)
@@ -205,10 +214,11 @@ def set_songs_sync(params, songs):
         if not len(loop_songs) == SONGS_SLICE_SIZE:
             break
         slice += 1
-    return full_scan, rating_up_songids, playcount_up_songids
+    if p_bar:
+        pbar.finish()
     # persist songs dataset
-    #save_songs(songs)
-    # comments for testing the delta sync
+    save_songs(songs)
+    return full_scan, rating_up_songids, playcount_up_songids
 
 def get_audio_library_from_server(obj):
     '''Load the library in memory from the Kodi server'''
@@ -618,6 +628,7 @@ def get_profile_id(api_key):
     logger.debug('return: %s', r.text)
     logger.debug('profile id: %s', profile_id)
     return profile_id
+
 def get_profile_id(api_key):
     '''Get echonest profile profile ID'''
     #TODO: split in unit API functions

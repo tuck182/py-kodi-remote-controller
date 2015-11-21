@@ -81,7 +81,7 @@ def songs_sync(f_scan, ru_songsids, pcu_songids):
     else:
         print "Delta scan."
         print
-        print "\tRating updated: {}".format(len(ru_songsids))
+        print "\tRatings updated: {}".format(len(ru_songsids))
         print "\tPlay counts updated: {}".format(len(pcu_songids))
 
 def playlist(properties, song_ids, songs):

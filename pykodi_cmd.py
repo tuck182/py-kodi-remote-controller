@@ -42,7 +42,9 @@ def get_params():
             logging.basicConfig(level=logging.INFO)
             logger.info('Kodi controller started in verbosity mode ...')
             logger.debug('... and even in high verbosity mode!')
-    return 
+        else:
+            args.verbosity = 0
+    return args.verbosity
 
 def is_file(fname):
     """Return true if the file does exist"""
@@ -107,7 +109,7 @@ def set_friendly_name(self):
 class KodiRemote(cmd.Cmd):
     
     def preloop(self):
-        get_params()
+        self.log_level = get_params()
         if not is_file('params.pickle'):
             logger.info('no kodi params file')
             print
@@ -200,7 +202,8 @@ class KodiRemote(cmd.Cmd):
         Sync the Kodi songs library.
         Usage: library_sync
         """
-        f_scan, ru_songids, pcu_songids = kodi.set_songs_sync(self.params, self.songs)
+        print
+        f_scan, ru_songids, pcu_songids = kodi.set_songs_sync(self.params, self.songs, self.log_level == 0)
         pk_fd.songs_sync(f_scan, ru_songids, pcu_songids)
         print
 
