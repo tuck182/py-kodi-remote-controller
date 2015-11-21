@@ -32,8 +32,8 @@ def albums_index(albums_id, kodi_albums):
     print
 
 def songs_index(songids, songs):
-    '''Display songs list from internal index'''
-    logger.debug('call disp_songs_index')
+    """Display songs list from internal index"""
+    logger.debug('call songs_index')
     print
     for i, songid in enumerate(songids):
         print ("%02i. \"%s\" by %s (%s) [%i]") % (
@@ -45,7 +45,7 @@ def songs_index(songids, songs):
 
 def songs_details(songid, songs):
     """Display song details from song id"""
-    logger.debug('call disp_songs_details')
+    logger.debug('call songs_details')
     print
     print ('"%s" by %s (%s)') % (
             songs[songid]['title'],
@@ -63,7 +63,7 @@ def songs_details(songid, songs):
 
 def songs_info(songs):
     """Display song details from song id"""
-    logger.debug('call disp_songs_info')
+    logger.debug('call songs_info')
     print
     print "Total number of songs: %i" % len(songs)
     total_duration = 0
@@ -71,6 +71,18 @@ def songs_info(songs):
         total_duration += songs[songid]['duration']
     duration_str = str(datetime.timedelta(seconds=total_duration))
     print "Total duration: %s" % duration_str
+
+def songs_sync(f_scan, ru_songsids, pcu_songids):
+    """Display result of the songs sync process"""
+    logger.debug('call songs_sync')
+    print
+    if f_scan:
+        print "Full scan."
+    else:
+        print "Delta scan."
+        print
+        print "\tRating updated: {}".format(len(ru_songsids))
+        print "\tPlay counts updated: {}".format(len(pcu_songids))
 
 def playlist(properties, song_ids, songs):
     '''Display playlist'''

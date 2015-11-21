@@ -200,7 +200,9 @@ class KodiRemote(cmd.Cmd):
         Sync the Kodi songs library.
         Usage: library_sync
         """
-        kodi.set_songs_sync(self.params, self.songs)
+        f_scan, ru_songids, pcu_songids = kodi.set_songs_sync(self.params, self.songs)
+        pk_fd.songs_sync(f_scan, ru_songids, pcu_songids)
+        print
 
     def do_EOF(self, line):
         '''Override end of file'''

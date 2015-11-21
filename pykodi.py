@@ -12,6 +12,7 @@ Kodi remote controller based on HTTP/TCP transport, JSON and using the (cmd) int
 import pykodi_rpc as pk_rpc
 import en_api
 #import fancy_disp
+#TODO: change output from old string to format
 
 import socket
 import requests
@@ -166,6 +167,9 @@ def set_songs_sync(params, songs):
     else:
         full_scan = True
     logger.info('full scan: %s', full_scan)
+    # dicts for delta sync
+    rating_up_songids = []
+    playcount_up_songids = []
     # slicing and loop
     slice = 0
     while True:
@@ -193,14 +197,18 @@ def set_songs_sync(params, songs):
                 if not songs[loop_song['songid']]['rating'] == loop_song['rating']:
                     songs[loop_song['songid']]['rating'] = loop_song['rating']
                     logger.info('rating updated for song: %i', loop_song['songid'])
+                    rating_up_songids.append(loop_song['songid'])
                 if not songs[loop_song['songid']]['playcount'] == loop_song['playcount']:
                     songs[loop_song['songid']]['playcount'] = loop_song['playcount']
                     logger.info('playcount updated for song: %i', loop_song['songid'])
+                    playcount_up_songids.append(loop_song['songid'])
         if not len(loop_songs) == SONGS_SLICE_SIZE:
             break
         slice += 1
+    return full_scan, rating_up_songids, playcount_up_songids
     # persist songs dataset
-    save_songs(songs)
+    #save_songs(songs)
+    # comments for testing the delta sync
 
 def get_audio_library_from_server(obj):
     '''Load the library in memory from the Kodi server'''
