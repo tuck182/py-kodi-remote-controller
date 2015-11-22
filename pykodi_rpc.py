@@ -177,8 +177,7 @@ def playlist_clear(server_params):
     display_result(ret)
 
 def playlist_get_items(server_params):
-    '''Get all items from the audio playlist'''
-    #TODO: change to return the item id only
+    """Get all songids from the audio playlist"""
     logger.debug('call playlist_get_items')
     command = {"jsonrpc": "2.0",
             "method": "Playlist.GetItems",
@@ -188,14 +187,7 @@ def playlist_get_items(server_params):
             "id": 1}
     ret = call_api(server_params, command)
     display_result(ret)
-    items = []
-    try:
-        for item in ret['result']['items']:
-            items.append(item['id'])
-        logger.debug('items in the playlist: %s', items)
-    except KeyError:
-        pass
-    return items
+    return ret['result']['items']
 
 # player
 

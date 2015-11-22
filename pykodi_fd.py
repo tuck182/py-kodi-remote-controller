@@ -84,28 +84,27 @@ def songs_sync(f_scan, ru_songsids, pcu_songids):
         print "\tRatings updated: {}".format(len(ru_songsids))
         print "\tPlay counts updated: {}".format(len(pcu_songids))
 
-def playlist(properties, song_ids, songs):
-    '''Display playlist'''
+def playlist_show(properties, songids, songs):
+    """Display playlist"""
     if properties:
         position = properties['position']
     else:
         position = -1
     print
-    if song_ids:
-        for i, song_id in enumerate(song_ids):
+    if songids:
+        for i, songid in enumerate(songids):
             if i == position:
                 print ">> ",
             else:
                 print "   ",
             print "%02i. \"%s\" by %s (%s) [%s]" % (
                     i + 1,
-                    songs[song_id]['artist'],
-                    songs[song_id]['title'],
-                    songs[song_id]['year'],
-                    song_id )
+                    songs[songid]['artist'],
+                    songs[songid]['title'],
+                    songs[songid]['year'],
+                    songid )
     else:
         print "[playlist empty]"
-    print
 
 def now_playing(item, properties):
     '''Display the now playing part of display_what'''

@@ -156,6 +156,24 @@ class KodiRemote(cmd.Cmd):
         print "Echonest API key: %s" % self.params['echonest_key']
         print
 
+    # playlist functions
+
+    def do_playlist_show(self, line):
+        """
+        Show the current audio playlist
+        Usage: playlist_show
+        """
+        logger.debug('call function do_playlist_show')
+        #if kodi.player_is_active(self.params):
+        #    properties = kodi.player_get_properties(self.params)
+        #else:
+        #    properties = None
+        songids = kodi.get_playlist_songids(self.params)
+        pk_fd.playlist_show(None, songids, self.songs)
+        print
+
+    # songs functions
+
     def do_songs_display(self, line):
         """
         Display details for a given song
