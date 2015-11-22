@@ -171,7 +171,7 @@ class KodiRemote(cmd.Cmd):
     def do_songs_info(self, line):
         """
         Display information on the song set
-        Usage songs_info
+        Usage: songs_info
             Display info on the songs set like the number of songs
             or the total duration.
         """
@@ -194,6 +194,17 @@ class KodiRemote(cmd.Cmd):
         songids = range(
                 (page - 1) * DISPLAY_NB_LINES + 1,
                 page * DISPLAY_NB_LINES + 1)
+        pk_fd.songs_index(songids, self.songs)
+        print
+
+    def do_songs_random(self, line):
+        """
+        Display a set of random songs
+        Usage: songs_random
+            Select random songs and display them.
+        """
+        logger.debug('call function do_songs_random')
+        songids = random.sample(xrange(len(self.songs)), DISPLAY_NB_LINES)
         pk_fd.songs_index(songids, self.songs)
         print
 
