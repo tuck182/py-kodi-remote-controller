@@ -208,6 +208,18 @@ class KodiRemote(cmd.Cmd):
         pk_fd.songs_index(songids, self.songs)
         print
 
+    def do_songs_search(self, line):
+        """
+        Search into the songs
+        Usage: songs_search string
+            List all songs containing the string in the title or artist.
+        """
+        logger.debug('call function do_songs_search')
+        search_string = line.lower()
+        songids = kodi.get_songs_search(search_string, self.songs)
+        pk_fd.songs_index(songids, self.songs)
+        print
+
     def do_songs_sync(self, line):
         """
         Sync the Kodi songs library.

@@ -387,14 +387,14 @@ def get_albums_search(search_string, albums):
     return sorted(list(set(search_result_title + search_result_artist)))
 
 def get_songs_search(search_string, songs):
-    '''Internal song indexes for a string search'''
+    """Search a string in songs"""
     search_result_title = []
     search_result_artist = []
-    for song_id in songs.keys():
-        if search_string in songs[song_id]['title'].lower():
-            search_result_title.append(song_id)
-        if search_string in songs[song_id]['artist'].lower():
-            search_result_artist.append(song_id)
+    for songid in songs.keys():
+        if search_string in songs[songid]['title'].lower():
+            search_result_title.append(songid)
+        if search_string in "/".join(songs[songid]['artist']).lower():
+            search_result_artist.append(songid)
     logger.debug('search result by title: %s', search_result_title)
     logger.debug('search result by artist: %s', search_result_artist)
     return sorted(list(set(search_result_title + search_result_artist)))
