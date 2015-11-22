@@ -169,7 +169,7 @@ class KodiRemote(cmd.Cmd):
         #else:
         #    properties = None
         songids = kodi.get_playlist_songids(self.params)
-        pk_fd.playlist_show(None, songids, self.songs)
+        pk_fd.playlist_show(2, songids, self.songs)
         print
 
     # songs functions
