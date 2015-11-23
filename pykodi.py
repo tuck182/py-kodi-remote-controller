@@ -689,6 +689,10 @@ def playback_stop(kodi_params):
     if kodi_api.player_get_active(kodi_params):
         kodi_api.player_stop(kodi_params)
 
+def clear_playlist(params):
+    """Clear the audio playlist"""
+    pk_rpc.playlist_clear(params)
+
 def populate_playlist(song_ids, kodi_params):
     '''Create a playlist from an array of song_id'''
     print

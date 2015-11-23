@@ -169,6 +169,15 @@ class KodiRemote(cmd.Cmd):
         songid = int(line)
         kodi.playlist_add_song(songid, self.params)
 
+    def do_playlist_clear(self, line):
+        """
+        Clear the playlist
+        Usage: playlist_clear
+            Remove all items from the current playlist.
+        """
+        logger.debug('call function do_playlist_clear')
+        kodi.clear_playlist(self.params)
+
     def do_playlist_show(self, line):
         """
         Show the current audio playlist

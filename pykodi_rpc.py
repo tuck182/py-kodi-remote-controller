@@ -166,7 +166,7 @@ def playlist_add(item_type, item_id, server_params):
     display_result(ret)
 
 def playlist_clear(server_params):
-    '''Clear the audio playlist'''
+    """Clear the audio playlist"""
     logger.debug('call function playlist_clear')
     command = {"jsonrpc": "2.0",
             "method": "Playlist.Clear",
