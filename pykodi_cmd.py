@@ -164,12 +164,9 @@ class KodiRemote(cmd.Cmd):
         Usage: playlist_show
         """
         logger.debug('call function do_playlist_show')
-        #if kodi.player_is_active(self.params):
-        #    properties = kodi.player_get_properties(self.params)
-        #else:
-        #    properties = None
+        position = kodi.get_playlist_position(self.params)
         songids = kodi.get_playlist_songids(self.params)
-        pk_fd.playlist_show(2, songids, self.songs)
+        pk_fd.playlist_show(position, songids, self.songs)
         print
 
     # songs functions

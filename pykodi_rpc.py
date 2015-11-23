@@ -187,7 +187,7 @@ def playlist_get_items(server_params):
             "id": 1}
     ret = call_api(server_params, command)
     display_result(ret)
-    return ret['result']['items']
+    return ret['result'].get('items', [])
 
 # player
 
@@ -225,7 +225,7 @@ def player_get_item(server_params):
         return None
 
 def player_get_properties(server_params):
-    '''Get properties of the played item'''
+    """Get properties of the played item"""
     logger.debug('call function player_get_properties')
     command = {"jsonrpc": "2.0",
             "method": "Player.GetProperties",
@@ -239,12 +239,7 @@ def player_get_properties(server_params):
                 "id": 1}
     ret = call_api(server_params, command)
     display_result(ret)
-    if 'result' in ret:
-        result = ret['result']
-    else:
-        logger.debug('no properties found, player not active')
-        result = None
-    return result
+    return ret['result']
 
 def player_goto(server_params):
     '''Go to the next item'''

@@ -411,9 +411,16 @@ def get_genre_search(search_string, songs):
 
 def get_playlist_songids(params):
     """Fetch playlist items"""
+    logger.debug('call get_playlist_songids')
     items = pk_rpc.playlist_get_items(params)
     songids = [item['id'] for item in items]
     return songids
+
+def get_playlist_position(params):
+    """Return the current playing item in the playlist"""
+    logger.debug('call get_playlist_position')
+    properties = pk_rpc.player_get_properties(params)
+    return properties['position']
 
 def set_songs_sync2(server_params, songs):
     '''Sync playcount and rating'''
