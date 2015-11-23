@@ -86,6 +86,7 @@ def songs_sync(f_scan, ru_songsids, pcu_songids):
 
 def playlist_show(position, songids, songs):
     """Display playlist"""
+    logger.debug('call playlist_show')
     print
     if songids:
         for i, songid in enumerate(songids):
@@ -101,6 +102,15 @@ def playlist_show(position, songids, songs):
             )
     else:
         print "\t[playlist empty]"
+
+def echonest_info(catalog):
+    """Display echnonest tasteprofile info"""
+    logger.debug('call echonest_info')
+    print
+    print "\tTotal/resolved:{}/{}".format(catalog['total'], catalog['resolved'])
+    print "\tID: {}".format(catalog['id'])
+    print "\tDate created: {}".format(catalog['created'])
+    print "\tPending tickets:".format("/".join(catalog['pending_tickets']))
 
 def now_playing(item, properties):
     '''Display the now playing part of display_what'''

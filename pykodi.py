@@ -10,7 +10,7 @@ Kodi remote controller based on HTTP/TCP transport, JSON and using the (cmd) int
 '''
 
 import pykodi_rpc as pk_rpc
-import en_api
+import pykodi_en as pk_en
 #import fancy_disp
 #TODO: change output from old string to format
 
@@ -647,33 +647,33 @@ def get_profile_id(api_key):
     logger.debug('profile id: %s', profile_id)
     return profile_id
 
-def get_profile_id(api_key):
-    '''Get echonest profile profile ID'''
-    #TODO: split in unit API functions
+def get_en_profile_id(api_key):
+    """Get echonest profile profile ID"""
     logger.debug('call get_profile_id')
-    url = 'http://developer.echonest.com/api/v4/tasteprofile/profile'
-    payload = {
-            'api_key': api_key,
-            'name': PROFILE_NAME}
-    r = requests.get(url, params=payload)
-    if r.status_code == 400:
-        logger.debug('no taste profile found')
-        url = 'http://developer.echonest.com/api/v4/tasteprofile/create'
-        headers = {'content-type': 'multipart/form-data'}
-        payload = {
-                'api_key': api_key,
-                'name': PROFILE_NAME,
-                'type': 'general'}
-        r = requests.post(url, headers=headers, params=payload)
-        ret = r.json()
-        profile_id = ret['response']['id']
-    else:
-        logger.debug('taste profile found')
-        ret = r.json()
-        profile_id = ret['response']['catalog']['id'] 
-    logger.debug('return: %s', r.text)
+    ret = pk_en.tasteprofile_profile_name(api_key)
+    #if r.status_code == 400:
+    #    logger.debug('return: %s', r.text)
+    #    logger.debug('no taste profile found, will create one')
+    #    url = 'http://developer.echonest.com/api/v4/tasteprofile/create'
+    #    headers = {'content-type': 'multipart/form-data'}
+    #    payload = {
+    #            'api_key': api_key,
+    #            'name': PROFILE_NAME,
+    #            'type': 'general'}
+    #    r = requests.post(url, headers=headers, params=payload)
+    #    ret = r.json()
+    #    profile_id = ret['response']['id']
+    #else:
+    #    logger.debug('taste profile found')
+    profile_id = ret['id']
     logger.debug('profile id: %s', profile_id)
     return profile_id
+
+def get_en_info(api_key, profile_id):
+    """Fetch echonest taste profile info"""
+    logger.debug('call get_en_info')
+    en_info = pk_en.tasteprofile_profile_id(api_key, profile_id)
+    return en_info
 
 def playback(kodi_params):
     '''Start playback'''

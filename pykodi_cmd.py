@@ -124,6 +124,20 @@ class KodiRemote(cmd.Cmd):
         else:
             self.songs = get_songs_from_file('songs.pickle')
 
+    # echonest functions
+
+    def do_echonest_info(self, line):
+        """
+        Display info about the echonest taste profile.
+        Usage: echonest_info
+        """
+        logger.debug('call function do_echonest_info')
+        profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
+        en_info = kodi.get_en_info(self.params['echonest_key'], profile_id)
+        #TODO: create disp function
+        pk_fd.echonest_info(en_info)
+        print
+
     # Kodi params file
 
     def do_params_create(self, line):
@@ -207,6 +221,8 @@ class KodiRemote(cmd.Cmd):
             is removed before.
         """
         logger.debug('call function do_playlist_tasteprofile')
+        profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
+        print profile_id
 
     def do_playlist_taste_seed(self, line):
         """
@@ -217,6 +233,8 @@ class KodiRemote(cmd.Cmd):
             is removed before.
         """
         logger.debug('call function do_playlist_taste_seed')
+        profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
+        print profile_id
 
     # songs functions
 

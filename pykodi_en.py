@@ -6,14 +6,44 @@
 # distribution and at
 # https://github.com/Arn-O/py-kodi-remote-controller/blob/master/LICENSE.
 
-'''
+"""
 Module of functions for echonest API management.
-'''
+"""
 
 import requests
 import logging
+
 logger = logging.getLogger(__name__)
 
+PROFILE_NAME = 'Kodi library'
+
+def tasteprofile_profile_name(api_key):
+    """Get profile info by name"""
+    logger.debug('call tasteprofile_profile_name')
+    url = 'http://developer.echonest.com/api/v4/tasteprofile/profile'
+    payload = {
+        'api_key': api_key,
+        'name': PROFILE_NAME
+    }
+    r = requests.get(url, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
+    ret = r.json()
+    return ret['response']['catalog']
+
+def tasteprofile_profile_id(api_key, profile_id):
+    """Get profile info by id"""
+    logger.debug('call tasteprofile_profile_id')
+    url = 'http://developer.echonest.com/api/v4/tasteprofile/profile'
+    payload = {
+        'api_key': api_key,
+        'id': profile_id
+    }
+    r = requests.get(url, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
+    ret = r.json()
+    return ret['response']['catalog']
 
 #TODO: rename to tasteprofile in place of echonest
 def echonest_favorite(api_key, profile_id, song_id):
@@ -39,19 +69,6 @@ def echonest_skip(api_key, profile_id, song_id):
     r = requests.get(url, params=payload)
     logger.debug('URL: %s', r.url)
     logger.debug('return: %s', r.text)
-
-def echonest_info(api_key, profile_id):
-    '''Display info about echonest profile'''
-    logger.debug('call echonest_info')
-    url = 'http://developer.echonest.com/api/v4/tasteprofile/profile'
-    payload = {"api_key": api_key,
-              "id": profile_id
-              }
-    r = requests.get(url, params=payload)
-    logger.debug('URL: %s', r.url)
-    logger.debug('return: %s', r.text)
-    ret = r.json()
-    return ret['response']['catalog']
 
 def echonest_read(api_key, profile_id, item_id):
     '''Display dat about a given item'''
