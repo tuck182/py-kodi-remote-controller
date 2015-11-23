@@ -198,6 +198,26 @@ class KodiRemote(cmd.Cmd):
         pk_fd.playlist_show(position, songids, self.songs)
         print
 
+    def do_playlist_tasteprofile(self, line):
+        """
+        Create a playlist from echonest taste profile
+        Usage: playlist_tasteprofile
+            Generate and play a new playlist based on
+            echonest taste profile. The current playlist
+            is removed before.
+        """
+        logger.debug('call function do_playlist_tasteprofile')
+
+    def do_playlist_taste_seed(self, line):
+        """
+        Create a playlist from echonest taste profile and seeded by a song
+        Usage: playlist_tasteprofile song_id
+            Generate and play a new playlist based on
+            echonest taste profile. The current playlist
+            is removed before.
+        """
+        logger.debug('call function do_playlist_taste_seed')
+
     # songs functions
 
     def do_songs_display(self, line):
