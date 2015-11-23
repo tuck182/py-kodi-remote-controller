@@ -153,7 +153,7 @@ def audiolibrary_get_songs_limits(server_params, songid_start, songid_end):
 # playlist
 
 def playlist_add(item_type, item_id, server_params):
-    '''Add an item to the audio playlist'''
+    """Add an item to the audio playlist"""
     logger.debug('call function playlist_add')
     command = {"jsonrpc": "2.0",
             "method": "Playlist.Add",

@@ -422,6 +422,11 @@ def get_playlist_position(params):
     properties = pk_rpc.player_get_properties(params)
     return properties['position']
 
+def playlist_add_song(songid, params):
+    """Add a song to the playlist"""
+    logger.debug('call playlist_add_song')
+    pk_rpc.playlist_add(SONG, songid, params)
+
 def set_songs_sync2(server_params, songs):
     '''Sync playcount and rating'''
     logger.debug('call set_songs_sync')
