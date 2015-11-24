@@ -651,21 +651,12 @@ def get_en_profile_id(api_key):
     """Get echonest profile profile ID"""
     logger.debug('call get_profile_id')
     ret = pk_en.tasteprofile_profile_name(api_key)
-    #if r.status_code == 400:
-    #    logger.debug('return: %s', r.text)
-    #    logger.debug('no taste profile found, will create one')
-    #    url = 'http://developer.echonest.com/api/v4/tasteprofile/create'
-    #    headers = {'content-type': 'multipart/form-data'}
-    #    payload = {
-    #            'api_key': api_key,
-    #            'name': PROFILE_NAME,
-    #            'type': 'general'}
-    #    r = requests.post(url, headers=headers, params=payload)
-    #    ret = r.json()
-    #    profile_id = ret['response']['id']
-    #else:
-    #    logger.debug('taste profile found')
-    profile_id = ret['id']
+    print ret
+    if not 'catalog' in ret:
+        logger.debug('no taste profile found, will create one')
+        pk_en.tasteprofile_create(api_key)
+        ret = pk_en.tasteprofile_profile_name(api_key)
+    profile_id = ret['catalog']['id']
     logger.debug('profile id: %s', profile_id)
     return profile_id
 

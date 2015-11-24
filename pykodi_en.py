@@ -17,9 +17,21 @@ logger = logging.getLogger(__name__)
 
 PROFILE_NAME = 'PyKodi library'
 
+def tasteprofile_create(api_key):
+    """Create an echonest tasteprofile"""
+    logger.debug('call tasteprofile_create')
+    url = 'http://developer.echonest.com/api/v4/tasteprofile/create'
+    headers = {'content-type': 'multipart/form-data'}
+    payload = {
+        'api_key': api_key,
+        'name': PROFILE_NAME,
+        'type': 'general'
+    }
+    r = requests.post(url, headers=headers, params=payload)
+
 def tasteprofile_delete(api_key, profile_id):
     """Delete echonest tasteprofile"""
-    logger.debug('call echonest_delete')
+    logger.debug('call tasteprofile_delete')
     url = 'http://developer.echonest.com/api/v4/tasteprofile/delete'
     headers = {'content-type': 'multipart/form-data'}
     payload = {
@@ -42,7 +54,7 @@ def tasteprofile_profile_name(api_key):
     logger.debug('URL: %s', r.url)
     logger.debug('return: %s', r.text)
     ret = r.json()
-    return ret['response']['catalog']
+    return ret['response']
 
 def tasteprofile_profile_id(api_key, profile_id):
     """Get profile info by id"""
