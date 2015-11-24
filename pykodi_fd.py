@@ -227,7 +227,7 @@ def validate_playlist():
     return rep.lower()
 
 def sure_delete_tasteprofile(api_key, profile_id):
-    '''Warning before taste profile deletion.'''
+    """Warning before taste profile deletion."""
     print
     print "WARNING: you are about to delete your taste profile. All your"
     print "favorite, ban and skip data will be lost. playcount and rating"

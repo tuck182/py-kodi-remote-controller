@@ -15,7 +15,20 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-PROFILE_NAME = 'Kodi library'
+PROFILE_NAME = 'PyKodi library'
+
+def tasteprofile_delete(api_key, profile_id):
+    """Delete echonest tasteprofile"""
+    logger.debug('call echonest_delete')
+    url = 'http://developer.echonest.com/api/v4/tasteprofile/delete'
+    headers = {'content-type': 'multipart/form-data'}
+    payload = {
+        'api_key': api_key,
+        'id': profile_id
+    }
+    r = requests.post(url, headers=headers, params=payload)
+    ret = r.json()
+    return ret['response']['status']
 
 def tasteprofile_profile_name(api_key):
     """Get profile info by name"""

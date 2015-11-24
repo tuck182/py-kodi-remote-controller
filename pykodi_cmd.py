@@ -126,6 +126,17 @@ class KodiRemote(cmd.Cmd):
 
     # echonest functions
 
+    def do_echonest_delete(self, line):
+        """
+        Delete echonest taste profile.
+        Usage: echonest_delete
+        """
+        logger.debug('call function do_echonest_delete')
+        profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
+        if pk_fd.sure_delete_tasteprofile(self.params['echonest_key'], profile_id):
+            en_status = kodi.en_delete(self.params['echonest_key'], profile_id)
+            print en_status
+
     def do_echonest_info(self, line):
         """
         Display info about the echonest taste profile.
@@ -134,7 +145,6 @@ class KodiRemote(cmd.Cmd):
         logger.debug('call function do_echonest_info')
         profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
         en_info = kodi.get_en_info(self.params['echonest_key'], profile_id)
-        #TODO: create disp function
         pk_fd.echonest_info(en_info)
         print
 
