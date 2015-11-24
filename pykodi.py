@@ -651,9 +651,8 @@ def get_en_profile_id(api_key):
     """Get echonest profile profile ID"""
     logger.debug('call get_profile_id')
     ret = pk_en.tasteprofile_profile_name(api_key)
-    print ret
     if not 'catalog' in ret:
-        logger.debug('no taste profile found, will create one')
+        logger.info('no taste profile found, will create one')
         pk_en.tasteprofile_create(api_key)
         ret = pk_en.tasteprofile_profile_name(api_key)
     profile_id = ret['catalog']['id']
@@ -669,8 +668,7 @@ def get_en_info(api_key, profile_id):
 def en_delete(api_key, profile_id):
     """Delete the echonest tasteprofile"""
     logger.debug('call en_delete')
-    en_status = pk_en.tasteprofile_delete(api_key, profile_id)
-    return en_status
+    pk_en.tasteprofile_delete(api_key, profile_id)
 
 def playback(kodi_params):
     '''Start playback'''

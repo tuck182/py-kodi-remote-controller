@@ -28,6 +28,8 @@ def tasteprofile_create(api_key):
         'type': 'general'
     }
     r = requests.post(url, headers=headers, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
 
 def tasteprofile_delete(api_key, profile_id):
     """Delete echonest tasteprofile"""
@@ -39,8 +41,8 @@ def tasteprofile_delete(api_key, profile_id):
         'id': profile_id
     }
     r = requests.post(url, headers=headers, params=payload)
-    ret = r.json()
-    return ret['response']['status']
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
 
 def tasteprofile_profile_name(api_key):
     """Get profile info by name"""

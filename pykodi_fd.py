@@ -236,6 +236,11 @@ def sure_delete_tasteprofile(api_key, profile_id):
     rep = raw_input("Are you sure (Y/c)? ")
     return rep == 'Y'
 
+def echonest_detele():
+    """Print delete output"""
+    print
+    print "Your echonest profile has been deleted."
+
 # stub for smart help
 
 def smart_help():
