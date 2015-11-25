@@ -32,6 +32,7 @@ logger = logging.getLogger(__name__)
 # global constants
 # number of songs by songs sync
 SONGS_SLICE_SIZE = 20
+SONGS_EN_SLICE_SIZE = 30
 
 BUFFER_SIZE = 1024
 DISPLAY_NB_LINES = 10
@@ -501,7 +502,52 @@ def get_profile_delta(songs):
             continue
     return songs_id_delta
 
-def echonest_sync(api_key, profile_id, songs):
+def en_sync(api_key, profile_id, songs, p_bar):
+    """Sync songs with echonest tasteprofile"""
+    en_info = pk_en.tasteprofile_profile_id(api_key, profile_id)
+    if en_info['total'] == 0:
+        logger.info("full sync")
+        songids = songs.keys()
+    else:
+        logger.info("delta sync")
+        songids = []
+        for song in songs:
+            if not (song['rating'] == song['rating_en']) and (song['playcount'] == song['playcount_en']):
+                songids.append(song['id'])
+        logger.debug("songs to sync: %s", songids)
+    nb_songs = len(songids)
+    logger.debug("numer of songs to sync: %s", nb_songs)
+    # slicing and loop
+    slice = 0
+    while True:
+        start = slice * SONGS_EN_SLICE_SIZE
+        end = (slice + 1) * SONGS_EN_SLICE_SIZE
+        if end > nb_songs:
+            end = nb_songs
+        logger.info(
+            'processing slice %i (songs %i to %i in %i)',
+            slice,
+            start,
+            end,
+            nb_songs)
+        items = {}
+        for song_index in range(start, end):
+            songid = songids[song_index]
+            mb_song_id = 'musicbrainz:song:' + songs[songid]['musicbrainztrackid']
+            items[str(songid)] = {}
+            items[str(songid)]['song_id'] = mb_song_id
+            items[str(songid)]['rating'] = songs[songid]['rating']
+            items[str(songid)]['play_count'] = songs[songid]['playcount']
+        pk_en.tasteprofile_update(items, api_key, profile_id)
+        if end == nb_songs:
+            break
+        # for testing only
+        #if slice == 4:
+        #    break
+        slice +=1
+        time.sleep(0.51)
+
+def echonest_sync2(api_key, profile_id, songs):
     '''Sync songs with echonest tasteprofile'''
     logger.debug('call echonest_sync')
     #TODO: cache the profile ID

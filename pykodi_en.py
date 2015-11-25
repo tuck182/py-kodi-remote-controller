@@ -11,6 +11,7 @@ Module of functions for echonest API management.
 """
 
 import requests
+import json
 import logging
 
 logger = logging.getLogger(__name__)
@@ -71,6 +72,32 @@ def tasteprofile_profile_id(api_key, profile_id):
     logger.debug('return: %s', r.text)
     ret = r.json()
     return ret['response']['catalog']
+
+def tasteprofile_update(items, api_key, profile_id):
+    """Batch update of items"""
+    logger.debug('call tasteprofile_update')
+    # crunch items into a single command
+    command = []
+    for item_id in items:
+        command.append({
+            "action": 'update',
+            "item": {
+                "item_id": item_id,
+                "song_id": items[item_id]['song_id'],
+                "rating": items[item_id]['rating'],
+                "play_count": items[item_id]['play_count']
+            }
+        })
+    url = 'http://developer.echonest.com/api/v4/tasteprofile/update'
+    headers = {'content-type': 'multipart/form-data'}
+    payload = {
+        'api_key': api_key,
+        'id': profile_id,
+        'data': json.dumps(command)
+    }
+    r = requests.post(url, headers=headers, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
 
 #TODO: rename to tasteprofile in place of echonest
 def echonest_favorite(api_key, profile_id, song_id):

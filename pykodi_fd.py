@@ -107,7 +107,7 @@ def echonest_info(catalog):
     """Display echnonest tasteprofile info"""
     logger.debug('call echonest_info')
     print
-    print "\tTotal/resolved:{}/{}".format(catalog['total'], catalog['resolved'])
+    print "\tTotal/resolved: {}/{}".format(catalog['total'], catalog['resolved'])
     print "\tID: {}".format(catalog['id'])
     print "\tDate created: {}".format(catalog['created'])
     print "\tPending tickets:".format("/".join(catalog['pending_tickets']))

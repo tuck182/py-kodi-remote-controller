@@ -149,6 +149,18 @@ class KodiRemote(cmd.Cmd):
         pk_fd.echonest_info(en_info)
         print
 
+    def do_echonest_sync(self, line):
+        """
+        Sync local songs with the echonest tasteprofile.
+        Usage: echonest_sync
+            If there is no song in the profile, a full sync is
+            performed. Otherwise, only the play counts and the
+            ratings are updated.
+        """
+        logger.debug('call function do_echonest_sync')
+        profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
+        kodi.en_sync(self.params['echonest_key'], profile_id, self.songs, self.log_level == 0)
+
     # Kodi params file
 
     def do_params_create(self, line):
