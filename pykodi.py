@@ -545,6 +545,11 @@ def en_sync(api_key, profile_id, songs, p_bar):
         slice +=1
         time.sleep(0.51)
 
+def echonest_status(ticket, api_key):
+    """Check ticket status"""
+    logger.debug('call echonest_status')
+    pk_en.tasteprofile_status(ticket, api_key)
+
 def echonest_sync2(api_key, profile_id, songs):
     '''Sync songs with echonest tasteprofile'''
     logger.debug('call echonest_sync')

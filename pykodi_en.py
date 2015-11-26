@@ -73,6 +73,18 @@ def tasteprofile_profile_id(api_key, profile_id):
     ret = r.json()
     return ret['response']['catalog']
 
+def tasteprofile_status(ticket, api_key):
+    """Check tasteprofile status update"""
+    logger.debug('call tasteprofile_profile_id')
+    url = 'http://developer.echonest.com/api/v4/tasteprofile/status'
+    payload = {
+        'api_key': api_key,
+        'ticket': ticket
+    }
+    r = requests.get(url, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
+
 def tasteprofile_update(items, api_key, profile_id):
     """Batch update of items"""
     logger.debug('call tasteprofile_update')
