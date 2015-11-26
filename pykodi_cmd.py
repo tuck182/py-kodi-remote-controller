@@ -138,6 +138,18 @@ class KodiRemote(cmd.Cmd):
         pk_fd.echonest_detele()
         print
 
+    def do_echonest_display(self, line):
+        """
+        Display song details in tasteprofile.
+        Usage: echonest_delete
+        """
+        logger.debug('call function do_echonest_display')
+        songid = int(line)
+        profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
+        song_data = kodi.en_display(songid, self.params['echonest_key'], profile_id)
+        pk_fd.en_display(song_data)
+        print
+
     def do_echonest_info(self, line):
         """
         Display info about the echonest taste profile.

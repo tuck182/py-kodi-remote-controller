@@ -719,6 +719,12 @@ def en_delete(api_key, profile_id):
     logger.debug('call en_delete')
     pk_en.tasteprofile_delete(api_key, profile_id)
 
+def en_display(songid, api_key, profile_id):
+    """Display song detail from tasteprofile"""
+    logger.debug('call en_display')
+    item = pk_en.tasteprofile_read(str(songid), api_key, profile_id)
+    return item
+
 def playback(kodi_params):
     '''Start playback'''
     logger.debug('call function playback')

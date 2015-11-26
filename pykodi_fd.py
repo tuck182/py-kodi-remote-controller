@@ -178,46 +178,33 @@ def add_song(song_id, songs):
     print "Let's add the song \"%s\" by %s [%i]." % (
             songs[song_id]['title'], songs[song_id]['artist'], song_id)
 
-def echonest_read(song_data):
-    '''Display echonest song data'''
-    # clean display
-    if 'rating' in song_data:
-        rating = song_data['rating']
-    else:
-        rating = 0
-    if 'play_count' in song_data:
-        play_count = song_data['play_count']
-    else:
-        play_count = 0
-    if 'skip_count' in song_data:
-        skip_count = song_data['skip_count']
-    else:
-        skip_count = 0
-    favorite = 'favorite' in song_data
-    banned = 'banned' in song_data
-    # output
-    print "\"%s\" by %s" % (song_data['song_name'], song_data['artist_name'])
+def en_display(song_data):
+    """Display echonest song data"""
     print
-    print "   Echonest ID: \t%s" % song_data['song_id']
-    print "   Foreign ID: \t\t%s" % song_data['foreign_id']
-    print "   MusicBrainz ID: \t%s" % song_data['request']['song_id']
+    print "\"{}\" by {}".format(song_data['song_name'], song_data['artist_name'])
     print
-    print "   Date added: %s - Last modified: %s" % (
-            song_data['date_added'], song_data['last_modified'])
+    print "\tEchonest ID: \t\t{}".format(song_data['song_id'])
+    print "\tForeign ID: \t\t{}".format(song_data['foreign_id'])
+    print "\tMusicBrainz ID: \t{}".format(song_data['request']['song_id'])
     print
-    print "   This song has been played %i time(s) and skipped %i time(s)" % (
-            play_count, skip_count)
-    print "   Rating: %s - Favorite: %s - Banned: %s" % (
-            rating, favorite, banned)
+    print "\tDate added: {} - Last modified: {}".format(
+        song_data['date_added'], song_data['last_modified'])
     print
-    print "   Song type(s): %s" % (", ".join(song_data['song_type']))
+    print "\tThis song has been played {} time(s) and skipped {} time(s)".format(
+        song_data.get('play_count', 0), song_data.get('skip_count', 0))
+    print "\tRating: {} - Favorite: {} - Banned: {}".format(
+        song_data.get('rating', 0),
+        song_data.get('favorite', False),
+        song_data.get('banned', False))
     print
-    print "   Song currency: \t%s" % (song_data['song_currency'])
-    print "   Song hotttnesss: \t%s" % (song_data['song_hotttnesss'])
+    print "\tSong type(s): {}".format(", ".join(song_data['song_type']))
     print
-    print "   Artist familiarity: \t%s" % (song_data['artist_familiarity'])
-    print "   Artist hotttnesss: \t%s" % (song_data['artist_hotttnesss'])
-    print "   Artist discovery: \t%s" % (song_data['artist_discovery'])
+    print "\tSong currency: \t\t{}".format(song_data['song_currency'])
+    print "\tSong hotttnesss: \t{}".format(song_data['song_hotttnesss'])
+    print
+    print "\tArtist familiarity: \t{}".format(song_data['artist_familiarity'])
+    print "\tArtist hotttnesss: \t{}".format(song_data['artist_hotttnesss'])
+    print "\tArtist discovery: \t{}".format(song_data['artist_discovery'])
 
 # prompt for confirmation
 

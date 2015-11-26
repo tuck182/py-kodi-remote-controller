@@ -73,6 +73,25 @@ def tasteprofile_profile_id(api_key, profile_id):
     ret = r.json()
     return ret['response']['catalog']
 
+def tasteprofile_read(item_id, api_key, profile_id):
+    """Display dat about a given item"""
+    logger.debug('call echonest_read')
+    url = 'http://developer.echonest.com/api/v4/tasteprofile/read'
+    payload = {
+            'api_key': api_key,
+            'id': profile_id,
+            'item_id': item_id,
+            'bucket': [
+                'artist_discovery', 'artist_familiarity', 'artist_hotttnesss',
+                'song_currency', 'song_hotttnesss', 'song_type',
+                ]
+            }
+    r = requests.get(url, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
+    ret = r.json()
+    return ret['response']['catalog']['items'][0]
+
 def tasteprofile_status(ticket, api_key):
     """Check tasteprofile status update"""
     logger.debug('call tasteprofile_profile_id')
