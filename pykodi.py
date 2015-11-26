@@ -511,9 +511,10 @@ def en_sync(api_key, profile_id, songs, p_bar):
     else:
         logger.info("delta sync")
         songids = []
-        for song in songs:
-            if not (song['rating'] == song['rating_en']) and (song['playcount'] == song['playcount_en']):
-                songids.append(song['id'])
+        for songid in songs:
+            if not (songs[songid]['rating'] == songs[songid]['rating_en']
+                    and songs[songid]['playcount'] == songs[songid]['playcount_en']):
+                songids.append(songid)
         logger.debug("songs to sync: %s", songids)
     nb_songs = len(songids)
     logger.debug("numer of songs to sync: %s", nb_songs)
@@ -541,9 +542,6 @@ def en_sync(api_key, profile_id, songs, p_bar):
         pk_en.tasteprofile_update(items, api_key, profile_id)
         if end == nb_songs:
             break
-        # for testing only
-        #if slice == 4:
-        #    break
         slice +=1
         time.sleep(0.51)
 

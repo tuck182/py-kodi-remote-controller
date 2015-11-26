@@ -80,12 +80,12 @@ def tasteprofile_update(items, api_key, profile_id):
     command = []
     for item_id in items:
         command.append({
-            "action": 'update',
-            "item": {
-                "item_id": item_id,
-                "song_id": items[item_id]['song_id'],
-                "rating": items[item_id]['rating'],
-                "play_count": items[item_id]['play_count']
+            'action': 'update',
+            'item': {
+                'item_id': item_id,
+                'song_id': items[item_id]['song_id'],
+                'rating': items[item_id]['rating'],
+                'play_count': items[item_id]['play_count']
             }
         })
     url = 'http://developer.echonest.com/api/v4/tasteprofile/update'
