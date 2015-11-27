@@ -518,6 +518,15 @@ def en_sync(api_key, profile_id, songs, p_bar):
         logger.debug("songs to sync: %s", songids)
     nb_songs = len(songids)
     logger.debug("numer of songs to sync: %s", nb_songs)
+    if p_bar:
+        widgets = [
+            'Songs: ', Percentage(),
+            ' ', Bar(marker='#',left='[',right=']'),
+            ' (', Counter(), ' in ' + str(nb_songs) + ') ',
+            ETA()
+        ]
+        pbar = ProgressBar(widgets=widgets, maxval=nb_songs)
+        pbar.start()
     # slicing and loop
     slice = 0
     while True:
@@ -531,6 +540,8 @@ def en_sync(api_key, profile_id, songs, p_bar):
             start,
             end,
             nb_songs)
+        if p_bar:
+            pbar.update(start)
         items = {}
         for song_index in range(start, end):
             songid = songids[song_index]
@@ -544,6 +555,9 @@ def en_sync(api_key, profile_id, songs, p_bar):
             break
         slice +=1
         time.sleep(0.51)
+    if p_bar:
+        pbar.finish()
+    save_songs(songs)
 
 def echonest_status(ticket, api_key):
     """Check ticket status"""
