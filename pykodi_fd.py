@@ -178,6 +178,13 @@ def add_song(song_id, songs):
     print "Let's add the song \"%s\" by %s [%i]." % (
             songs[song_id]['title'], songs[song_id]['artist'], song_id)
 
+def en_sync(songids):
+    """Display echonest sync results"""
+    if len(songids) == 0:
+        print "Echonest tasteprofile up to date."
+    else:
+        print "{} song(s) have been updated.".format(len(songids))
+
 def en_display(song_data):
     """Display echonest song data"""
     print

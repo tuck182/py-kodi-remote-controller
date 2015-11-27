@@ -184,7 +184,8 @@ class KodiRemote(cmd.Cmd):
         logger.debug('call function do_echonest_sync')
         profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
         print
-        kodi.en_sync(self.params['echonest_key'], profile_id, self.songs, self.log_level == 0)
+        en_songids = kodi.en_sync(self.params['echonest_key'], profile_id, self.songs, self.log_level == 0)
+        pk_fd.en_sync(en_songids)
         print
 
     # Kodi params file

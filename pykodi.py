@@ -518,6 +518,9 @@ def en_sync(api_key, profile_id, songs, p_bar):
         logger.debug("songs to sync: %s", songids)
     nb_songs = len(songids)
     logger.debug("numer of songs to sync: %s", nb_songs)
+    if nb_songs == 0:
+        logger.debug("no songs to sync")
+        return songids
     if p_bar:
         widgets = [
             'Songs: ', Percentage(),
@@ -550,6 +553,8 @@ def en_sync(api_key, profile_id, songs, p_bar):
             items[str(songid)]['song_id'] = mb_song_id
             items[str(songid)]['rating'] = songs[songid]['rating']
             items[str(songid)]['play_count'] = songs[songid]['playcount']
+            songs[songid]['rating_en'] = songs[songid]['rating']
+            songs[songid]['playcount_en'] = songs[songid]['playcount']
         pk_en.tasteprofile_update(items, api_key, profile_id)
         if end == nb_songs:
             break
@@ -558,6 +563,7 @@ def en_sync(api_key, profile_id, songs, p_bar):
     if p_bar:
         pbar.finish()
     save_songs(songs)
+    return songids
 
 def echonest_status(ticket, api_key):
     """Check ticket status"""
