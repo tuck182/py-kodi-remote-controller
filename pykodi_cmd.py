@@ -239,8 +239,9 @@ class KodiRemote(cmd.Cmd):
             Use the songs function to find the id.
         """
         logger.debug('call function do_playlist_add_song')
-        songid = int(line)
-        kodi.playlist_add_song(songid, self.params)
+        songids = []
+        songids.append(int(line))
+        kodi.playlist_add_songs(songids, self.params)
 
     def do_playlist_clear(self, line):
         """
@@ -272,7 +273,11 @@ class KodiRemote(cmd.Cmd):
         """
         logger.debug('call function do_playlist_tasteprofile')
         profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
-        print profile_id
+        songids = kodi.en_playlist(self.params['echonest_key'], profile_id)
+        kodi.clear_playlist(self.params)
+        kodi.playlist_add_songs(songids, self.params)
+        pk_fd.songs_index(songids, self.songs)
+        print
 
     def do_playlist_taste_seed(self, line):
         """

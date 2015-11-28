@@ -18,6 +18,22 @@ logger = logging.getLogger(__name__)
 
 PROFILE_NAME = 'PyKodi library'
 
+def playlist_static(api_key, profile_id):
+    """Create a static playlist"""
+    logger.debug('call playlist_static')
+    url = 'http://developer.echonest.com/api/v4/playlist/static'
+    payload = {
+        "api_key": api_key,
+        "type": 'catalog',
+        "seed_catalog": profile_id,
+        "bucket": 'id:' + profile_id
+    }
+    r = requests.get(url, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
+    ret = r.json()
+    return ret['response']['songs']
+
 def tasteprofile_create(api_key):
     """Create an echonest tasteprofile"""
     logger.debug('call tasteprofile_create')
@@ -173,16 +189,3 @@ def echonest_read(api_key, profile_id, item_id):
     logger.debug('return: %s', r.text)
     ret = r.json()
     return ret['response']['catalog']['items'][0]
-
-def echonest_delete(api_key, profile_id):
-    '''Delete echonest tasteprofile'''
-    logger.debug('call echonest_delete')
-    url = 'http://developer.echonest.com/api/v4/tasteprofile/delete'
-    headers = {'content-type': 'multipart/form-data'}
-    payload = {"api_key": api_key,
-            "id": profile_id
-            }
-    r = requests.post(url, headers=headers, params=payload)
-    #TODO: move to disp function
-    print(r.url)
-    print(r.text)

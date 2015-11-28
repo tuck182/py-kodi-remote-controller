@@ -423,10 +423,11 @@ def get_playlist_position(params):
     properties = pk_rpc.player_get_properties(params)
     return properties['position']
 
-def playlist_add_song(songid, params):
-    """Add a song to the playlist"""
-    logger.debug('call playlist_add_song')
-    pk_rpc.playlist_add(SONG, songid, params)
+def playlist_add_songs(songids, params):
+    """Add songids list to the playlist"""
+    logger.debug('call playlist_add_songs')
+    for songid in songids:
+        pk_rpc.playlist_add(SONG, songid, params)
 
 def set_songs_sync2(server_params, songs):
     '''Sync playcount and rating'''
@@ -638,29 +639,27 @@ def echonest_sync2(api_key, profile_id, songs):
     save_songs(songs)
     print
 
+def en_playlist(api_key, profile_id):
+    """Create a static playlist"""
+    logger.debug('call en_playlist')
+    en_songs = pk_en.playlist_static(api_key, profile_id)
+    songids = []
+    for en_song in en_songs:
+        en_id = en_song['foreign_ids'][0]['foreign_id']
+        songid = int(en_id.replace(profile_id + ':song:', ""))
+        songids.append(songid)
+    return songids
+
 def echonest_playlist(api_key, profile_id):
     '''Create a premium static playlist'''
     logger.debug('call echonest_playlist')
-    #TODO: split in API function + conversion of namespace
-    print
-    print "Requesting a playlist to echonest ..."
-    url = 'http://developer.echonest.com/api/v4/playlist/static'
-    payload = {"api_key": api_key,
-              "type": 'catalog',
-              "seed_catalog": profile_id,
-              "bucket": 'id:' + profile_id
-              }
-    r = requests.get(url, params=payload)
-    logger.debug('URL: %s', r.url)
-    logger.debug('return: %s', r.text)
-    ret = r.json()
-    en_songs = ret['response']['songs']
-    playlist = []
+    en_songs = pk_en.playlist_static(api_key, profile_id)
+    songids = []
     for en_song in en_songs:
         en_id = en_song['foreign_ids'][0]['foreign_id']
-        kodi_id = en_id.replace(profile_id + ':song:', "")
-        playlist.append(int(kodi_id))
-    return playlist
+        songid = int(en_id.replace(profile_id + ':song:', ""))
+        songids.append(songid)
+    return songids
 
 def echonest_pl_seed(api_key, profile_id, song_id):
     '''Create a premium static playlist seeded by a song'''

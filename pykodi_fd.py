@@ -183,6 +183,7 @@ def en_sync(songids):
     if len(songids) == 0:
         print "Echonest tasteprofile up to date."
     else:
+        print
         print "{} song(s) have been updated.".format(len(songids))
 
 def en_display(song_data):
