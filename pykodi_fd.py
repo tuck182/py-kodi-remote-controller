@@ -95,8 +95,8 @@ def playlist_show(position, songids, songs):
             print "\t",
             print "{}. \"{}\" by {} ({}) [{}]".format(
                 str(i+1).zfill(2),
-                songs[songid]['title'],
-                "/".join(songs[songid]['artist']),
+                songs[songid]['title'].encode('utf-8'),
+                "/".join(songs[songid]['artist']).encode('utf-8'),
                 songs[songid]['year'],
                 songid
             )

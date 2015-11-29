@@ -392,9 +392,9 @@ def get_songs_search(search_string, songs):
     search_result_title = []
     search_result_artist = []
     for songid in songs.keys():
-        if search_string in songs[songid]['title'].lower():
+        if search_string in songs[songid]['title'].encode('utf-8').lower():
             search_result_title.append(songid)
-        if search_string in "/".join(songs[songid]['artist']).lower():
+        if search_string in "/".join(songs[songid]['artist']).encode('utf-8').lower():
             search_result_artist.append(songid)
     logger.debug('search result by title: %s', search_result_title)
     logger.debug('search result by artist: %s', search_result_artist)
