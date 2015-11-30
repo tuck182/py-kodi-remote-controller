@@ -91,6 +91,14 @@ def display_banner():
     print "Read the API key on the Echonest account, it will be requested"
     print "later on. When you are ready, try params_create."
 
+def get_albums_from_file(fname):
+    """Load albums from pickle file"""
+    logger.debug('call function get_albums_from_file')
+    f = open(fname, 'rb')
+    albums = pickle.load(f)
+    f.close()
+    return albums
+
 def get_songs_from_file(fname):
     """Load songs from pickle file"""
     logger.debug('call function get_songs_from_file')
@@ -127,6 +135,20 @@ class KodiRemote(cmd.Cmd):
             self.songs = {}
         else:
             self.songs = get_songs_from_file('songs.pickle')
+
+    # albums functions
+
+    def do_albums_display(self, line):
+        """
+        Display details for a given album
+        Usage albums_display id
+            Display all information about a given album like the artist
+            or the release year.
+        """
+        logger.debug('call function do_albums_display')
+        albumid = int(line)
+        pk_fd.albums_details(albumid, self.songs)
+        print
 
     def do_albums_sync(self, line):
         """

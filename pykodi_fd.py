@@ -31,6 +31,12 @@ def albums_index(albums_id, kodi_albums):
     print "Total number of albums: %i" % len(kodi_albums)
     print
 
+def albums_details(albumid, albums):
+    """Display album details from albumid"""
+    logger.debug('call albums_details')
+    print
+    print albums[albumid]
+
 def songs_index(songids, songs):
     """Display songs list from internal index"""
     logger.debug('call songs_index')
