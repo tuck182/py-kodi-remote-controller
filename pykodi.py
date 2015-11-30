@@ -34,6 +34,8 @@ logger = logging.getLogger(__name__)
 SONGS_SLICE_SIZE = 20
 SONGS_EN_SLICE_SIZE = 30
 
+ALBUMS_SLICE_SIZE = 20
+
 BUFFER_SIZE = 1024
 DISPLAY_NB_LINES = 10
 PROFILE_NAME = 'Kodi library'
@@ -220,6 +222,49 @@ def set_songs_sync(params, songs, p_bar):
     # persist songs dataset
     save_songs(songs)
     return full_scan, rating_up_songids, playcount_up_songids
+
+def set_albums_sync(params, albums, p_bar):
+    """Sync library albums to local"""
+    logger.debug('call function set_albums_sync')
+    assert is_reachable(params)
+    # get the number of songs
+    limits = pk_rpc.audiolibrary_get_albums_limits(params, 0, 1)
+    nb_albums = limits['total']
+    logger.debug('total number of albums: %i', nb_albums)
+    if p_bar:
+        widgets = [
+            'Albums: ', Percentage(),
+            ' ', Bar(marker='#',left='[',right=']'),
+            ' (', Counter(), ' in ' + str(nb_albums) + ') ',
+            ETA()]
+        pbar = ProgressBar(widgets=widgets, maxval=nb_albums)
+        pbar.start()
+    # slicing and loop
+    slice = 0
+    while True:
+        start = slice * ALBUMS_SLICE_SIZE
+        end = (slice + 1) * ALBUMS_SLICE_SIZE
+        logger.info(
+            'processing slice %i (songs %i to %i in %i)',
+            slice,
+            start,
+            end,
+            nb_albums)
+        if p_bar:
+            pbar.update(start)
+        # fetch songs slice data
+        loop_albums = pk_rpc.audiolibrary_get_albums(params, start, end)
+        # update songs dataset
+        for loop_album in loop_albums:
+            albums[loop_album['albumid']] = loop_album.copy()
+            del albums[loop_album['albumid']]['albumid']
+        if not len(loop_albums) == ALBUMS_SLICE_SIZE:
+            break
+        slice += 1
+    if p_bar:
+        pbar.finish()
+    # persist albums dataset
+    save_albums(albums)
 
 def get_audio_library_from_server(obj):
     '''Load the library in memory from the Kodi server'''

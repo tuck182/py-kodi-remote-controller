@@ -119,10 +119,23 @@ class KodiRemote(cmd.Cmd):
         logger.debug('kodi params file found')
         self.params = read_params()
         set_friendly_name(self)
+        if not is_file('albums.pickle'):
+            self.albums = {}
+        else:
+            self.albums = get_albums_from_file('albums.pickle')
         if not is_file('songs.pickle'):
             self.songs = {}
         else:
             self.songs = get_songs_from_file('songs.pickle')
+
+    def do_albums_sync(self, line):
+        """
+        Sync the Kodi albums library.
+        Usage: album_sync
+        """
+        print
+        kodi.set_albums_sync(self.params, self.albums, self.log_level == 0)
+        print
 
     # echonest functions
 
@@ -312,7 +325,7 @@ class KodiRemote(cmd.Cmd):
 
     def do_songs_info(self, line):
         """
-        Display information on the song set
+        Display information on the songs set
         Usage: songs_info
             Display info on the songs set like the number of songs
             or the total duration.
@@ -340,6 +353,7 @@ class KodiRemote(cmd.Cmd):
         """
         logger.debug('call function do_songs_random')
         songids = random.sample(xrange(len(self.songs)), DISPLAY_NB_LINES)
+        # TODO: translate index to songid
         pk_fd.songs_index(songids, self.songs)
         print
 

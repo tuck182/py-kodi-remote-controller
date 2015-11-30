@@ -78,19 +78,33 @@ def display_result(ret):
 
 # audiolibrary
 
-def audiolibrary_get_albums(server_params, album_id_start, album_id_end):
-    '''Retrieve all albums whithin limits'''
+def audiolibrary_get_albums_limits(server_params, songid_start, songid_end):
+    """Retrieve all albums whithin limits"""
     command = {"jsonrpc": "2.0",
             "method": "AudioLibrary.GetAlbums",
             "params": {
                 "limits": {
-                    "start": album_id_start,
-                    "end": album_id_end } 
+                    "start": songid_start,
+                    "end": songid_end }
                 },
             "id": 1}
     ret = call_api(server_params, command)
     display_result(ret)
-    return ret['result']
+    return ret['result']['limits']
+
+def audiolibrary_get_albums(server_params, albumid_start, albumid_end):
+    """Retrieve all albums whithin limits"""
+    command = {"jsonrpc": "2.0",
+            "method": "AudioLibrary.GetAlbums",
+            "params": {
+                "limits": {
+                    "start": albumid_start,
+                    "end": albumid_end }
+                },
+            "id": 1}
+    ret = call_api(server_params, command)
+    display_result(ret)
+    return ret['result']['albums']
 
 def audiolibrary_get_songs_full(server_params, songid_start, songid_end):
     """Retrieve all songs whithin limits"""
