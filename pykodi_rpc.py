@@ -97,6 +97,14 @@ def audiolibrary_get_albums(server_params, albumid_start, albumid_end):
     command = {"jsonrpc": "2.0",
             "method": "AudioLibrary.GetAlbums",
             "params": {
+                "properties":
+                    [
+                        "title",
+                        "artist",
+                        "year",
+                        "rating",
+                        "musicbrainzalbumid",
+                    ],
                 "limits": {
                     "start": albumid_start,
                     "end": albumid_end }

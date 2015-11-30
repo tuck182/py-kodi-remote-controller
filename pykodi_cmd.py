@@ -147,7 +147,7 @@ class KodiRemote(cmd.Cmd):
         """
         logger.debug('call function do_albums_display')
         albumid = int(line)
-        pk_fd.albums_details(albumid, self.songs)
+        pk_fd.albums_details(albumid, self.albums)
         print
 
     def do_albums_sync(self, line):
