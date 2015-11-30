@@ -319,18 +319,11 @@ class KodiRemote(cmd.Cmd):
     def do_songs_page(self, line):
         """
         Display a given page of the songs library
-        Usage: songs_page [page]
-            The page is optional, a random page is displayed without it.
+        Usage: songs_page page
         """
         logger.debug('call function do_songs_page')
-        if not line:
-            logger.info('no page number provided')
-            page = random.randrange(len(self.songs) / DISPLAY_NB_LINES + 1)
-        else:
-            page = int(line)
-        songids = range(
-                (page - 1) * DISPLAY_NB_LINES + 1,
-                page * DISPLAY_NB_LINES + 1)
+        page = int(line)
+        songids = self.songs.keys()[(page - 1) * DISPLAY_NB_LINES:page * DISPLAY_NB_LINES]
         pk_fd.songs_index(songids, self.songs)
         print
 
