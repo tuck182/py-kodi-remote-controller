@@ -35,7 +35,14 @@ def albums_details(albumid, albums):
     """Display album details from albumid"""
     logger.debug('call albums_details')
     print
-    print albums[albumid]
+    print "\"{}\" by {} ({})".format(
+        albums[albumid]['title'],
+        "/".join(albums[albumid]['artist']),
+        albums[albumid]['year']
+    )
+    print
+    print "   Rating:          {}".format(albums[albumid]['rating'])
+    print "   MusicBrainz ID:  {}".format(albums[albumid]['musicbrainzalbumid'])
 
 def songs_index(songids, songs):
     """Display songs list from internal index"""
