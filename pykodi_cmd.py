@@ -288,8 +288,13 @@ class KodiRemote(cmd.Cmd):
             is removed before.
         """
         logger.debug('call function do_playlist_taste_seed')
+        songid = int(line)
         profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
-        print profile_id
+        songids = kodi.en_playlist_seed(songid, self.params['echonest_key'], profile_id)
+        kodi.clear_playlist(self.params)
+        kodi.playlist_add_songs(songids, self.params)
+        pk_fd.songs_index(songids, self.songs)
+        print
 
     # songs functions
 

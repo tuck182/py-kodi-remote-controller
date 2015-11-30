@@ -650,6 +650,19 @@ def en_playlist(api_key, profile_id):
         songids.append(songid)
     return songids
 
+def en_playlist_seed(songid, api_key, profile_id):
+    """Create a static playlist"""
+    logger.debug('call en_playlist')
+    song_id = profile_id + ':song:' + str(songid)
+    en_songs = pk_en.playlist_static_seed(song_id, api_key, profile_id)
+    songids = []
+    #TODO function to extract the songids (shared with en_playlist)
+    for en_song in en_songs:
+        en_id = en_song['foreign_ids'][0]['foreign_id']
+        songid = int(en_id.replace(profile_id + ':song:', ""))
+        songids.append(songid)
+    return songids
+
 def echonest_playlist(api_key, profile_id):
     '''Create a premium static playlist'''
     logger.debug('call echonest_playlist')
