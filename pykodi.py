@@ -474,6 +474,12 @@ def playlist_add_songs(songids, params):
     for songid in songids:
         pk_rpc.playlist_add(SONG, songid, params)
 
+def playlist_add_albums(albumids, params):
+    """Add albumids list to the playlist"""
+    logger.debug('call playlist_add_albums')
+    for albumid in albumids:
+        pk_rpc.playlist_add(ALBUM, albumid, params)
+
 def set_songs_sync2(server_params, songs):
     '''Sync playcount and rating'''
     logger.debug('call set_songs_sync')

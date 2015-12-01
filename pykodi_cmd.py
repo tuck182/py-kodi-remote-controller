@@ -265,6 +265,9 @@ class KodiRemote(cmd.Cmd):
             Use the albums function to find the id.
         """
         logger.debug('call function do_playlist_add_album')
+        albumids = []
+        albumids.append(int(line))
+        kodi.playlist_add_albums(albumids, self.params)
 
     def do_playlist_add_song(self, line):
         """
