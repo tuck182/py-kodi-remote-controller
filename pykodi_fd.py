@@ -16,20 +16,17 @@ logger = logging.getLogger(__name__)
 
 
 #TODO: song_ids and not songs_id + just albums or songs
-def albums_index(albums_id, kodi_albums):
-    '''Display albums list from internal index'''
+def albums_index(albumids, albums):
+    """Display albums list from internal index"""
     logger.debug('call disp_albums_index')
     print
-    for i, album_id in enumerate(albums_id):
-        print ("%02i. %s by %s (%s) [%i]") % (
-                i + 1,
-                kodi_albums[album_id]['title'],
-                kodi_albums[album_id]['artist'],
-                kodi_albums[album_id]['year'],
-                album_id )
-    print
-    print "Total number of albums: %i" % len(kodi_albums)
-    print
+    for albumid in albumids:
+        print "\"{}\" by {} ({}) [{}]".format(
+                albums[albumid]['title'].encode('UTF-8'),
+                "/".join(albums[albumid]['artist']).encode('UTF-8'),
+                albums[albumid]['year'],
+                albumid
+        )
 
 def albums_details(albumid, albums):
     """Display album details from albumid"""

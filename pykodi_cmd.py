@@ -150,6 +150,17 @@ class KodiRemote(cmd.Cmd):
         pk_fd.albums_details(albumid, self.albums)
         print
 
+    def do_albums_page(self, line):
+        """
+        Display a given page of the albums library
+        Usage: albums_page page
+        """
+        logger.debug('call function do_albums_page')
+        page = int(line)
+        albumids = self.albums.keys()[(page - 1) * DISPLAY_NB_LINES:page * DISPLAY_NB_LINES]
+        pk_fd.albums_index(albumids, self.albums)
+        print
+
     def do_albums_sync(self, line):
         """
         Sync the Kodi albums library.
