@@ -420,14 +420,14 @@ def parse_get_string(line):
 # other
 
 def get_albums_search(search_string, albums):
-    '''Internal album indexes for a string search'''
+    """Search a string in albums"""
     search_result_title = []
     search_result_artist = []
-    for album_id in albums.keys():
-        if search_string in albums[album_id]['title'].lower():
-            search_result_title.append(album_id)
-        if search_string in albums[album_id]['artist'].lower():
-            search_result_artist.append(album_id)
+    for albumid in albums.keys():
+        if search_string in albums[albumid]['title'].encode('utf-8').lower():
+            search_result_title.append(albumid)
+        if search_string in "/".join(albums[albumid]['artist']).encode('utf-8').lower():
+            search_result_artist.append(albumid)
     logger.debug('search result by title: %s', search_result_title)
     logger.debug('search result by artist: %s', search_result_artist)
     return sorted(list(set(search_result_title + search_result_artist)))

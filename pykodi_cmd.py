@@ -161,6 +161,18 @@ class KodiRemote(cmd.Cmd):
         pk_fd.albums_index(albumids, self.albums)
         print
 
+    def do_albums_search(self, line):
+        """
+        Search into the albums
+        Usage: songs_search string
+            List all albums containing the string in the title or artist.
+        """
+        logger.debug('call function do_albums_search')
+        search_string = line.lower()
+        albumids = kodi.get_albums_search(search_string, self.albums)
+        pk_fd.albums_index(albumids, self.albums)
+        print
+
     def do_albums_sync(self, line):
         """
         Sync the Kodi albums library.

@@ -21,7 +21,7 @@ def albums_index(albumids, albums):
     logger.debug('call disp_albums_index')
     print
     for albumid in albumids:
-        print "\"{}\" by {} ({}) [{}]".format(
+        print "   \"{}\" by {} ({}) [{}]".format(
                 albums[albumid]['title'].encode('UTF-8'),
                 "/".join(albums[albumid]['artist']).encode('UTF-8'),
                 albums[albumid]['year'],
