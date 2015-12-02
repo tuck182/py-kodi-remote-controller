@@ -199,7 +199,10 @@ def en_sync(songids):
 def en_display(song_data):
     """Display echonest song data"""
     print
-    print "\"{}\" by {}".format(song_data['song_name'], song_data['artist_name'])
+    print "\"{}\" by {}".format(
+        song_data['song_name'].encode('UTF-8'),
+        song_data['artist_name'].encode('UTF-8')
+    )
     print
     print "\tEchonest ID: \t\t{}".format(song_data['song_id'])
     print "\tForeign ID: \t\t{}".format(song_data['foreign_id'])
