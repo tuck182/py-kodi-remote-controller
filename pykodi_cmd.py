@@ -161,6 +161,18 @@ class KodiRemote(cmd.Cmd):
         pk_fd.albums_index(albumids, self.albums)
         print
 
+    def do_albums_random(self, line):
+        """
+        Display a set of random albums
+        Usage: albums_random
+            Select random albums and display them.
+        """
+        logger.debug('call function do_albums_random')
+        indexes = random.sample(xrange(len(self.albums)), DISPLAY_NB_LINES)
+        albumids = [self.albums.keys()[index] for index in indexes]
+        pk_fd.albums_index(albumids, self.albums)
+        print
+
     def do_albums_recent(self, line):
         """
         Display recently added albums
@@ -410,8 +422,8 @@ class KodiRemote(cmd.Cmd):
             Select random songs and display them.
         """
         logger.debug('call function do_songs_random')
-        songids = random.sample(xrange(len(self.songs)), DISPLAY_NB_LINES)
-        # TODO: translate index to songid
+        indexes = random.sample(xrange(len(self.songs)), DISPLAY_NB_LINES)
+        songids = [self.songs.keys()[index] for index in indexes]
         pk_fd.songs_index(songids, self.songs)
         print
 
