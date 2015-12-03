@@ -300,6 +300,17 @@ class KodiRemote(cmd.Cmd):
         print "Echonest API key: %s" % self.params['echonest_key']
         print
 
+    # player functions
+
+    def do_play_stop(self, line):
+        """
+        Stop the music
+        Usage: play_stop
+            Stop the music and go home, I repeat, stop the music and go home.
+        """
+        logger.debug('call function do_play_stop')
+        kodi.playback_stop(self.params)
+
     # playlist functions
 
     def do_playlist_add_album(self, line):

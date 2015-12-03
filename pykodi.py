@@ -36,7 +36,7 @@ ALBUMS_SLICE_SIZE = 20
 
 # echonest sync parameters
 SONGS_EN_SLICE_SIZE = 20
-EN_API_WAIT = 0.60 # max 120 api calls per minute
+EN_API_WAIT = 0.51 # max 120 api calls per minute
 
 BUFFER_SIZE = 1024
 DISPLAY_NB_LINES = 10
@@ -818,11 +818,20 @@ def playback(kodi_params):
     else:
         kodi_api.player_open(kodi_params)
 
-def playback_stop(kodi_params):
-    '''Start playback'''
+def playback_start(params):
+    """Start playback"""
+    logger.debug('call function playback_start')
+    if pk_rpc.player_get_active(params):
+        pk_rpc.player_play_pause(params)
+    else:
+        logger.info('no active player, will open one')
+        pk_rpc.player_open(params)
+
+def playback_stop(params):
+    """Start playback"""
     logger.debug('call function playback stop')
-    if kodi_api.player_get_active(kodi_params):
-        kodi_api.player_stop(kodi_params)
+    if pk_rpc.player_get_active(params):
+        pk_rpc.player_stop(params)
 
 def clear_playlist(params):
     """Clear the audio playlist"""

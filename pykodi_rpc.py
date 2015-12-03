@@ -214,20 +214,16 @@ def playlist_get_items(server_params):
 # player
 
 def player_get_active(server_params):
-    '''Returns active audio players (boolean)'''
+    """Returns active audio players (boolean)"""
     logger.debug('call function player_get_active')
-    command = {"jsonrpc": "2.0",
-            "method": "Player.GetActivePlayers",
-            "id": 1,
-            }
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'Player.GetActivePlayers',
+        'id': 1,
+    }
     ret = call_api(server_params, command)
     display_result(ret)
-    is_active = False
-    for player in ret ['result']:
-        if player['playerid'] == 0:
-            is_active = True
-    logger.debug('active audio player: %s', is_active)
-    return is_active
+    return not len(ret['result']) == 0
 
 def player_get_item(server_params):
     '''Get the current played item'''
@@ -276,15 +272,18 @@ def player_goto(server_params):
     display_result(ret)
 
 def player_open(server_params):
-    '''Open the audio playlist'''
+    """Open the audio playlist"""
     logger.debug('call function player_open')
-    command = {"jsonrpc": "2.0",
-            "method": "Player.Open",
-            "params": {
-                "item": {
-                    "playlistid": 0 } 
-                },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'Player.Open',
+        'params': {
+            'item': {
+                'playlistid': 0
+            },
+        },
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
 
@@ -302,7 +301,7 @@ def player_open_party(server_params):
     display_result(ret)
 
 def player_play_pause(server_params):
-    '''Pauses or unpause playback'''
+    """Pauses or unpause playback"""
     logger.debug('call function player_play_pause')
     command = {"jsonrpc": "2.0",
             "method": "Player.PlayPause",
@@ -314,7 +313,7 @@ def player_play_pause(server_params):
     display_result(ret)
 
 def player_stop(server_params):
-    '''Stop playback'''
+    """Stop playback"""
     logger.debug('call function player_stop')
     command = {"jsonrpc": "2.0",
             "method": "Player.Stop",
