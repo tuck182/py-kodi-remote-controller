@@ -193,7 +193,7 @@ class KodiRemote(cmd.Cmd):
         profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
         if pk_fd.sure_delete_tasteprofile(self.params['echonest_key'], profile_id):
             kodi.en_delete(self.params['echonest_key'], profile_id)
-        pk_fd.echonest_detele()
+            pk_fd.echonest_detele()
         print
 
     def do_echonest_display(self, line):

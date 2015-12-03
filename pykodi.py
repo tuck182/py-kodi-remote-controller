@@ -30,11 +30,13 @@ from sys import exit
 logger = logging.getLogger(__name__)
 
 # global constants
-# number of songs by songs sync
+# Kodi sync parameters
 SONGS_SLICE_SIZE = 20
-SONGS_EN_SLICE_SIZE = 30
-
 ALBUMS_SLICE_SIZE = 20
+
+# echonest sync parameters
+SONGS_EN_SLICE_SIZE = 20
+EN_API_WAIT = 0.60 # max 120 api calls per minute
 
 BUFFER_SIZE = 1024
 DISPLAY_NB_LINES = 10
@@ -611,7 +613,7 @@ def en_sync(api_key, profile_id, songs, p_bar):
         if end == nb_songs:
             break
         slice +=1
-        time.sleep(0.51)
+        time.sleep(EN_API_WAIT)
     if p_bar:
         pbar.finish()
     save_songs(songs)
