@@ -161,6 +161,16 @@ class KodiRemote(cmd.Cmd):
         pk_fd.albums_index(albumids, self.albums)
         print
 
+    def do_albums_recent(self, line):
+        """
+        Display recently added albums
+        Usage: albums_recent
+        """
+        logger.debug('call function do_albums_recent')
+        albumids = self.albums.keys()[-1 * DISPLAY_NB_LINES:]
+        pk_fd.albums_index(albumids, self.albums)
+        print
+
     def do_albums_search(self, line):
         """
         Search into the albums
