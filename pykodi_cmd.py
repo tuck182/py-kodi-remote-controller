@@ -302,6 +302,15 @@ class KodiRemote(cmd.Cmd):
 
     # player functions
 
+    def do_play_pause(self, line):
+        """
+        Switch to play or pause
+        Usage: play_pause
+            Switch to pause if playing, switch to play if in pause.
+        """
+        logger.debug('call function do_play_pause')
+        kodi.playback_start(self.params)
+
     def do_play_stop(self, line):
         """
         Stop the music
