@@ -256,15 +256,17 @@ def player_get_properties(server_params):
     display_result(ret)
     return ret['result']
 
-def player_goto(server_params):
-    '''Go to the next item'''
-    logger.debug('call function player_goto')
-    command = {"jsonrpc": "2.0",
-            "method": "Player.GoTo",
-            "params":{
-                "playerid": 0,
-                "to": 'next'},
-            "id": 1}
+def player_goto_next(server_params):
+    """Go to the next item"""
+    logger.debug('call function player_goto_next')
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'Player.GoTo',
+        'params': {
+            'playerid': 0,
+            'to': 'next'},
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
 

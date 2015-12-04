@@ -854,7 +854,17 @@ def populate_playlist(song_ids, kodi_params):
 def en_favorite(api_key, profile_id, songid):
     """Toggle favorite flag in echonest"""
     logger.debug('call function en_favorite')
-    pk_en.tasprofile_favorite(api_key, profile_id, str(songid))
+    pk_en.tasteprofile_favorite(api_key, profile_id, str(songid))
+
+def en_skip(api_key, profile_id, songid):
+    """Toggle favorite flag in echonest"""
+    logger.debug('call function en_skip')
+    pk_en.tasteprofile_skip(api_key, profile_id, str(songid))
+
+def play_next(params):
+    """Move to the next song"""
+    logger.debug('call function play_next')
+    pk_rpc.player_goto_next(params)
 
 # process return messages
 

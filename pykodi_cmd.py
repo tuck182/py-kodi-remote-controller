@@ -323,6 +323,19 @@ class KodiRemote(cmd.Cmd):
         logger.debug('call function do_play_pause')
         kodi.playback_start(self.params)
 
+    def do_play_skip(self, line):
+        """
+        Skip the current song
+        Usage: play_skip
+        """
+        logger.debug('call function do_play_skip')
+        songid = kodi.get_play_item(self.params)
+        kodi.play_next(self.params)
+        profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
+        kodi.en_skip(self.params['echonest_key'], profile_id, songid)
+        pk_fd.play_skip(songid, self.songs)
+        print
+
     def do_play_stop(self, line):
         """
         Stop the music
