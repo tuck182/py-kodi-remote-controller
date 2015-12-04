@@ -470,6 +470,12 @@ def get_playlist_position(params):
     properties = pk_rpc.player_get_properties(params)
     return properties['position']
 
+def get_play_item(params):
+    """Return the currently played item"""
+    logger.debug('call get_play_item')
+    item = pk_rpc.player_get_item(params)
+    return item['id']
+
 def playlist_add_songs(songids, params):
     """Add songids list to the playlist"""
     logger.debug('call playlist_add_songs')
@@ -829,7 +835,7 @@ def playback_start(params):
 
 def playback_stop(params):
     """Start playback"""
-    logger.debug('call function playback stop')
+    logger.debug('call function playback_stop')
     if pk_rpc.player_get_active(params):
         pk_rpc.player_stop(params)
 
@@ -844,6 +850,11 @@ def populate_playlist(song_ids, kodi_params):
     for song_id in song_ids:
         kodi_api.playlist_add(SONG, song_id, kodi_params)
     print "   ... let's rock the house!"
+
+def en_favorite(api_key, profile_id, songid):
+    """Toggle favorite flag in echonest"""
+    logger.debug('call function en_favorite')
+    pk_en.tasprofile_favorite(api_key, profile_id, str(songid))
 
 # process return messages
 

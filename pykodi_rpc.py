@@ -226,21 +226,18 @@ def player_get_active(server_params):
     return not len(ret['result']) == 0
 
 def player_get_item(server_params):
-    '''Get the current played item'''
-    #TODO: change to return item id only
+    """Get the current played item"""
     logger.debug('call function get_item')
-    command = {"jsonrpc": "2.0",
-            "method": "Player.GetItem",
-            "params": {
-                "playerid": 0,
-                },
-            "id": 1}
+    command = {
+        "jsonrpc": "2.0",
+        "method": "Player.GetItem",
+        "params": {
+            "playerid": 0,
+        },
+        "id": 1}
     ret = call_api(server_params, command)
     display_result(ret)
-    if 'result' in ret:
-        return ret['result']['item']['id']
-    else:
-        return None
+    return ret['result']['item']
 
 def player_get_properties(server_params):
     """Get properties of the played item"""

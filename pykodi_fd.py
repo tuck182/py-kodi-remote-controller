@@ -163,10 +163,14 @@ def skip(song_id, songs):
     print "You just have skipped the song \"%s\" by %s [%i]." % (
             songs[song_id]['title'], songs[song_id]['artist'], song_id)
 
-def favorite(song_id, songs):
-    '''Confirm favorite'''
-    print "The song \"%s\" by %s [%i] is now a favorite." % (
-            songs[song_id]['title'], songs[song_id]['artist'], song_id)
+def play_favorite(songid, songs):
+    """Confirm favorite"""
+    print
+    print "   The song \"{}\" by {} [{}] is now a favorite.".format(
+        songs[songid]['title'].encode('UTF-8'),
+        "/".join(songs[songid]['artist']).encode('UTF-8)'),
+        songid
+    )
 
 def play_album(album_id, albums):
     '''Confirm play album'''

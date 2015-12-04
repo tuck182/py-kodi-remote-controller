@@ -164,14 +164,15 @@ def tasteprofile_update(items, api_key, profile_id):
     logger.debug('return: %s', r.text)
 
 #TODO: rename to tasteprofile in place of echonest
-def echonest_favorite(api_key, profile_id, song_id):
-    '''Make a song favorite in echonest tasteprofile'''
-    logger.debug('call set_echonest_favorite')
+def tasprofile_favorite(api_key, profile_id, item):
+    """Make a song favorite in echonest tasteprofile"""
+    logger.debug('call tasteprofile_favorite')
     url = 'http://developer.echonest.com/api/v4/tasteprofile/favorite'
-    payload = {"api_key": api_key,
-              "id": profile_id,
-              "item": str(song_id)
-              }
+    payload = {
+        'api_key': api_key,
+        'id': profile_id,
+        'item': item
+    }
     r = requests.get(url, params=payload)
     logger.debug('URL: %s', r.url)
     logger.debug('return: %s', r.text)

@@ -302,6 +302,18 @@ class KodiRemote(cmd.Cmd):
 
     # player functions
 
+    def do_play_favorite(self, line):
+        """
+        Like the current song (in your echonest tasteprofile)
+        Usage: play_favorite
+        """
+        logger.debug('call function do_play_favorite')
+        songid = kodi.get_play_item(self.params)
+        profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
+        kodi.en_favorite(self.params['echonest_key'], profile_id, songid)
+        pk_fd.play_favorite(songid, self.songs)
+        print
+
     def do_play_pause(self, line):
         """
         Switch to play or pause
