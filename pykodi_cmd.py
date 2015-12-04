@@ -302,6 +302,19 @@ class KodiRemote(cmd.Cmd):
 
     # player functions
 
+    def do_play_ban(self, line):
+        """
+        Ban the current song and skip
+        Usage: play_ban
+        """
+        logger.debug('call function do_play_ban')
+        songid = kodi.get_play_item(self.params)
+        kodi.play_next(self.params)
+        profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
+        kodi.en_ban(self.params['echonest_key'], profile_id, songid)
+        pk_fd.play_ban(songid, self.songs)
+        print
+
     def do_play_favorite(self, line):
         """
         Like the current song (in your echonest tasteprofile)
@@ -313,6 +326,14 @@ class KodiRemote(cmd.Cmd):
         kodi.en_favorite(self.params['echonest_key'], profile_id, songid)
         pk_fd.play_favorite(songid, self.songs)
         print
+
+    def do_play_party(self, line):
+        """
+        Start a big party!
+        Usage: play_party
+        """
+        logger.debug('call function do_play_party')
+        kodi.play_party(self.params)
 
     def do_play_pause(self, line):
         """

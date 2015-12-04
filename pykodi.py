@@ -861,10 +861,20 @@ def en_skip(api_key, profile_id, songid):
     logger.debug('call function en_skip')
     pk_en.tasteprofile_skip(api_key, profile_id, str(songid))
 
+def en_ban(api_key, profile_id, songid):
+    """Toggle ban flag in echonest"""
+    logger.debug('call function en_ban')
+    pk_en.tasteprofile_ban(api_key, profile_id, str(songid))
+
 def play_next(params):
     """Move to the next song"""
     logger.debug('call function play_next')
     pk_rpc.player_goto_next(params)
+
+def play_party(params):
+    """Trigger party mode"""
+    logger.debug('call function play_party')
+    pk_rpc.player_open_party(params)
 
 # process return messages
 

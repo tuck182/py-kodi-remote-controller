@@ -161,7 +161,7 @@ def next_playing(properties, items):
 def play_skip(songid, songs):
     """Confirm skip"""
     print
-    print "You just have skipped the song \"{}\" by {} [{}].".format(
+    print "   You just have skipped the song \"{}\" by {} [{}].".format(
         songs[songid]['title'].encode('UTF-8'),
         "/".join(songs[songid]['artist']).encode('UTF-8'),
         songid
@@ -171,6 +171,15 @@ def play_favorite(songid, songs):
     """Confirm favorite"""
     print
     print "   The song \"{}\" by {} [{}] is now a favorite.".format(
+        songs[songid]['title'].encode('UTF-8'),
+        "/".join(songs[songid]['artist']).encode('UTF-8)'),
+        songid
+    )
+
+def play_ban(songid, songs):
+    """Confirm ban"""
+    print
+    print "   The song \"{}\" by {} [{}] has been banned forever.".format(
         songs[songid]['title'].encode('UTF-8'),
         "/".join(songs[songid]['artist']).encode('UTF-8)'),
         songid

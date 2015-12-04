@@ -178,9 +178,22 @@ def tasteprofile_favorite(api_key, profile_id, item):
     logger.debug('return: %s', r.text)
 
 def tasteprofile_skip(api_key, profile_id, item):
-    """Skip a song favorite in echonest taste profile"""
+    """Skip a song in echonest taste profile"""
     logger.debug('call tasteprofile_skip')
     url = 'http://developer.echonest.com/api/v4/tasteprofile/skip'
+    payload = {
+        'api_key': api_key,
+        'id': profile_id,
+        'item': item
+    }
+    r = requests.get(url, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
+
+def tasteprofile_ban(api_key, profile_id, item):
+    """Ban a song  in echonest taste profile"""
+    logger.debug('call tasteprofile_skip')
+    url = 'http://developer.echonest.com/api/v4/tasteprofile/ban'
     payload = {
         'api_key': api_key,
         'id': profile_id,
