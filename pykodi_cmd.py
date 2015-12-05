@@ -554,6 +554,17 @@ class KodiRemote(cmd.Cmd):
         pk_fd.songs_sync(f_scan, ru_songids, pcu_songids)
         print
 
+    # volume functions
+
+    def do_volume_set(self, line):
+        """
+        Set Kodi volume
+        Usage: volume_set n
+        """
+        logger.debug('call function do_volume_set')
+        volume = int(line)
+        kodi.volume_set(self.params, volume)
+
     def do_EOF(self, line):
         '''Override end of file'''
         logger.info('Bye!')

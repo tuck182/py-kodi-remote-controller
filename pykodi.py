@@ -896,6 +896,11 @@ def play_party(params):
     logger.debug('call function play_party')
     pk_rpc.player_open_party(params)
 
+def volume_set(params, volume):
+    """Set server volume"""
+    logger.debug('call function volume_set')
+    pk_rpc.application_set_volume(params, volume)
+
 # process return messages
 
 class KodiRemote(cmd.Cmd):
