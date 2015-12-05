@@ -125,38 +125,51 @@ def echonest_info(catalog):
     )
 
 def now_playing(item, properties):
-    '''Display the now playing part of display_what'''
+    """Display the now playing part of play_what"""
     print
-    #TODO: merge somehow with songs_display 
-    if item:
-        disp_rating = '.....'
-        for i in range(item['rating']):
-            disp_rating[i] = '*'
-        print 'Now Playing:'
-        print
-        print "%s - %s (%s)" % (item['artist'][0], item['album'], item['year'])
-        print "   %s - [%s]" % (item['title'], disp_rating)
-        print "   %02d:%02d:%02d / %02d:%02d:%02d - %i %%" % (
-            properties['time']['hours'],
-            properties['time']['minutes'],
-            properties['time']['seconds'],
-            properties['totaltime']['hours'],
-            properties['totaltime']['minutes'],
-            properties['totaltime']['seconds'],
-            properties['percentage'] )
-    else:
-        print "[not playing anything]"
+    if not item:
+        print "   [not playing anything]"
+        return
+    # build rating display
+    disp_rating = '.....'
+    for i in range(item['rating']):
+        disp_rating[i] = '*'
+    # build time variables
+    play_time = datetime.timedelta(
+        hours=properties['time']['hours'],
+        minutes=properties['time']['minutes'],
+        seconds=properties['time']['seconds']
+    )
+    play_totaltime = datetime.timedelta(
+        hours=properties['totaltime']['hours'],
+        minutes=properties['totaltime']['minutes'],
+        seconds=properties['totaltime']['seconds']
+    )
+    print "Now Playing:"
+    print
+    print "{} - {} ({})".format(
+        "/".join(item['artist']).encode('UTF-8'),
+        item['album'].encode('UTF-8'),
+        item['year']
+    )
+    print "   {} - [{}]".format(item['label'].encode('UTF-8'), disp_rating)
+    print "   {} / {} - {} %".format(
+        play_time,
+        play_totaltime,
+        int(properties['percentage'])
+    )
 
-def next_playing(properties, items):
-    '''Display the next playing part of display_what'''
+def next_playing(items, properties):
+    """Display the next playing part of display_what"""
+    if not properties:
+        return
     print
-    if properties:
-        print "(%i / %i) - Next: %s - %s" % (
-                properties['position'] + 1,
-                len(items),
-                items[properties['position'] + 1]['artist'][0],
-                items[properties['position'] + 1]['title'] )
-        print
+    print "({} / {}) - Next: {} - {}".format(
+        properties['position'] + 1,
+        len(items),
+        "/".join(items[properties['position'] + 1]['artist']).encode('UTF-8'),
+        items[properties['position'] + 1]['label'].encode('UTF-8')
+    )
 
 def play_skip(songid, songs):
     """Confirm skip"""

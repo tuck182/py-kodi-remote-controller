@@ -366,6 +366,19 @@ class KodiRemote(cmd.Cmd):
         logger.debug('call function do_play_stop')
         kodi.playback_stop(self.params)
 
+    def do_play_what(self, line):
+        """
+        Detail status of what is currently played
+        Usage: play_what
+        """
+        logger.debug('call function do_play_what')
+        properties = kodi.player_properties(self.params)
+        item = kodi.player_item(self.params)
+        items = kodi.playlist_items(self.params)
+        pk_fd.now_playing(item, properties)
+        pk_fd.next_playing(items, properties)
+        print
+
     # playlist functions
 
     def do_playlist_add_album(self, line):

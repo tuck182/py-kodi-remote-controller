@@ -35,7 +35,7 @@ SONGS_SLICE_SIZE = 20
 ALBUMS_SLICE_SIZE = 20
 
 # echonest sync parameters
-SONGS_EN_SLICE_SIZE = 20
+SONGS_EN_SLICE_SIZE = 25
 EN_API_WAIT = 0.51 # max 120 api calls per minute
 
 BUFFER_SIZE = 1024
@@ -466,12 +466,32 @@ def get_playlist_songids(params):
 
 def get_playlist_position(params):
     """Return the current playing item in the playlist"""
+    # TODO rename to player
     logger.debug('call get_playlist_position')
     properties = pk_rpc.player_get_properties(params)
     return properties['position']
 
+def player_properties(params):
+    """Return the played time of the current song"""
+    logger.debug('call player_properties')
+    properties = pk_rpc.player_get_properties(params)
+    return properties
+
+def player_item(params):
+    """Return the played time of the current song"""
+    logger.debug('call player_properties')
+    item = pk_rpc.player_get_item(params)
+    return item
+
+def playlist_items(params):
+    """Return items playlist"""
+    logger.debug('call playlist_items')
+    items = pk_rpc.playlist_get_items(params)
+    return items
+
 def get_play_item(params):
     """Return the currently played item"""
+    # TODO rename to player
     logger.debug('call get_play_item')
     item = pk_rpc.player_get_item(params)
     return item['id']

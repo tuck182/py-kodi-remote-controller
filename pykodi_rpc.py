@@ -201,12 +201,16 @@ def playlist_clear(server_params):
 def playlist_get_items(server_params):
     """Get all songids from the audio playlist"""
     logger.debug('call playlist_get_items')
-    command = {"jsonrpc": "2.0",
-            "method": "Playlist.GetItems",
-            "params": {
-                "playlistid": 0,
-                },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'Playlist.GetItems',
+        'params': {
+            'playlistid': 0,
+            'properties': [
+                'artist'
+            ]
+        },
+        'id': 1}
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result'].get('items', [])
@@ -229,12 +233,19 @@ def player_get_item(server_params):
     """Get the current played item"""
     logger.debug('call function get_item')
     command = {
-        "jsonrpc": "2.0",
-        "method": "Player.GetItem",
-        "params": {
-            "playerid": 0,
+        'jsonrpc': '2.0',
+        'method': 'Player.GetItem',
+        'params': {
+            'playerid': 0,
+            'properties': [
+                'artist',
+                'album',
+                'year',
+                'rating'
+            ]
         },
-        "id": 1}
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result']['item']
