@@ -302,6 +302,19 @@ class KodiRemote(cmd.Cmd):
 
     # player functions
 
+    def do_play_albums(self, line):
+        """
+        Play a given album
+        Usage: play_albums id
+        """
+        logger.debug('call function do_play_songs')
+        albumids = []
+        albumids.append(int(line))
+        kodi.playback_stop(self.params)
+        kodi.clear_playlist(self.params)
+        kodi.playlist_add_albums(albumids, self.params)
+        kodi.playback_start(self.params)
+
     def do_play_ban(self, line):
         """
         Ban the current song and skip
@@ -357,6 +370,19 @@ class KodiRemote(cmd.Cmd):
         pk_fd.play_skip(songid, self.songs)
         print
 
+    def do_play_songs(self, line):
+        """
+        Play a given song
+        Usage: play_songs id
+        """
+        logger.debug('call function do_play_songs')
+        albumids = []
+        albumids.append(int(line))
+        kodi.playback_stop(self.params)
+        kodi.clear_playlist(self.params)
+        kodi.playlist_add_albums(albumids, self.params)
+        kodi.playback_start(self.params)
+
     def do_play_stop(self, line):
         """
         Stop the music
@@ -384,7 +410,7 @@ class KodiRemote(cmd.Cmd):
     def do_playlist_add_album(self, line):
         """
         Add a album to the playlist
-        Usage: playlist_add_album [id]
+        Usage: playlist_add_album id
             Add the album id to the current playlist.
             Use the albums function to find the id.
         """
