@@ -376,11 +376,11 @@ class KodiRemote(cmd.Cmd):
         Usage: play_songs id
         """
         logger.debug('call function do_play_songs')
-        albumids = []
-        albumids.append(int(line))
+        songids = []
+        songids.append(int(line))
         kodi.playback_stop(self.params)
         kodi.clear_playlist(self.params)
-        kodi.playlist_add_albums(albumids, self.params)
+        kodi.playlist_add_songs(songids, self.params)
         kodi.playback_start(self.params)
 
     def do_play_stop(self, line):
