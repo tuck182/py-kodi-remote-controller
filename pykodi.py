@@ -187,6 +187,8 @@ def set_songs_sync(params, songs, p_bar):
     while True:
         start = slice * SONGS_SLICE_SIZE
         end = (slice + 1) * SONGS_SLICE_SIZE
+        if end > nb_songs:
+            end = nb_songs
         logger.info(
             'processing slice %i (songs %i to %i in %i)',
             slice,
@@ -216,7 +218,7 @@ def set_songs_sync(params, songs, p_bar):
                     songs[loop_song['songid']]['playcount'] = loop_song['playcount']
                     logger.info('playcount updated for song: %i', loop_song['songid'])
                     playcount_up_songids.append(loop_song['songid'])
-        if not len(loop_songs) == SONGS_SLICE_SIZE:
+        if end == nb_songs:
             break
         slice += 1
     if p_bar:
@@ -246,6 +248,8 @@ def set_albums_sync(params, albums, p_bar):
     while True:
         start = slice * ALBUMS_SLICE_SIZE
         end = (slice + 1) * ALBUMS_SLICE_SIZE
+        if end > nb_albums:
+            end = nb_albums
         logger.info(
             'processing slice %i (songs %i to %i in %i)',
             slice,
@@ -260,7 +264,7 @@ def set_albums_sync(params, albums, p_bar):
         for loop_album in loop_albums:
             albums[loop_album['albumid']] = loop_album.copy()
             del albums[loop_album['albumid']]['albumid']
-        if not len(loop_albums) == ALBUMS_SLICE_SIZE:
+        if end == nb_albums:
             break
         slice += 1
     if p_bar:
