@@ -5,14 +5,12 @@
 # distribution and at
 # https://github.com/Arn-O/py-kodi-remote-controller/blob/master/LICENSE.
 
-'''
-Kodi remote controller based on HTTP/TCP transport, JSON and using the (cmd) interface.
-'''
+"""
+Kodi remote controller based on HTTP transport and JSON.
+"""
 
 import pykodi_rpc as pk_rpc
 import pykodi_en as pk_en
-#import fancy_disp
-#TODO: change output from old string to format
 
 import socket
 import requests
@@ -27,9 +25,9 @@ import logging
 import argparse
 from sys import exit
 
-logger = logging.getLogger(__name__)
 
 # global constants
+
 # Kodi sync parameters
 SONGS_SLICE_SIZE = 20
 ALBUMS_SLICE_SIZE = 20
@@ -38,13 +36,15 @@ ALBUMS_SLICE_SIZE = 20
 SONGS_EN_SLICE_SIZE = 25
 EN_API_WAIT = 0.51 # max 120 api calls per minute
 
+# global variable
+logger = logging.getLogger(__name__)
+
 BUFFER_SIZE = 1024
 DISPLAY_NB_LINES = 10
 PROFILE_NAME = 'Kodi library'
 ALBUM = 'albumid'
 SONG = 'songid'
 
-#TODO: add instrospect
 #TODO: display number of transactions calls in echonest API
 
 def is_reachable(params):
@@ -1274,141 +1274,4 @@ class KodiRemote(cmd.Cmd):
         print
         fancy_disp.favorite(song_id, self.songs)
         print
-    
-    def do_play_skip(self, line):
-        '''
-        Skip the current song
-        Usage: play_skip
-        '''
-        logger.debug('call function do_play_skip')
-        song_id = kodi_api.player_get_item(self.kodi_params)
-        profile_id = get_profile_id(self.api_key)
-        kodi_api.player_goto(self.kodi_params)
-        en_api.echonest_skip(self.api_key, profile_id, song_id)
-        print
-        fancy_disp.skip(song_id, self.songs)
-        print
-        
-    def do_play_genre(self,line):
-        '''
-        Start playing songs from specific genre. 
-        Usage: play_genre [genre]
-            The library is search for all songs with playlist is shuffled each time
-        '''
-        logger.debug('call function do_play_genre')
-        song_ids=get_genre_search(line, self.songs)
-        if len(song_ids) >= 1:
-            #Listening to the same sequence is bornig, so shuffle the list each time. 
-            random.shuffle(song_ids)
-            #TODO check if result is empty and is really a list
-            kodi_api.playlist_clear(self.kodi_params)
-            #First add only one song and start playback
-            kodi_api.playlist_add(SONG, song_ids[0], self.kodi_params)
-            kodi_api.player_open(self.kodi_params)
-            #Adding the other songs takes very long
-            if len(song_ids)>=2:
-                populate_playlist(song_ids[1:-1],self.kodi_params)
-            else:
-                logger.info("Genre %s has only one song", line)
-        else:
-            logger.error("Genre %s has no songs", line)
 
-    # volume control
-    def do_volume(self,percent):
-       '''
-       Set volume in percent
-       Usage: volume 100
-       '''
-       logger.debug('call function do_volume')
-       #TODO percent might not be a number between 0 and 100
-       try:            
-           kodi_api.player_volume(self.kodi_params,int(percent))
-       except:
-           logger.error('Volume must be between 0 and 100.')
-
-    # echonest functions
-
-    def do_echonest_sync(self, line):
-        '''
-        Sync play count and rating with echonest taste profile
-        Usage: echonest_sync
-        '''
-        logger.debug('call function do_echonest_sync')
-        profile_id = get_profile_id(self.api_key)
-        echonest_sync(self.api_key, profile_id, self.songs)
-        
-    def do_echonest_info(self, line):
-        '''
-        Display info about the echonest taste profile.
-        Usage: echonest_info
-        '''
-        logger.debug('call function do_echonest_info')
-        profile_id = get_profile_id(self.api_key)
-        en_info = en_api.echonest_info(self.api_key, profile_id)
-        #TODO: create disp function
-        print
-        print en_info
-        print
-
-    def do_echonest_read(self, line):
-        '''
-        Display data for a given item.
-        Usage: echonest_read item_id
-        '''
-        logger.debug('call function do_echonest_info')
-        profile_id = get_profile_id(self.api_key)
-        item_id = parse_single_int(line)
-        song_data = en_api.echonest_read(self.api_key, profile_id, item_id)
-        print
-        fancy_disp.echonest_read(song_data)
-        print
-
-    def do_echonest_delete(self, line):
-        '''
-        Delete echonest taste profile.
-        Usage: echonest_delete
-        '''
-        logger.debug('call function do_echonest_delete')
-        profile_id = get_profile_id(self.api_key)
-        if fancy_disp.sure_delete_tasteprofile(self.api_key, profile_id):
-        #TODO: insert a validation prompt
-            en_api.echonest_delete(self.api_key, profile_id)
-
-    def do_debug_kavod(self, line):
-        '''
-        Special debug function for Kavod library.
-        Usage: debug_kavod album_id
-        '''
-        print
-        print "Special debug mode for Kavod library"
-        print
-        print "Length of albums array: %i" % len(self.albums)
-        print
-        print "List of IDs: %s" % self.albums.keys()
-        print
-        album_id = parse_single_int(line)
-        ret = kodi_api.audiolibrary_get_albums(
-                self.kodi_params, 
-                album_id - 1, 
-                album_id)
-        print ret
-        print
-        print "In the local library: %s - %s" % (
-                self.albums[album_id]['title'],
-                self.albums[album_id]['artist'])
-        print
-
-    def do_EOF(self, line):
-        '''Override end of file'''
-        logger.info('Bye!')
-        print 'Bye!'
-        return True
-
-def main():
-    '''Where everything starts'''
-
-    remote_controller = KodiRemote()
-    remote_controller.cmdloop()
-
-if __name__ == '__main__':
-    main()
