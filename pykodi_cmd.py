@@ -40,10 +40,10 @@ def get_params():
     else:
         if args.verbosity == 1:
             logging.basicConfig(level=logging.INFO)
-            logger.info('Kodi controller started in verbosity mode ...')
-            logger.debug('... and even in high verbosity mode!')
         else:
             args.verbosity = 0
+    logger.info('Kodi controller started in verbosity mode ...')
+    logger.debug('... and even in high verbosity mode!')
     return args.verbosity
 
 def is_file(fname):
@@ -81,9 +81,25 @@ def read_params():
     f.close()
     return params
 
+def display_params(params):
+    """Fancy display of PyKodi params"""
+    print
+    print "Kodi parameters:"
+    print "   Network:        {}/{}".format(
+        params['ip'],
+        params['port']
+    )
+    print "   Credential:     {} ({})".format(
+        params['user'],
+        params['password']
+    )
+    print
+    print "Echonest API key:  {}".format(params['echonest_key'])
+
 def display_banner():
     """Display initial banner"""
     logger.debug('call function display_banner')
+    print
     print "No Kodi params file found, this is probably the first launch. Check"
     print "your Kodi parameters (IP, port, user and password) and create an"
     print "Echonest account: https://developer.echonest.com/account/register"
@@ -120,7 +136,6 @@ class KodiRemote(cmd.Cmd):
         self.log_level = get_params()
         if not is_file('params.pickle'):
             logger.info('no kodi params file')
-            print
             display_banner()
             print
             return
@@ -141,7 +156,7 @@ class KodiRemote(cmd.Cmd):
     def do_albums_display(self, line):
         """
         Display details for a given album
-        Usage albums_display id
+        Usage: albums_display id
             Display all information about a given album like the artist
             or the release year.
         """
@@ -210,6 +225,7 @@ class KodiRemote(cmd.Cmd):
         """
         Delete echonest taste profile.
         Usage: echonest_delete
+            All information stored in the profile will be lost.
         """
         logger.debug('call function do_echonest_delete')
         profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
@@ -220,8 +236,8 @@ class KodiRemote(cmd.Cmd):
 
     def do_echonest_display(self, line):
         """
-        Display song details in tasteprofile.
-        Usage: echonest_delete
+        Display song details in tasteprofile
+        Usage: echonest_display id
         """
         logger.debug('call function do_echonest_display')
         songid = int(line)
@@ -243,11 +259,9 @@ class KodiRemote(cmd.Cmd):
 
     def do_echonest_status(self, line):
         """
-        Check the status of a tasteprofile update.
+        Check the status of a tasteprofile update
         Usage: echonest_status ticket
-            If there is no song in the profile, a full sync is
-            performed. Otherwise, only the play counts and the
-            ratings are updated.
+            Detail status of the update tickets.
         """
         logger.debug('call function do_echonest_sync')
         ticket = line
@@ -255,7 +269,7 @@ class KodiRemote(cmd.Cmd):
 
     def do_echonest_sync(self, line):
         """
-        Sync local songs with the echonest tasteprofile.
+        Sync local songs with the echonest tasteprofile
         Usage: echonest_sync
             If there is no song in the profile, a full sync is
             performed. Otherwise, only the play counts and the
@@ -288,16 +302,7 @@ class KodiRemote(cmd.Cmd):
         Usage: params_display
         """
         logger.debug('call function do_params_display')
-        print
-        print "Kodi parameters:"
-        print "\tNetwork:    %s/%s" % (
-                self.params['ip'], 
-                self.params['port'])
-        print "\tCredential: %s (%s)" % (
-                self.params['user'], 
-                self.params['password'])
-        print
-        print "Echonest API key: %s" % self.params['echonest_key']
+        display_params(self.params)
         print
 
     # player functions
@@ -317,8 +322,9 @@ class KodiRemote(cmd.Cmd):
 
     def do_play_ban(self, line):
         """
-        Ban the current song and skip
+        Ban the current song (in your echonest tasteprofile) and skip
         Usage: play_ban
+            The echonest integration should be activated.
         """
         logger.debug('call function do_play_ban')
         songid = kodi.get_play_item(self.params)
@@ -332,6 +338,7 @@ class KodiRemote(cmd.Cmd):
         """
         Like the current song (in your echonest tasteprofile)
         Usage: play_favorite
+            The echonest integration should be activated.
         """
         logger.debug('call function do_play_favorite')
         songid = kodi.get_play_item(self.params)
@@ -359,7 +366,7 @@ class KodiRemote(cmd.Cmd):
 
     def do_play_skip(self, line):
         """
-        Skip the current song
+        Skip the current song (also in your echonest tasteprofile)
         Usage: play_skip
         """
         logger.debug('call function do_play_skip')
@@ -394,7 +401,7 @@ class KodiRemote(cmd.Cmd):
 
     def do_play_what(self, line):
         """
-        Detail status of what is currently played
+        Detail status of what is currently being played
         Usage: play_what
         """
         logger.debug('call function do_play_what')
@@ -409,10 +416,10 @@ class KodiRemote(cmd.Cmd):
 
     def do_playlist_add_album(self, line):
         """
-        Add a album to the playlist
+        Add an album to the playlist
         Usage: playlist_add_album id
-            Add the album id to the current playlist.
-            Use the albums function to find the id.
+            Add the album id to the current playlist. Use the
+            albums function to find the id.
         """
         logger.debug('call function do_playlist_add_album')
         albumids = []
@@ -422,9 +429,9 @@ class KodiRemote(cmd.Cmd):
     def do_playlist_add_song(self, line):
         """
         Add a song to the playlist
-        Usage: playlist_add_song [id]
-            Add the song id to the current playlist.
-            Use the songs function to find the id.
+        Usage: playlist_add_song id
+            Add the song id to the current playlist. Use the
+            songs function to find the id.
         """
         logger.debug('call function do_playlist_add_song')
         songids = []
@@ -455,9 +462,8 @@ class KodiRemote(cmd.Cmd):
         """
         Create a playlist from echonest taste profile
         Usage: playlist_tasteprofile
-            Generate and play a new playlist based on
-            echonest taste profile. The current playlist
-            is removed before.
+            Generate a new playlist based on echonest taste
+            profile. The current playlist is removed before.
         """
         logger.debug('call function do_playlist_tasteprofile')
         profile_id = kodi.get_en_profile_id(self.params['echonest_key'])
@@ -469,11 +475,11 @@ class KodiRemote(cmd.Cmd):
 
     def do_playlist_taste_seed(self, line):
         """
-        Create a playlist from echonest taste profile and seeded by a song
-        Usage: playlist_tasteprofile song_id
-            Generate and play a new playlist based on
-            echonest taste profile. The current playlist
-            is removed before.
+        Create a playlist from echonest taste profile seeded by a song
+        Usage: playlist_taste_seed songid
+            Generate a new playlist based on your echonest taste,
+            profile seeded by a song. The current playlist is
+            removed before.
         """
         logger.debug('call function do_playlist_taste_seed')
         songid = int(line)
@@ -500,7 +506,7 @@ class KodiRemote(cmd.Cmd):
 
     def do_songs_info(self, line):
         """
-        Display information on the songs set
+        Display information on the songs library
         Usage: songs_info
             Display info on the songs set like the number of songs
             or the total duration.
@@ -566,7 +572,7 @@ class KodiRemote(cmd.Cmd):
         kodi.volume_set(self.params, volume)
 
     def do_EOF(self, line):
-        '''Override end of file'''
+        """Override end of file"""
         logger.info('Bye!')
         print 'Bye!'
         return True
