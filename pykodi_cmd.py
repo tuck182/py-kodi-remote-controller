@@ -566,6 +566,7 @@ class KodiRemote(cmd.Cmd):
         """
         Set Kodi volume
         Usage: volume_set n
+            The value should be between 0 and 100.
         """
         logger.debug('call function do_volume_set')
         volume = int(line)
