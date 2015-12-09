@@ -26,7 +26,50 @@ DISPLAY_NB_LINES = 10
 
 logger = logging.getLogger(__name__)
 
-# utility functions
+# simple utility functions
+
+def is_file(fname):
+    """Return true if the file does exist"""
+    logger.debug('call function is_file')
+    try:
+        open(fname)
+    except IOError:
+        return False
+    return True
+
+def display_banner():
+    """Display initial banner"""
+    logger.debug('call function display_banner')
+    print
+    print "No Kodi params file found, this is probably the first launch. Check"
+    print "your Kodi parameters (IP, port, user and password) and create an"
+    print "Echonest account: https://developer.echonest.com/account/register"
+    print
+    print "Read the API key on the Echonest account, it will be requested"
+    print "later on. When you are ready, try params_create."
+
+def set_friendly_name(self):
+    """Set Kodi friendly name in the cmd prompt"""
+    logger.debug('call function set_friendly_name')
+    friendly_name = pk.get_friendly_name(self.params)
+    self.prompt = "(" + friendly_name + ") "
+
+# params utility functions
+
+def params_display(params):
+    """Fancy display of PyKodi params"""
+    print
+    print "Kodi parameters:"
+    print "   Network:        {}/{}".format(
+        params['ip'],
+        params['port']
+    )
+    print "   Credential:     {} ({})".format(
+        params['user'],
+        params['password']
+    )
+    print
+    print "Echonest API key:  {}".format(params['echonest_key'])
 
 def params_get():
     """Get the run parameters"""
@@ -46,16 +89,7 @@ def params_get():
     logger.debug('... and even in high verbosity mode!')
     return args.verbosity
 
-def is_file(fname):
-    """Return true if the file does exist"""
-    logger.debug('call function is_file')
-    try:
-        open(fname)
-    except IOError:
-        return False
-    return True
-
-def input_params():
+def params_inputs():
     """Request the user for params input"""
     logger.debug('call function input_params')
     params = {}
@@ -66,14 +100,7 @@ def input_params():
     params['echonest_key'] = raw_input("Echonest developer key: ")
     return params
 
-def save_params(params):
-    """Save the Kodi parameters to a local file"""
-    logger.debug('call function save_params')
-    f = open('params.pickle', 'wb')
-    pickle.dump(params, f)
-    f.close()
-
-def read_params():
+def params_read():
     """Read the Kodi params from the local file"""
     logger.debug('call function read_params')
     f = open('params.pickle', 'rb')
@@ -81,31 +108,14 @@ def read_params():
     f.close()
     return params
 
-def display_params(params):
-    """Fancy display of PyKodi params"""
-    print
-    print "Kodi parameters:"
-    print "   Network:        {}/{}".format(
-        params['ip'],
-        params['port']
-    )
-    print "   Credential:     {} ({})".format(
-        params['user'],
-        params['password']
-    )
-    print
-    print "Echonest API key:  {}".format(params['echonest_key'])
+def params_save(params):
+    """Save the Kodi parameters to a local file"""
+    logger.debug('call function save_params')
+    f = open('params.pickle', 'wb')
+    pickle.dump(params, f)
+    f.close()
 
-def display_banner():
-    """Display initial banner"""
-    logger.debug('call function display_banner')
-    print
-    print "No Kodi params file found, this is probably the first launch. Check"
-    print "your Kodi parameters (IP, port, user and password) and create an"
-    print "Echonest account: https://developer.echonest.com/account/register"
-    print
-    print "Read the API key on the Echonest account, it will be requested"
-    print "later on. When you are ready, try params_create."
+# local files utility functions
 
 def get_albums_from_file(fname):
     """Load albums from pickle file"""
@@ -123,12 +133,6 @@ def get_songs_from_file(fname):
     f.close()
     return songs
 
-def set_friendly_name(self):
-    """Set Kodi friendly name in the cmd prompt"""
-    logger.debug('call function set_friendly_name')
-    friendly_name = pk.get_friendly_name(self.params)
-    self.prompt = "(" + friendly_name + ") "
-
 
 class KodiRemote(cmd.Cmd):
     
@@ -140,7 +144,7 @@ class KodiRemote(cmd.Cmd):
             print
             return
         logger.debug('kodi params file found')
-        self.params = read_params()
+        self.params = params_read()
         set_friendly_name(self)
         if not is_file('albums.pickle'):
             self.albums = {}
@@ -291,9 +295,9 @@ class KodiRemote(cmd.Cmd):
         """
         logger.debug('call function do_params_create')
         print
-        self.params = input_params()
+        self.params = params_inputs()
         print
-        save_params(self.params)
+        params_save(self.params)
         set_friendly_name(self)
 
     def do_params_display(self, line):
@@ -302,7 +306,7 @@ class KodiRemote(cmd.Cmd):
         Usage: params_display
         """
         logger.debug('call function do_params_display')
-        display_params(self.params)
+        params_display(self.params)
         print
 
     # player functions
