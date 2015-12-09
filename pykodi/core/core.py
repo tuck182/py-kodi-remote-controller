@@ -10,7 +10,7 @@ Kodi remote controller based on HTTP transport and JSON.
 """
 
 from .. import rpc
-from pykodi import echonest
+from .. import echonest
 
 import socket
 import requests
@@ -161,7 +161,7 @@ def set_songs_sync(params, songs, p_bar):
     logger.debug('call function set_songs_sync')
     assert is_reachable(params)
     # get the number of songs
-    limits = pk_rpc.audiolibrary_get_songs_limits(params, 0, 1)
+    limits = rpc.audiolibrary_get_songs_limits(params, 0, 1)
     nb_songs = limits['total']
     logger.debug('total number of songs: %i', nb_songs)
     # select sync type
@@ -198,9 +198,9 @@ def set_songs_sync(params, songs, p_bar):
             pbar.update(start)
         # fetch songs slice data
         if full_scan:
-            loop_songs = pk_rpc.audiolibrary_get_songs_full(params, start, end)
+            loop_songs = rpc.audiolibrary_get_songs_full(params, start, end)
         else:
-            loop_songs = pk_rpc.audiolibrary_get_songs_delta(params, start, end)
+            loop_songs = rpc.audiolibrary_get_songs_delta(params, start, end)
         # update songs dataset
         for loop_song in loop_songs:
             if full_scan:
@@ -231,7 +231,7 @@ def set_albums_sync(params, albums, p_bar):
     logger.debug('call function set_albums_sync')
     assert is_reachable(params)
     # get the number of songs
-    limits = pk_rpc.audiolibrary_get_albums_limits(params, 0, 1)
+    limits = rpc.audiolibrary_get_albums_limits(params, 0, 1)
     nb_albums = limits['total']
     logger.debug('total number of albums: %i', nb_albums)
     if p_bar:
@@ -258,7 +258,7 @@ def set_albums_sync(params, albums, p_bar):
         if p_bar:
             pbar.update(start)
         # fetch songs slice data
-        loop_albums = pk_rpc.audiolibrary_get_albums(params, start, end)
+        loop_albums = rpc.audiolibrary_get_albums(params, start, end)
         # update songs dataset
         for loop_album in loop_albums:
             albums[loop_album['albumid']] = loop_album.copy()
@@ -463,7 +463,7 @@ def get_genre_search(search_string, songs):
 def get_playlist_songids(params):
     """Fetch playlist items"""
     logger.debug('call get_playlist_songids')
-    items = pk_rpc.playlist_get_items(params)
+    items = rpc.playlist_get_items(params)
     songids = [item['id'] for item in items]
     return songids
 
@@ -471,45 +471,45 @@ def get_playlist_position(params):
     """Return the current playing item in the playlist"""
     # TODO rename to player
     logger.debug('call get_playlist_position')
-    properties = pk_rpc.player_get_properties(params)
+    properties = rpc.player_get_properties(params)
     return properties['position']
 
 def player_properties(params):
     """Return the played time of the current song"""
     logger.debug('call player_properties')
-    properties = pk_rpc.player_get_properties(params)
+    properties = rpc.player_get_properties(params)
     return properties
 
 def player_item(params):
     """Return the played time of the current song"""
     logger.debug('call player_properties')
-    item = pk_rpc.player_get_item(params)
+    item = rpc.player_get_item(params)
     return item
 
 def playlist_items(params):
     """Return items playlist"""
     logger.debug('call playlist_items')
-    items = pk_rpc.playlist_get_items(params)
+    items = rpc.playlist_get_items(params)
     return items
 
 def get_play_item(params):
     """Return the currently played item"""
     # TODO rename to player
     logger.debug('call get_play_item')
-    item = pk_rpc.player_get_item(params)
+    item = rpc.player_get_item(params)
     return item['id']
 
 def playlist_add_songs(songids, params):
     """Add songids list to the playlist"""
     logger.debug('call playlist_add_songs')
     for songid in songids:
-        pk_rpc.playlist_add(SONG, songid, params)
+        rpc.playlist_add(SONG, songid, params)
 
 def playlist_add_albums(albumids, params):
     """Add albumids list to the playlist"""
     logger.debug('call playlist_add_albums')
     for albumid in albumids:
-        pk_rpc.playlist_add(ALBUM, albumid, params)
+        rpc.playlist_add(ALBUM, albumid, params)
 
 def set_songs_sync2(server_params, songs):
     '''Sync playcount and rating'''
@@ -587,7 +587,7 @@ def get_profile_delta(songs):
 
 def en_sync(api_key, profile_id, songs, p_bar):
     """Sync songs with echonest tasteprofile"""
-    en_info = pk_en.tasteprofile_profile_id(api_key, profile_id)
+    en_info = echonest.tasteprofile_profile_id(api_key, profile_id)
     if en_info['total'] == 0:
         logger.info("full sync")
         songids = songs.keys()
@@ -638,7 +638,7 @@ def en_sync(api_key, profile_id, songs, p_bar):
             items[str(songid)]['play_count'] = songs[songid]['playcount']
             songs[songid]['rating_en'] = songs[songid]['rating']
             songs[songid]['playcount_en'] = songs[songid]['playcount']
-        pk_en.tasteprofile_update(items, api_key, profile_id)
+        echonest.tasteprofile_update(items, api_key, profile_id)
         if end == nb_songs:
             break
         slice +=1
@@ -651,7 +651,7 @@ def en_sync(api_key, profile_id, songs, p_bar):
 def echonest_status(ticket, api_key):
     """Check ticket status"""
     logger.debug('call echonest_status')
-    pk_en.tasteprofile_status(ticket, api_key)
+    echonest.tasteprofile_status(ticket, api_key)
 
 def echonest_sync2(api_key, profile_id, songs):
     '''Sync songs with echonest tasteprofile'''
@@ -724,7 +724,7 @@ def echonest_sync2(api_key, profile_id, songs):
 def en_playlist(api_key, profile_id):
     """Create a static playlist"""
     logger.debug('call en_playlist')
-    en_songs = pk_en.playlist_static(api_key, profile_id)
+    en_songs = echonest.playlist_static(api_key, profile_id)
     songids = []
     for en_song in en_songs:
         en_id = en_song['foreign_ids'][0]['foreign_id']
@@ -736,7 +736,7 @@ def en_playlist_seed(songid, api_key, profile_id):
     """Create a static playlist"""
     logger.debug('call en_playlist')
     song_id = profile_id + ':song:' + str(songid)
-    en_songs = pk_en.playlist_static_seed(song_id, api_key, profile_id)
+    en_songs = echonest.playlist_static_seed(song_id, api_key, profile_id)
     songids = []
     #TODO function to extract the songids (shared with en_playlist)
     for en_song in en_songs:
@@ -748,7 +748,7 @@ def en_playlist_seed(songid, api_key, profile_id):
 def echonest_playlist(api_key, profile_id):
     '''Create a premium static playlist'''
     logger.debug('call echonest_playlist')
-    en_songs = pk_en.playlist_static(api_key, profile_id)
+    en_songs = echonest.playlist_static(api_key, profile_id)
     songids = []
     for en_song in en_songs:
         en_id = en_song['foreign_ids'][0]['foreign_id']
@@ -813,11 +813,11 @@ def get_profile_id(api_key):
 def get_en_profile_id(api_key):
     """Get echonest profile profile ID"""
     logger.debug('call get_profile_id')
-    ret = pk_en.tasteprofile_profile_name(api_key)
+    ret = echonest.tasteprofile_profile_name(api_key)
     if not 'catalog' in ret:
         logger.info('no taste profile found, will create one')
-        pk_en.tasteprofile_create(api_key)
-        ret = pk_en.tasteprofile_profile_name(api_key)
+        echonest.tasteprofile_create(api_key)
+        ret = echonest.tasteprofile_profile_name(api_key)
     profile_id = ret['catalog']['id']
     logger.debug('profile id: %s', profile_id)
     return profile_id
@@ -825,18 +825,18 @@ def get_en_profile_id(api_key):
 def get_en_info(api_key, profile_id):
     """Fetch echonest taste profile info"""
     logger.debug('call get_en_info')
-    en_info = pk_en.tasteprofile_profile_id(api_key, profile_id)
+    en_info = echonest.tasteprofile_profile_id(api_key, profile_id)
     return en_info
 
 def en_delete(api_key, profile_id):
     """Delete the echonest tasteprofile"""
     logger.debug('call en_delete')
-    pk_en.tasteprofile_delete(api_key, profile_id)
+    echonest.tasteprofile_delete(api_key, profile_id)
 
 def en_display(songid, api_key, profile_id):
     """Display song detail from tasteprofile"""
     logger.debug('call en_display')
-    item = pk_en.tasteprofile_read(str(songid), api_key, profile_id)
+    item = echonest.tasteprofile_read(str(songid), api_key, profile_id)
     return item
 
 def playback(kodi_params):
@@ -850,21 +850,21 @@ def playback(kodi_params):
 def playback_start(params):
     """Start playback"""
     logger.debug('call function playback_start')
-    if pk_rpc.player_get_active(params):
-        pk_rpc.player_play_pause(params)
+    if rpc.player_get_active(params):
+        rpc.player_play_pause(params)
     else:
         logger.info('no active player, will open one')
-        pk_rpc.player_open(params)
+        rpc.player_open(params)
 
 def playback_stop(params):
     """Start playback"""
     logger.debug('call function playback_stop')
-    if pk_rpc.player_get_active(params):
-        pk_rpc.player_stop(params)
+    if rpc.player_get_active(params):
+        rpc.player_stop(params)
 
 def clear_playlist(params):
     """Clear the audio playlist"""
-    pk_rpc.playlist_clear(params)
+    rpc.playlist_clear(params)
 
 def populate_playlist(song_ids, kodi_params):
     '''Create a playlist from an array of song_id'''
@@ -877,32 +877,32 @@ def populate_playlist(song_ids, kodi_params):
 def en_favorite(api_key, profile_id, songid):
     """Toggle favorite flag in echonest"""
     logger.debug('call function en_favorite')
-    pk_en.tasteprofile_favorite(api_key, profile_id, str(songid))
+    echonest.tasteprofile_favorite(api_key, profile_id, str(songid))
 
 def en_skip(api_key, profile_id, songid):
     """Toggle favorite flag in echonest"""
     logger.debug('call function en_skip')
-    pk_en.tasteprofile_skip(api_key, profile_id, str(songid))
+    echonest.tasteprofile_skip(api_key, profile_id, str(songid))
 
 def en_ban(api_key, profile_id, songid):
     """Toggle ban flag in echonest"""
     logger.debug('call function en_ban')
-    pk_en.tasteprofile_ban(api_key, profile_id, str(songid))
+    echonest.tasteprofile_ban(api_key, profile_id, str(songid))
 
 def play_next(params):
     """Move to the next song"""
     logger.debug('call function play_next')
-    pk_rpc.player_goto_next(params)
+    rpc.player_goto_next(params)
 
 def play_party(params):
     """Trigger party mode"""
     logger.debug('call function play_party')
-    pk_rpc.player_open_party(params)
+    rpc.player_open_party(params)
 
 def volume_set(params, volume):
     """Set server volume"""
     logger.debug('call function volume_set')
-    pk_rpc.application_set_volume(params, volume)
+    rpc.application_set_volume(params, volume)
 
 # process return messages
 
