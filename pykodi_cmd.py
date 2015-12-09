@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 # utility functions
 
-def get_params():
+def params_get():
     """Get the run parameters"""
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbosity",
@@ -133,7 +133,7 @@ def set_friendly_name(self):
 class KodiRemote(cmd.Cmd):
     
     def preloop(self):
-        self.log_level = get_params()
+        self.log_level = params_get()
         if not is_file('params.pickle'):
             logger.info('no kodi params file')
             display_banner()
