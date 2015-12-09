@@ -11,8 +11,8 @@ the echonest API for smart playlists generation.
 More info on the echonest API: http://developer.echonest.com/docs/v4
 """
 
-import pykodi as kodi
-import pykodi_fd as pk_fd
+import pykodi as pk
+import pykodi.display as pkd
 
 import cmd
 import logging
@@ -126,7 +126,7 @@ def get_songs_from_file(fname):
 def set_friendly_name(self):
     """Set Kodi friendly name in the cmd prompt"""
     logger.debug('call function set_friendly_name')
-    friendly_name = kodi.get_friendly_name(self.params)
+    friendly_name = pk.get_friendly_name(self.params)
     self.prompt = "(" + friendly_name + ") "
 
 

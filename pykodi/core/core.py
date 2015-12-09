@@ -9,13 +9,12 @@
 Kodi remote controller based on HTTP transport and JSON.
 """
 
-import pykodi_rpc as pk_rpc
-import pykodi_en as pk_en
+from .. import rpc
+from pykodi import echonest
 
 import socket
 import requests
 import json
-#from datetime import timedelta
 from progressbar import *
 import pickle
 import time
@@ -50,14 +49,14 @@ SONG = 'songid'
 def is_reachable(params):
     '''Return true if the Kodi server is reachable'''
     logger.debug('call function is_reachable')
-    ping_reply = pk_rpc.jsonrpc_ping(params)
+    ping_reply = rpc.jsonrpc_ping(params)
     return ping_reply
 
 def get_friendly_name(params):
     '''Return Kodi server friendly name'''
     logger.debug('call function get_friendly_name')
     assert is_reachable(params)
-    friendly_name = pk_rpc.system_friendly_name(params)
+    friendly_name = rpc.system_friendly_name(params)
     return friendly_name
 
 # utility functions
