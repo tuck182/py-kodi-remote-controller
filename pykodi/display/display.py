@@ -6,16 +6,15 @@
 # https://github.com/Arn-O/py-kodi-remote-controller/blob/master/LICENSE.
 
 """
-Module of display function for PyKodi.
+Module of display functions for PyKodi.
 """
 
 import datetime
 import logging
 
+# global variable
 logger = logging.getLogger(__name__)
 
-
-#TODO: song_ids and not songs_id + just albums or songs
 def albums_index(albumids, albums):
     """Display albums list from internal index"""
     logger.debug('call disp_albums_index')
@@ -203,21 +202,6 @@ def play_album(album_id, albums):
     print "Let's play the album \"%s\" by %s [%i]." % (
             albums[album_id]['title'], albums[album_id]['artist'], album_id)
 
-def add_album(album_id, albums):
-    '''Confirm add album'''
-    print "Let's add the album \"%s\" by %s [%i]." % (
-            albums[album_id]['title'], albums[album_id]['artist'], album_id)
-
-def play_song(song_id, songs):
-    '''Confirm play song'''
-    print "Let's play the song \"%s\" by %s [%i]." % (
-            songs[song_id]['title'], songs[song_id]['artist'], song_id)
-
-def add_song(song_id, songs):
-    '''Confirm add song'''
-    print "Let's add the song \"%s\" by %s [%i]." % (
-            songs[song_id]['title'], songs[song_id]['artist'], song_id)
-
 def en_sync(songids):
     """Display echonest sync results"""
     if len(songids) == 0:
@@ -257,14 +241,7 @@ def en_display(song_data):
     print "\tArtist hotttnesss: \t{}".format(song_data['artist_hotttnesss'])
     print "\tArtist discovery: \t{}".format(song_data['artist_discovery'])
 
-# prompt for confirmation
-
-def validate_playlist():
-    '''Request what should be done with a playlist proposal.'''
-    print
-    rep = raw_input(
-            "What now? (P)lay or (R)egenerate? Anything else to cancel: ")
-    return rep.lower()
+# prompts for confirmation
 
 def sure_delete_tasteprofile(api_key, profile_id):
     """Warning before taste profile deletion."""
@@ -280,12 +257,3 @@ def echonest_detele():
     """Print delete output"""
     print
     print "Your echonest profile has been deleted."
-
-# stub for smart help
-
-def smart_help():
-    '''Help messages that make sense.'''
-    # welcome message
-    print
-    print "For a quick start, try play_album"
-    print
