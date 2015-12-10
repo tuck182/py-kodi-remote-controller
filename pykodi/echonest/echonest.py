@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 # coding=utf-8
 #
@@ -14,9 +13,11 @@ import requests
 import json
 import logging
 
-logger = logging.getLogger(__name__)
-
+# global constants
 PROFILE_NAME = 'PyKodi library'
+
+# global variable
+logger = logging.getLogger(__name__)
 
 def playlist_static(api_key, profile_id):
     """Create a static playlist"""
@@ -163,7 +164,6 @@ def tasteprofile_update(items, api_key, profile_id):
     logger.debug('URL: %s', r.url)
     logger.debug('return: %s', r.text)
 
-#TODO: rename to tasteprofile in place of echonest
 def tasteprofile_favorite(api_key, profile_id, item):
     """Make a song favorite in echonest tasteprofile"""
     logger.debug('call tasteprofile_favorite')
@@ -202,22 +202,3 @@ def tasteprofile_ban(api_key, profile_id, item):
     r = requests.get(url, params=payload)
     logger.debug('URL: %s', r.url)
     logger.debug('return: %s', r.text)
-
-def echonest_read(api_key, profile_id, item_id):
-    '''Display dat about a given item'''
-    logger.debug('call echonest_read')
-    url = 'http://developer.echonest.com/api/v4/tasteprofile/read'
-    payload = {
-            'api_key': api_key,
-            'id': profile_id,
-            'item_id': str(item_id),
-            'bucket': [
-                'artist_discovery', 'artist_familiarity', 'artist_hotttnesss',
-                'song_currency', 'song_hotttnesss', 'song_type',
-                ]
-            }
-    r = requests.get(url, params=payload)
-    logger.debug('URL: %s', r.url)
-    logger.debug('return: %s', r.text)
-    ret = r.json()
-    return ret['response']['catalog']['items'][0]

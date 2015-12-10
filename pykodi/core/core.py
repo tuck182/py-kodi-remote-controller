@@ -28,7 +28,6 @@ ALBUMS_SLICE_SIZE = 20
 # echonest sync parameters
 SONGS_EN_SLICE_SIZE = 25
 EN_API_WAIT = 0.51 # max 120 api calls per minute
-PROFILE_NAME = 'Kodi library'
 
 # global variable
 logger = logging.getLogger(__name__)
