@@ -5,31 +5,21 @@
 # distribution and at
 # https://github.com/Arn-O/py-kodi-remote-controller/blob/master/LICENSE.
 
-'''
+"""
 Module of functions for Kodi API management.
-'''
+"""
 
 import requests
 import json
 import logging
 
+# global variable
 logger = logging.getLogger(__name__)
 
-# API call management
-
-def call_api(server_params, command):
-    #if server_params['tcp']:
-    #    ret = call_api_tcp(
-    #            server_params['ip'], 
-    #            server_params['port'],
-    #            command)
-    #else:
-    #TODO: manage TCP calls
-    ret = call_api_http(server_params, command)
-    return ret
+# api call management
 
 def call_api_http(server_params, command):
-    logger.debug('call call_api_http')
+    logger.debug('call function call_api_http')
     logger.info('command: %s', command)
     kodi_url = 'http://' + server_params['ip'] +  ':' + str(server_params['port']) + '/jsonrpc'
     headers = {'Content-Type': 'application/json'}
@@ -44,31 +34,15 @@ def call_api_http(server_params, command):
     logger.debug('text: %s', r.text)
     return ret
 
-def call_api_tcp(ip, port, command):
-    '''Send the command using TCP'''
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((ip, port))
-    logger.debug('command: %s', command)
-    s.send(json.dumps(command))
-    data = ''
-    while True:
-        filler = s.recv(BUFFER_SIZE)
-        logger.debug('data received: %s', filler)
-        logger.debug('length of the filler: %i', len(filler))
-        data += filler
-        nb_open_brackets = data.count('{') - data.count('}')
-        logger.debug('number of open brackets: %i', nb_open_brackets)
-        if nb_open_brackets == 0:
-            break
-        else:
-            logger.info('api reception incomplete')
-    s.close()
-    logger.debug('data length: %i', len(data))
-    ret = json.loads(data)
-    logger.debug('return: %s', ret)
+def call_api(server_params, command):
+    logger.debug('call function call_api')
+    # wrapper for api calls
+    # could be used for both HTTP and TCP
+    ret = call_api_http(server_params, command)
+    return ret
 
 def display_result(ret):
-    '''Display command result for simple methods'''
+    """Display command result for simple methods"""
     logger.debug('call display_result')
     if 'error' in ret:
         logger.error('too bad, something went wrong!')
@@ -298,7 +272,7 @@ def player_open(server_params):
     display_result(ret)
 
 def player_open_party(server_params):
-    '''Open the audio player in partymode'''
+    """Open the audio player in partymode"""
     logger.debug('call function player_open_party')
     command = {"jsonrpc": "2.0",
             "method": "Player.Open",
@@ -351,7 +325,7 @@ def application_set_volume(server_params, volume):
 # system
 
 def system_friendly_name(server_params):
-    '''Get the system name and hostname'''
+    """Get the system name and hostname"""
     command = {"jsonrpc": "2.0",
             "method": "XBMC.GetInfoLabels",
             "params": {
@@ -362,7 +336,7 @@ def system_friendly_name(server_params):
     return ret['result']['System.FriendlyName']
 
 def jsonrpc_ping(server_params):
-    '''Ping the server'''
+    """Ping the server"""
     logger.debug('call function jsonrpc_ping')
     command = {"jsonrpc": "2.0",
             "method": "JSONRPC.Ping",
