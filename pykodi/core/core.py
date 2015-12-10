@@ -18,6 +18,9 @@ import logging
 
 # global constants
 
+ALBUMS_FILE = 'albums.pickle'
+SONGS_FILE = 'songs.pickle'
+
 ALBUM = 'albumid'
 SONG = 'songid'
 
@@ -45,21 +48,58 @@ def get_friendly_name(params):
     friendly_name = rpc.system_friendly_name(params)
     return friendly_name
 
-# local files
+# local files utility functions
 
-def save_songs(songs):
+def is_file(fname):
+    """Return true if the file does exist"""
+    logger.debug('call function is_file')
+    try:
+        open(fname)
+    except IOError:
+        return False
+    return True
+
+def is_local_albums():
+    """True if there is a local albums file"""
+    logger.debug('call function is_local_albums')
+    return is_file(ALBUMS_FILE)
+
+def is_local_songs():
+    """True if there is a local songs file"""
+    logger.debug('call function is_local_songs')
+    return is_file(SONGS_FILE)
+
+def albums_save(albums):
+    """Save albums to local files"""
+    logger.debug('call function save_albums')
+    f = open('albums.pickle', 'wb')
+    pickle.dump(albums, f)
+    f.close()
+
+def songs_save(songs):
     """Save songs to local files"""
     logger.debug('call function save_songs')
     f = open('songs.pickle', 'wb')
     pickle.dump(songs, f)
     f.close()
 
-def save_albums(albums):
-    """Save albums to local files"""
-    logger.debug('call function save_albums')
-    f = open('albums.pickle', 'wb')
-    pickle.dump(albums, f)
+def read_albums_from_file():
+    """Load albums from pickle file"""
+    logger.debug('call function get_albums_from_file')
+    f = open(ALBUMS_FILE, 'rb')
+    albums = pickle.load(f)
     f.close()
+    return albums
+
+def read_songs_from_file():
+    """Load songs from pickle file"""
+    logger.debug('call function get_songs_from_file')
+    f = open(SONGS_FILE, 'rb')
+    songs = pickle.load(f)
+    f.close()
+    return songs
+
+# sync processes
 
 def set_songs_sync(params, songs, p_bar):
     """Sync library songs to local"""
@@ -128,7 +168,7 @@ def set_songs_sync(params, songs, p_bar):
     if p_bar:
         pbar.finish()
     # persist songs dataset
-    save_songs(songs)
+    songs_save(songs)
     return full_scan, rating_up_songids, playcount_up_songids
 
 def set_albums_sync(params, albums, p_bar):
@@ -174,7 +214,7 @@ def set_albums_sync(params, albums, p_bar):
     if p_bar:
         pbar.finish()
     # persist albums dataset
-    save_albums(albums)
+    albums_save(albums)
 
 # other
 
@@ -314,7 +354,7 @@ def en_sync(api_key, profile_id, songs, p_bar):
         time.sleep(EN_API_WAIT)
     if p_bar:
         pbar.finish()
-    save_songs(songs)
+    songs_save(songs)
     return songids
 
 def echonest_status(ticket, api_key):

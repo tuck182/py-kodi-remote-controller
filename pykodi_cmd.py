@@ -28,15 +28,6 @@ logger = logging.getLogger(__name__)
 
 # simple utility functions
 
-def is_file(fname):
-    """Return true if the file does exist"""
-    logger.debug('call function is_file')
-    try:
-        open(fname)
-    except IOError:
-        return False
-    return True
-
 def display_banner():
     """Display initial banner"""
     logger.debug('call function display_banner')
@@ -115,30 +106,12 @@ def params_save(params):
     pickle.dump(params, f)
     f.close()
 
-# local files utility functions
-
-def get_albums_from_file(fname):
-    """Load albums from pickle file"""
-    logger.debug('call function get_albums_from_file')
-    f = open(fname, 'rb')
-    albums = pickle.load(f)
-    f.close()
-    return albums
-
-def get_songs_from_file(fname):
-    """Load songs from pickle file"""
-    logger.debug('call function get_songs_from_file')
-    f = open(fname, 'rb')
-    songs = pickle.load(f)
-    f.close()
-    return songs
-
 
 class KodiRemote(cmd.Cmd):
     
     def preloop(self):
         self.log_level = params_get()
-        if not is_file('params.pickle'):
+        if not pk.is_file('params.pickle'):
             logger.info('no kodi params file')
             display_banner()
             print
@@ -146,14 +119,14 @@ class KodiRemote(cmd.Cmd):
         logger.debug('kodi params file found')
         self.params = params_read()
         set_friendly_name(self)
-        if not is_file('albums.pickle'):
+        if not pk.is_local_albums():
             self.albums = {}
         else:
-            self.albums = get_albums_from_file('albums.pickle')
-        if not is_file('songs.pickle'):
+            self.albums = pk.read_albums_from_file()
+        if not pk.is_local_songs():
             self.songs = {}
         else:
-            self.songs = get_songs_from_file('songs.pickle')
+            self.songs = pk.read_songs_from_file()
 
     # albums functions
 
