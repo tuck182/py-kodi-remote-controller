@@ -206,9 +206,9 @@ class KodiRemote(cmd.Cmd):
         """
         logger.debug('call function do_echonest_delete')
         profile_id = pk.en_profile_id(self.params['echonest_key'])
-        if pkd.sure_delete_tasteprofile(self.params['echonest_key'], profile_id):
+        if pkd.en_sure_delete_tasteprofile(self.params['echonest_key'], profile_id):
             pk.en_delete(self.params['echonest_key'], profile_id)
-            pkd.echonest_detele()
+            pkd.en_delete()
         print
 
     def do_echonest_display(self, line):
@@ -226,12 +226,12 @@ class KodiRemote(cmd.Cmd):
     def do_echonest_info(self, line):
         """
         Display info about the echonest taste profile.
-        Usage: echonest_info
+        Usage: en_info
         """
         logger.debug('call function do_echonest_info')
         profile_id = pk.en_profile_id(self.params['echonest_key'])
         en_info = pk.en_info(self.params['echonest_key'], profile_id)
-        pkd.echonest_info(en_info)
+        pkd.en_info(en_info)
         print
 
     def do_echonest_status(self, line):
@@ -385,8 +385,8 @@ class KodiRemote(cmd.Cmd):
         properties = pk.player_properties(self.params)
         item = pk.player_item(self.params)
         items = pk.playlist_items(self.params)
-        pkd.now_playing(item, properties)
-        pkd.next_playing(items, properties)
+        pkd.playlist_now_playing(item, properties)
+        pkd.playlist_next_playing(items, properties)
         print
 
     # playlist functions

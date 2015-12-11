@@ -19,6 +19,8 @@ PROFILE_NAME = 'PyKodi library'
 # global variable
 logger = logging.getLogger(__name__)
 
+# playlist
+
 def playlist_static(api_key, profile_id):
     """Create a static playlist"""
     logger.debug('call playlist_static')
@@ -52,6 +54,21 @@ def playlist_static_seed(song_id, api_key, profile_id):
     ret = r.json()
     return ret['response']['songs']
 
+# tasteprofile
+
+def tasteprofile_ban(api_key, profile_id, item):
+    """Ban a song  in echonest taste profile"""
+    logger.debug('call tasteprofile_skip')
+    url = 'http://developer.echonest.com/api/v4/tasteprofile/ban'
+    payload = {
+        'api_key': api_key,
+        'id': profile_id,
+        'item': item
+    }
+    r = requests.get(url, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
+
 def tasteprofile_create(api_key):
     """Create an echonest tasteprofile"""
     logger.debug('call tasteprofile_create')
@@ -76,6 +93,19 @@ def tasteprofile_delete(api_key, profile_id):
         'id': profile_id
     }
     r = requests.post(url, headers=headers, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
+
+def tasteprofile_favorite(api_key, profile_id, item):
+    """Make a song favorite in echonest tasteprofile"""
+    logger.debug('call tasteprofile_favorite')
+    url = 'http://developer.echonest.com/api/v4/tasteprofile/favorite'
+    payload = {
+        'api_key': api_key,
+        'id': profile_id,
+        'item': item
+    }
+    r = requests.get(url, params=payload)
     logger.debug('URL: %s', r.url)
     logger.debug('return: %s', r.text)
 
@@ -164,36 +194,10 @@ def tasteprofile_update(items, api_key, profile_id):
     logger.debug('URL: %s', r.url)
     logger.debug('return: %s', r.text)
 
-def tasteprofile_favorite(api_key, profile_id, item):
-    """Make a song favorite in echonest tasteprofile"""
-    logger.debug('call tasteprofile_favorite')
-    url = 'http://developer.echonest.com/api/v4/tasteprofile/favorite'
-    payload = {
-        'api_key': api_key,
-        'id': profile_id,
-        'item': item
-    }
-    r = requests.get(url, params=payload)
-    logger.debug('URL: %s', r.url)
-    logger.debug('return: %s', r.text)
-
 def tasteprofile_skip(api_key, profile_id, item):
     """Skip a song in echonest taste profile"""
     logger.debug('call tasteprofile_skip')
     url = 'http://developer.echonest.com/api/v4/tasteprofile/skip'
-    payload = {
-        'api_key': api_key,
-        'id': profile_id,
-        'item': item
-    }
-    r = requests.get(url, params=payload)
-    logger.debug('URL: %s', r.url)
-    logger.debug('return: %s', r.text)
-
-def tasteprofile_ban(api_key, profile_id, item):
-    """Ban a song  in echonest taste profile"""
-    logger.debug('call tasteprofile_skip')
-    url = 'http://developer.echonest.com/api/v4/tasteprofile/ban'
     payload = {
         'api_key': api_key,
         'id': profile_id,

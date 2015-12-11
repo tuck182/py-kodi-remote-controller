@@ -15,6 +15,8 @@ import logging
 # global variable
 logger = logging.getLogger(__name__)
 
+# albums
+
 def albums_index(albumids, albums):
     """Display albums list from internal index"""
     logger.debug('call disp_albums_index')
@@ -39,6 +41,8 @@ def albums_details(albumid, albums):
     print
     print "   Rating:          {}".format(albums[albumid]['rating'])
     print "   MusicBrainz ID:  {}".format(albums[albumid]['musicbrainzalbumid'])
+
+# songs
 
 def songs_index(songids, songs):
     """Display songs list from internal index"""
@@ -93,6 +97,8 @@ def songs_sync(f_scan, ru_songsids, pcu_songids):
         print "\tRatings updated: {}".format(len(ru_songsids))
         print "\tPlay counts updated: {}".format(len(pcu_songids))
 
+# playlist
+
 def playlist_show(position, songids, songs):
     """Display playlist"""
     logger.debug('call playlist_show')
@@ -112,18 +118,7 @@ def playlist_show(position, songids, songs):
     else:
         print "\t[playlist empty]"
 
-def echonest_info(catalog):
-    """Display echnonest tasteprofile info"""
-    logger.debug('call echonest_info')
-    print
-    print "\tTotal songs/resolved: {} / {}".format(catalog['total'], catalog['resolved'])
-    print "\tID: {}".format(catalog['id'])
-    print "\tDate created: {}".format(catalog['created'])
-    print "\tPending tickets: {}".format(" / ".join(
-        [pending_ticket['ticket_id'] for pending_ticket in catalog['pending_tickets']])
-    )
-
-def now_playing(item, properties):
+def playlist_now_playing(item, properties):
     """Display the now playing part of play_what"""
     print
     if not item:
@@ -158,7 +153,7 @@ def now_playing(item, properties):
         int(properties['percentage'])
     )
 
-def next_playing(items, properties):
+def playlist_next_playing(items, properties):
     """Display the next playing part of display_what"""
     if not properties:
         return
@@ -170,12 +165,19 @@ def next_playing(items, properties):
         items[properties['position'] + 1]['label'].encode('UTF-8')
     )
 
-def play_skip(songid, songs):
-    """Confirm skip"""
+# player
+
+def play_album(albumid, albums):
+    """Confirm play album"""
+    print "Let's play the album \"%s\" by %s [%i]." % (
+            albums[albumid]['title'], albums[albumid]['artist'], albumid)
+
+def play_ban(songid, songs):
+    """Confirm ban"""
     print
-    print "   You just have skipped the song \"{}\" by {} [{}].".format(
+    print "   The song \"{}\" by {} [{}] has been banned forever.".format(
         songs[songid]['title'].encode('UTF-8'),
-        "/".join(songs[songid]['artist']).encode('UTF-8'),
+        "/".join(songs[songid]['artist']).encode('UTF-8)'),
         songid
     )
 
@@ -188,19 +190,16 @@ def play_favorite(songid, songs):
         songid
     )
 
-def play_ban(songid, songs):
-    """Confirm ban"""
+def play_skip(songid, songs):
+    """Confirm skip"""
     print
-    print "   The song \"{}\" by {} [{}] has been banned forever.".format(
+    print "   You just have skipped the song \"{}\" by {} [{}].".format(
         songs[songid]['title'].encode('UTF-8'),
-        "/".join(songs[songid]['artist']).encode('UTF-8)'),
+        "/".join(songs[songid]['artist']).encode('UTF-8'),
         songid
     )
 
-def play_album(album_id, albums):
-    '''Confirm play album'''
-    print "Let's play the album \"%s\" by %s [%i]." % (
-            albums[album_id]['title'], albums[album_id]['artist'], album_id)
+# echonest
 
 def en_sync(songids):
     """Display echonest sync results"""
@@ -241,9 +240,18 @@ def en_display(song_data):
     print "\tArtist hotttnesss: \t{}".format(song_data['artist_hotttnesss'])
     print "\tArtist discovery: \t{}".format(song_data['artist_discovery'])
 
-# prompts for confirmation
+def en_info(catalog):
+    """Display echnonest tasteprofile info"""
+    logger.debug('call en_info')
+    print
+    print "\tTotal songs/resolved: {} / {}".format(catalog['total'], catalog['resolved'])
+    print "\tID: {}".format(catalog['id'])
+    print "\tDate created: {}".format(catalog['created'])
+    print "\tPending tickets: {}".format(" / ".join(
+        [pending_ticket['ticket_id'] for pending_ticket in catalog['pending_tickets']])
+    )
 
-def sure_delete_tasteprofile(api_key, profile_id):
+def en_sure_delete_tasteprofile(api_key, profile_id):
     """Warning before taste profile deletion."""
     print
     print "WARNING: you are about to delete your taste profile. All your"
@@ -253,7 +261,7 @@ def sure_delete_tasteprofile(api_key, profile_id):
     rep = raw_input("Are you sure (Y/c)? ")
     return rep == 'Y'
 
-def echonest_detele():
+def en_delete():
     """Print delete output"""
     print
     print "Your echonest profile has been deleted."
