@@ -122,11 +122,11 @@ class KodiRemote(cmd.Cmd):
         if not pk.is_local_albums():
             self.albums = {}
         else:
-            self.albums = pk.read_albums_from_file()
+            self.albums = pk.albums_read_from_file()
         if not pk.is_local_songs():
             self.songs = {}
         else:
-            self.songs = pk.read_songs_from_file()
+            self.songs = pk.songs_read_from_file()
 
     # albums functions
 
@@ -183,7 +183,7 @@ class KodiRemote(cmd.Cmd):
         """
         logger.debug('call function do_albums_search')
         search_string = line.lower()
-        albumids = pk.get_albums_search(search_string, self.albums)
+        albumids = pk.albums_search(self.albums, search_string)
         pkd.albums_index(albumids, self.albums)
         print
 
@@ -193,7 +193,7 @@ class KodiRemote(cmd.Cmd):
         Usage: album_sync
         """
         print
-        pk.set_albums_sync(self.params, self.albums, self.log_level == 0)
+        pk.albums_sync(self.params, self.albums, self.log_level == 0)
         print
 
     # echonest functions
@@ -205,7 +205,7 @@ class KodiRemote(cmd.Cmd):
             All information stored in the profile will be lost.
         """
         logger.debug('call function do_echonest_delete')
-        profile_id = pk.get_en_profile_id(self.params['echonest_key'])
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
         if pkd.sure_delete_tasteprofile(self.params['echonest_key'], profile_id):
             pk.en_delete(self.params['echonest_key'], profile_id)
             pkd.echonest_detele()
@@ -218,8 +218,8 @@ class KodiRemote(cmd.Cmd):
         """
         logger.debug('call function do_echonest_display')
         songid = int(line)
-        profile_id = pk.get_en_profile_id(self.params['echonest_key'])
-        song_data = pk.en_display(songid, self.params['echonest_key'], profile_id)
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
+        song_data = pk.en_display(self.params['echonest_key'], profile_id, songid)
         pkd.en_display(song_data)
         print
 
@@ -229,20 +229,20 @@ class KodiRemote(cmd.Cmd):
         Usage: echonest_info
         """
         logger.debug('call function do_echonest_info')
-        profile_id = pk.get_en_profile_id(self.params['echonest_key'])
-        en_info = pk.get_en_info(self.params['echonest_key'], profile_id)
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
+        en_info = pk.en_info(self.params['echonest_key'], profile_id)
         pkd.echonest_info(en_info)
         print
 
     def do_echonest_status(self, line):
         """
         Check the status of a tasteprofile update
-        Usage: echonest_status ticket
+        Usage: en_status ticket
             Detail status of the update tickets.
         """
         logger.debug('call function do_echonest_sync')
         ticket = line
-        pk.echonest_status(ticket, self.params['echonest_key'])
+        pk.en_status(self.params['echonest_key'], ticket)
 
     def do_echonest_sync(self, line):
         """
@@ -253,7 +253,7 @@ class KodiRemote(cmd.Cmd):
             ratings are updated.
         """
         logger.debug('call function do_echonest_sync')
-        profile_id = pk.get_en_profile_id(self.params['echonest_key'])
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
         print
         en_songids = pk.en_sync(self.params['echonest_key'], profile_id, self.songs, self.log_level == 0)
         pkd.en_sync(en_songids)
@@ -293,8 +293,8 @@ class KodiRemote(cmd.Cmd):
         albumids = []
         albumids.append(int(line))
         pk.playback_stop(self.params)
-        pk.clear_playlist(self.params)
-        pk.playlist_add_albums(albumids, self.params)
+        pk.playlist_clear(self.params)
+        pk.playlist_add_albums(self.params, albumids)
         pk.playback_start(self.params)
 
     def do_play_ban(self, line):
@@ -304,9 +304,9 @@ class KodiRemote(cmd.Cmd):
             The echonest integration should be activated.
         """
         logger.debug('call function do_play_ban')
-        songid = pk.get_play_item(self.params)
-        pk.play_next(self.params)
-        profile_id = pk.get_en_profile_id(self.params['echonest_key'])
+        songid = pk.player_songid(self.params)
+        pk.player_next(self.params)
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
         pk.en_ban(self.params['echonest_key'], profile_id, songid)
         pkd.play_ban(songid, self.songs)
         print
@@ -318,8 +318,8 @@ class KodiRemote(cmd.Cmd):
             The echonest integration should be activated.
         """
         logger.debug('call function do_play_favorite')
-        songid = pk.get_play_item(self.params)
-        profile_id = pk.get_en_profile_id(self.params['echonest_key'])
+        songid = pk.player_songid(self.params)
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
         pk.en_favorite(self.params['echonest_key'], profile_id, songid)
         pkd.play_favorite(songid, self.songs)
         print
@@ -327,10 +327,10 @@ class KodiRemote(cmd.Cmd):
     def do_play_party(self, line):
         """
         Start a big party!
-        Usage: play_party
+        Usage: player_party
         """
         logger.debug('call function do_play_party')
-        pk.play_party(self.params)
+        pk.player_party(self.params)
 
     def do_play_pause(self, line):
         """
@@ -347,9 +347,9 @@ class KodiRemote(cmd.Cmd):
         Usage: play_skip
         """
         logger.debug('call function do_play_skip')
-        songid = pk.get_play_item(self.params)
-        pk.play_next(self.params)
-        profile_id = pk.get_en_profile_id(self.params['echonest_key'])
+        songid = pk.player_songid(self.params)
+        pk.player_next(self.params)
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
         pk.en_skip(self.params['echonest_key'], profile_id, songid)
         pkd.play_skip(songid, self.songs)
         print
@@ -363,8 +363,8 @@ class KodiRemote(cmd.Cmd):
         songids = []
         songids.append(int(line))
         pk.playback_stop(self.params)
-        pk.clear_playlist(self.params)
-        pk.playlist_add_songs(songids, self.params)
+        pk.playlist_clear(self.params)
+        pk.playlist_add_songs(self.params, songids)
         pk.playback_start(self.params)
 
     def do_play_stop(self, line):
@@ -401,7 +401,7 @@ class KodiRemote(cmd.Cmd):
         logger.debug('call function do_playlist_add_album')
         albumids = []
         albumids.append(int(line))
-        pk.playlist_add_albums(albumids, self.params)
+        pk.playlist_add_albums(self.params, albumids)
 
     def do_playlist_add_song(self, line):
         """
@@ -413,7 +413,7 @@ class KodiRemote(cmd.Cmd):
         logger.debug('call function do_playlist_add_song')
         songids = []
         songids.append(int(line))
-        pk.playlist_add_songs(songids, self.params)
+        pk.playlist_add_songs(self.params, songids)
 
     def do_playlist_clear(self, line):
         """
@@ -422,7 +422,7 @@ class KodiRemote(cmd.Cmd):
             Remove all items from the current playlist.
         """
         logger.debug('call function do_playlist_clear')
-        pk.clear_playlist(self.params)
+        pk.playlist_clear(self.params)
 
     def do_playlist_show(self, line):
         """
@@ -430,8 +430,8 @@ class KodiRemote(cmd.Cmd):
         Usage: playlist_show
         """
         logger.debug('call function do_playlist_show')
-        position = pk.get_playlist_position(self.params)
-        songids = pk.get_playlist_songids(self.params)
+        position = pk.player_position(self.params)
+        songids = pk.playlist_songids(self.params)
         pkd.playlist_show(position, songids, self.songs)
         print
 
@@ -443,10 +443,10 @@ class KodiRemote(cmd.Cmd):
             profile. The current playlist is removed before.
         """
         logger.debug('call function do_playlist_tasteprofile')
-        profile_id = pk.get_en_profile_id(self.params['echonest_key'])
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
         songids = pk.en_playlist(self.params['echonest_key'], profile_id)
-        pk.clear_playlist(self.params)
-        pk.playlist_add_songs(songids, self.params)
+        pk.playlist_clear(self.params)
+        pk.playlist_add_songs(self.params, songids)
         pkd.songs_index(songids, self.songs)
         print
 
@@ -460,10 +460,10 @@ class KodiRemote(cmd.Cmd):
         """
         logger.debug('call function do_playlist_taste_seed')
         songid = int(line)
-        profile_id = pk.get_en_profile_id(self.params['echonest_key'])
-        songids = pk.en_playlist_seed(songid, self.params['echonest_key'], profile_id)
-        pk.clear_playlist(self.params)
-        pk.playlist_add_songs(songids, self.params)
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
+        songids = pk.en_playlist_seed(self.params['echonest_key'], profile_id, songid)
+        pk.playlist_clear(self.params)
+        pk.playlist_add_songs(self.params, songids)
         pkd.songs_index(songids, self.songs)
         print
 
@@ -523,7 +523,7 @@ class KodiRemote(cmd.Cmd):
         """
         logger.debug('call function do_songs_search')
         search_string = line.lower()
-        songids = pk.get_songs_search(search_string, self.songs)
+        songids = pk.songs_search(self.songs, search_string)
         pkd.songs_index(songids, self.songs)
         print
 
@@ -533,7 +533,7 @@ class KodiRemote(cmd.Cmd):
         Usage: library_sync
         """
         print
-        f_scan, ru_songids, pcu_songids = pk.set_songs_sync(self.params, self.songs, self.log_level == 0)
+        f_scan, ru_songids, pcu_songids = pk.songs_sync(self.params, self.songs, self.log_level == 0)
         pkd.songs_sync(f_scan, ru_songids, pcu_songids)
         print
 
