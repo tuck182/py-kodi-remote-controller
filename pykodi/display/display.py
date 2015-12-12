@@ -227,45 +227,45 @@ def en_sync(songids):
         print
         print "   {} song(s) have been updated.".format(len(songids))
 
-def en_display(song_data):
+def en_display(song):
     """Display echonest song data"""
     logger.debug('call function en_display')
     print
     print "\"{}\" by {}".format(
-        song_data['song_name'].encode('UTF-8'),
-        song_data['artist_name'].encode('UTF-8')
+        song['song_name'].encode('UTF-8'),
+        song['artist_name'].encode('UTF-8')
     )
     print
-    print "   Echonest ID:         {}".format(song_data['song_id'])
-    print "   Foreign ID:          {}".format(song_data['foreign_id'])
-    print "   MusicBrainz ID:      {}".format(song_data['request']['song_id'])
+    print "   Echonest ID:         {}".format(song['song_id'])
+    print "   Foreign ID:          {}".format(song['foreign_id'])
+    print "   MusicBrainz ID:      {}".format(song['request']['song_id'])
     print
     print "   Date added: {} - Last modified: {}".format(
-        song_data['date_added'], song_data['last_modified'])
+        song['date_added'], song['last_modified'])
     print
     print "   This song has been played {} time(s) and skipped {} time(s)".format(
-        song_data.get('play_count', 0), song_data.get('skip_count', 0)
+        song.get('play_count', 0), song.get('skip_count', 0)
     )
     print "   Rating: {} - Favorite: {} - Banned: {}".format(
-        song_data.get('rating', 0),
-        song_data.get('favorite', False),
-        song_data.get('banned', False)
+        song.get('rating', 0),
+        song.get('favorite', False),
+        song.get('banned', False)
     )
     print
-    print "   Song type(s):        {}".format(", ".join(song_data['song_type']))
+    print "   Song type(s):        {}".format(", ".join(song['song_type']))
     print
-    print "   Song currency:       {}".format(song_data['song_currency'])
-    print "   Song hotttnesss:     {}".format(song_data['song_hotttnesss'])
+    print "   Song currency:       {}".format(song['song_currency'])
+    print "   Song hotttnesss:     {}".format(song['song_hotttnesss'])
     print
-    print "   Artist familiarity:  {}".format(song_data['artist_familiarity'])
-    print "   Artist hotttnesss:   {}".format(song_data['artist_hotttnesss'])
-    print "   Artist discovery:    {}".format(song_data['artist_discovery'])
+    print "   Artist familiarity:  {}".format(song['artist_familiarity'])
+    print "   Artist hotttnesss:   {}".format(song['artist_hotttnesss'])
+    print "   Artist discovery:    {}".format(song['artist_discovery'])
 
 def en_info(catalog):
     """Display echnonest tasteprofile info"""
     logger.debug('call function en_info')
     print
-    print "   Total songs/resolved: {} / {}".format(catalog['total'], catalog['resolved'])
+    print "   Songs resolved/total: {} / {}".format(catalog['resolved'], catalog['total'])
     print "   ID:                   {}".format(catalog['id'])
     print "   Date created:         {}".format(catalog['created'])
     print "   Pending tickets:      {}".format(" / ".join(
