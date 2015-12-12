@@ -23,13 +23,13 @@ logger = logging.getLogger(__name__)
 
 def playlist_static(api_key, profile_id):
     """Create a static playlist"""
-    logger.debug('call playlist_static')
+    logger.debug('call function playlist_static')
     url = 'http://developer.echonest.com/api/v4/playlist/static'
     payload = {
-        "api_key": api_key,
-        "type": 'catalog',
-        "seed_catalog": profile_id,
-        "bucket": 'id:' + profile_id
+        'api_key': api_key,
+        'type': 'catalog',
+        'seed_catalog': profile_id,
+        'bucket': 'id:' + profile_id
     }
     r = requests.get(url, params=payload)
     logger.debug('URL: %s', r.url)
@@ -39,14 +39,14 @@ def playlist_static(api_key, profile_id):
 
 def playlist_static_seed(song_id, api_key, profile_id):
     """Create a static playlist with a seed song"""
-    logger.debug('call playlist_static')
+    logger.debug('call function playlist_static')
     url = 'http://developer.echonest.com/api/v4/playlist/static'
     payload = {
-        "api_key": api_key,
-        "type": 'catalog',
-        "seed_catalog": profile_id,
-        "song_id": song_id,
-        "bucket": 'id:' + profile_id
+        'api_key': api_key,
+        'type': 'catalog',
+        'seed_catalog': profile_id,
+        'song_id': song_id,
+        'bucket': 'id:' + profile_id
     }
     r = requests.get(url, params=payload)
     logger.debug('URL: %s', r.url)
@@ -58,7 +58,7 @@ def playlist_static_seed(song_id, api_key, profile_id):
 
 def tasteprofile_ban(api_key, profile_id, item):
     """Ban a song  in echonest taste profile"""
-    logger.debug('call tasteprofile_skip')
+    logger.debug('call function tasteprofile_skip')
     url = 'http://developer.echonest.com/api/v4/tasteprofile/ban'
     payload = {
         'api_key': api_key,
@@ -71,7 +71,7 @@ def tasteprofile_ban(api_key, profile_id, item):
 
 def tasteprofile_create(api_key):
     """Create an echonest tasteprofile"""
-    logger.debug('call tasteprofile_create')
+    logger.debug('call function tasteprofile_create')
     url = 'http://developer.echonest.com/api/v4/tasteprofile/create'
     headers = {'content-type': 'multipart/form-data'}
     payload = {
@@ -142,14 +142,18 @@ def tasteprofile_read(item_id, api_key, profile_id):
     logger.debug('call echonest_read')
     url = 'http://developer.echonest.com/api/v4/tasteprofile/read'
     payload = {
-            'api_key': api_key,
-            'id': profile_id,
-            'item_id': item_id,
-            'bucket': [
-                'artist_discovery', 'artist_familiarity', 'artist_hotttnesss',
-                'song_currency', 'song_hotttnesss', 'song_type',
-                ]
-            }
+        'api_key': api_key,
+        'id': profile_id,
+        'item_id': item_id,
+        'bucket': [
+            'artist_discovery',
+            'artist_familiarity',
+            'artist_hotttnesss',
+            'song_currency',
+            'song_hotttnesss',
+            'song_type',
+        ]
+    }
     r = requests.get(url, params=payload)
     logger.debug('URL: %s', r.url)
     logger.debug('return: %s', r.text)
