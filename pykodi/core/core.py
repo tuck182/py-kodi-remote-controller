@@ -108,6 +108,9 @@ def albums_sync(params, albums, p_bar):
     # get the number of songs
     limits = rpc.audiolibrary_get_albums_limits(params, 0, 1)
     nb_albums = limits['total']
+    if nb_albums == 0:
+        logger.info('no albums in this library!')
+        return
     logger.debug('total number of albums: %i', nb_albums)
     if p_bar:
         widgets = [
@@ -153,6 +156,9 @@ def songs_sync(params, songs, p_bar):
     # get the number of songs
     limits = rpc.audiolibrary_get_songs_limits(params, 0, 1)
     nb_songs = limits['total']
+    if nb_songs == 0:
+        logger.info('no songs in this library!')
+        return
     logger.debug('total number of songs: %i', nb_songs)
     # select sync type
     if len(songs) == nb_songs:
