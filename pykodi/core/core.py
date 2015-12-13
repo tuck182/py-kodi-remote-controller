@@ -269,13 +269,13 @@ def playlist_add_songs(params, songids):
     """Add songids list to the playlist"""
     logger.debug('call playlist_add_songs')
     for songid in songids:
-        rpc.playlist_add(SONG, songid, params)
+        rpc.playlist_add(params, SONG, songid)
 
 def playlist_add_albums(params, albumids):
     """Add albumids list to the playlist"""
     logger.debug('call playlist_add_albums')
     for albumid in albumids:
-        rpc.playlist_add(ALBUM, albumid, params)
+        rpc.playlist_add(params, ALBUM, albumid)
 
 # player
 

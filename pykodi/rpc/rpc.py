@@ -43,7 +43,7 @@ def call_api(server_params, command):
 
 def display_result(ret):
     """Display command result for simple methods"""
-    logger.debug('call display_result')
+    logger.debug('call function display_result')
     if 'error' in ret:
         logger.error('too bad, something went wrong!')
         logger.error('error message: %s', ret['error']['message'])
@@ -54,101 +54,107 @@ def display_result(ret):
 
 def audiolibrary_get_albums_limits(server_params, songid_start, songid_end):
     """Retrieve all albums whithin limits"""
-    command = {"jsonrpc": "2.0",
-            "method": "AudioLibrary.GetAlbums",
-            "params": {
-                "limits": {
-                    "start": songid_start,
-                    "end": songid_end }
-                },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'AudioLibrary.GetAlbums',
+        'params': {
+            'limits': {
+                'start': songid_start,
+                'end': songid_end }
+            },
+        'id': 1}
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result']['limits']
 
 def audiolibrary_get_albums(server_params, albumid_start, albumid_end):
     """Retrieve all albums whithin limits"""
-    command = {"jsonrpc": "2.0",
-            "method": "AudioLibrary.GetAlbums",
-            "params": {
-                "properties":
-                    [
-                        "title",
-                        "artist",
-                        "year",
-                        "rating",
-                        "musicbrainzalbumid",
-                    ],
-                "limits": {
-                    "start": albumid_start,
-                    "end": albumid_end }
-                },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'AudioLibrary.GetAlbums',
+        'params': {
+        'properties': [
+            'title',
+            'artist',
+            'year',
+            'rating',
+            'musicbrainzalbumid',
+        ],
+        'limits': {
+            'start': albumid_start,
+            'end': albumid_end }
+        },
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result']['albums']
 
 def audiolibrary_get_songs_full(server_params, songid_start, songid_end):
     """Retrieve all songs whithin limits"""
-    command = {"jsonrpc": "2.0",
-            "method": "AudioLibrary.GetSongs",
-            "params": {
-                "properties":
-                    [
-                        "title",
-                        "artist",
-                        "year",
-                        "duration",
-                        "rating",
-                        "playcount",
-                        "musicbrainztrackid",
-                        "genre"
-                    ],
-                "limits": {
-                    "start": songid_start,
-                    "end": songid_end }
-                },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'AudioLibrary.GetSongs',
+        'params': {
+        'properties': [
+            'title',
+            'artist',
+            'year',
+            'duration',
+            'rating',
+            'playcount',
+            'musicbrainztrackid',
+            'genre'
+        ],
+        'limits': {
+            'start': songid_start,
+            'end': songid_end }
+        },
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result']['songs']
 
 def audiolibrary_get_songs_delta(server_params, songid_start, songid_end):
     """Retrieve all songs whithin limits"""
-    command = {"jsonrpc": "2.0",
-            "method": "AudioLibrary.GetSongs",
-            "params": {
-                "properties":
-                    [
-                        "rating",
-                        "playcount",
-                    ],
-                "limits": {
-                    "start": songid_start,
-                    "end": songid_end }
-                },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'AudioLibrary.GetSongs',
+        'params': {
+            'properties': [
+                'rating',
+                'playcount',
+            ],
+        'limits': {
+            'start': songid_start,
+            'end': songid_end }
+            },
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result']['songs']
 
 def audiolibrary_get_songs_limits(server_params, songid_start, songid_end):
     """Retrieve all songs whithin limits"""
-    command = {"jsonrpc": "2.0",
-            "method": "AudioLibrary.GetSongs",
-            "params": {
-                "limits": {
-                    "start": songid_start,
-                    "end": songid_end }
-                },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'AudioLibrary.GetSongs',
+        'params': {
+        'limits': {
+            'start': songid_start,
+            'end': songid_end }
+        },
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result']['limits']
 
 # playlist
 
-def playlist_add(item_type, item_id, server_params):
+def playlist_add(server_params, item_type, item_id):
     """Add an item to the audio playlist"""
     logger.debug('call function playlist_add')
     command = {"jsonrpc": "2.0",
@@ -184,7 +190,8 @@ def playlist_get_items(server_params):
                 'artist'
             ]
         },
-        'id': 1}
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result'].get('items', [])
@@ -193,7 +200,6 @@ def playlist_get_items(server_params):
 
 def player_get_active(server_params):
     """Returns active audio players (boolean)"""
-    logger.debug('call function player_get_active')
     command = {
         'jsonrpc': '2.0',
         'method': 'Player.GetActivePlayers',
@@ -205,7 +211,6 @@ def player_get_active(server_params):
 
 def player_get_item(server_params):
     """Get the current played item"""
-    logger.debug('call function get_item')
     command = {
         'jsonrpc': '2.0',
         'method': 'Player.GetItem',
@@ -226,17 +231,20 @@ def player_get_item(server_params):
 
 def player_get_properties(server_params):
     """Get properties of the played item"""
-    logger.debug('call function player_get_properties')
-    command = {"jsonrpc": "2.0",
-            "method": "Player.GetProperties",
-            "params": {
-                "playerid": 0,
-                "properties": [
-                    "time",
-                    "totaltime",
-                    "percentage",
-                    "position" ] },
-                "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'Player.GetProperties',
+        'params': {
+            'playerid': 0,
+            'properties': [
+                'time',
+                'totaltime',
+                'percentage',
+                'position'
+            ]
+        },
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result']
@@ -257,7 +265,6 @@ def player_goto_next(server_params):
 
 def player_open(server_params):
     """Open the audio playlist"""
-    logger.debug('call function player_open')
     command = {
         'jsonrpc': '2.0',
         'method': 'Player.Open',
@@ -274,36 +281,40 @@ def player_open(server_params):
 def player_open_party(server_params):
     """Open the audio player in partymode"""
     logger.debug('call function player_open_party')
-    command = {"jsonrpc": "2.0",
-            "method": "Player.Open",
-            "params": {
-                "item": {
-                    "partymode": "music" }
-                },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'Player.Open',
+        'params': {
+            'item': {
+                'partymode': 'music'
+            }
+        },
+        'id': 1}
     ret = call_api(server_params, command)
     display_result(ret)
 
 def player_play_pause(server_params):
     """Pauses or unpause playback"""
-    logger.debug('call function player_play_pause')
-    command = {"jsonrpc": "2.0",
-            "method": "Player.PlayPause",
-            "params": {
-                "playerid": 0,
-                },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'Player.PlayPause',
+        'params': {
+            'playerid': 0,
+        },
+        'id': 1}
     ret = call_api(server_params, command)
     display_result(ret)
 
 def player_stop(server_params):
     """Stop playback"""
-    logger.debug('call function player_stop')
-    command = {"jsonrpc": "2.0",
-            "method": "Player.Stop",
-            "params": {
-                "playerid": 0 },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'Player.Stop',
+        'params': {
+            'playerid': 0
+        },
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
 
@@ -311,14 +322,14 @@ def player_stop(server_params):
 
 def application_set_volume(server_params, volume):
     """Volume"""
-    logger.debug('call function application_set_volume')
     command = {
         'jsonrpc': '2.0',
         'method': 'Application.SetVolume',
         'params': {
             'volume': volume,
         },
-        'id': 1}
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
     
@@ -326,21 +337,25 @@ def application_set_volume(server_params, volume):
 
 def system_friendly_name(server_params):
     """Get the system name and hostname"""
-    command = {"jsonrpc": "2.0",
-            "method": "XBMC.GetInfoLabels",
-            "params": {
-                "labels": ["System.FriendlyName"] },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'XBMC.GetInfoLabels',
+        'params': {
+            'labels': ['System.FriendlyName']
+        },
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
     return ret['result']['System.FriendlyName']
 
 def jsonrpc_ping(server_params):
     """Ping the server"""
-    logger.debug('call function jsonrpc_ping')
-    command = {"jsonrpc": "2.0",
-            "method": "JSONRPC.Ping",
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'JSONRPC.Ping',
+        'id': 1
+    }
     try:
         ret = call_api(server_params, command)
         display_result(ret)
