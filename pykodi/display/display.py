@@ -134,7 +134,6 @@ def playlist_now_playing(item, properties):
         print "   [not playing anything]"
         return
     # build rating display
-    print item['rating']
     disp_rating = '*' * int(item['rating']) + '.' * (5 - int(item['rating']))
     # build time variables
     play_time = datetime.timedelta(

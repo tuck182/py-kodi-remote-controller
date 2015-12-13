@@ -391,10 +391,10 @@ class KodiRemote(cmd.Cmd):
 
     # playlist functions
 
-    def do_playlist_add_album(self, line):
+    def do_playlist_add_albums(self, line):
         """
         Add an album to the playlist
-        Usage: playlist_add_album id
+        Usage: playlist_add_albums id
             Add the album id to the current playlist. Use the
             albums function to find the id.
         """
@@ -403,10 +403,10 @@ class KodiRemote(cmd.Cmd):
         albumids.append(int(line))
         pk.playlist_add_albums(self.params, albumids)
 
-    def do_playlist_add_song(self, line):
+    def do_playlist_add_songs(self, line):
         """
         Add a song to the playlist
-        Usage: playlist_add_song id
+        Usage: playlist_add_songs id
             Add the song id to the current playlist. Use the
             songs function to find the id.
         """
