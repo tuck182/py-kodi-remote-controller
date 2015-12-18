@@ -199,6 +199,17 @@ class KodiRemote(cmd.Cmd):
         pk.genres_extract(self.albums, self.genres)
         print
 
+    # genres function
+
+    def do_genres_info(self, line):
+        """
+        Display information on the genres
+        Usage: genres_info
+        """
+        logger.debug('call function do_genres_info')
+        pkd.genres_info(self.genres)
+        print
+
     # echonest functions
 
     def do_echonest_delete(self, line):

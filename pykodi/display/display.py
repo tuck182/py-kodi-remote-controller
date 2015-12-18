@@ -42,6 +42,14 @@ def albums_details(albumid, albums):
     print "   Rating:          {}".format(albums[albumid]['rating'])
     print "   MusicBrainz ID:  {}".format(albums[albumid]['musicbrainzalbumid'])
 
+# genres
+
+def genres_info(genres):
+    """Display genres information"""
+    logger.debug('call function genres_info')
+    print
+    print "   Total number of genres: {}".format(len(genres))
+
 # songs
 
 def songs_index(songids, songs):
@@ -82,15 +90,15 @@ def songs_details(songid, songs):
     )
 
 def songs_info(songs):
-    """Display song details from song id"""
+    """Display songs information"""
     logger.debug('call function songs_info')
     print
-    print "   Total number of songs: %i" % len(songs)
+    print "   Total number of songs: {}".format(len(songs))
     total_duration = 0
     for songid in songs:
         total_duration += songs[songid]['duration']
     duration_str = str(datetime.timedelta(seconds=total_duration))
-    print "   Total duration: %s" % duration_str
+    print "   Total duration: {}".format(duration_str)
 
 def songs_sync(f_scan, ru_songsids, pcu_songids):
     """Display result of the songs sync process"""
