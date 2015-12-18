@@ -23,6 +23,7 @@ GENRES_FILE = 'genres.pickle'
 SONGS_FILE = 'songs.pickle'
 
 ALBUM = 'albumid'
+GENRE = 'genreid'
 SONG = 'songid'
 
 # Kodi sync parameters
@@ -309,17 +310,24 @@ def playlist_clear(params):
     """Clear the audio playlist"""
     rpc.playlist_clear(params)
 
+def playlist_add_albums(params, albumids):
+    """Add albumids list to the playlist"""
+    logger.debug('call playlist_add_albums')
+    for albumid in albumids:
+        rpc.playlist_add(params, ALBUM, albumid)
+
+def playlist_add_genres(params, genreids):
+    """Add genreids list to the playlist"""
+    logger.debug('call playlist_add_genres')
+    for genreid in genreids:
+        rpc.playlist_add(params, GENRE, genreid)
+
 def playlist_add_songs(params, songids):
     """Add songids list to the playlist"""
     logger.debug('call playlist_add_songs')
     for songid in songids:
         rpc.playlist_add(params, SONG, songid)
 
-def playlist_add_albums(params, albumids):
-    """Add albumids list to the playlist"""
-    logger.debug('call playlist_add_albums')
-    for albumid in albumids:
-        rpc.playlist_add(params, ALBUM, albumid)
 
 # player
 

@@ -350,6 +350,19 @@ class KodiRemote(cmd.Cmd):
         pkd.play_favorite(songid, self.songs)
         print
 
+    def do_play_genres(self, line):
+        """
+        Play a given genre
+        Usage: play_genres id
+        """
+        logger.debug('call function do_play_genres')
+        genreids = []
+        genreids.append(int(line))
+        pk.playback_stop(self.params)
+        pk.playlist_clear(self.params)
+        pk.playlist_add_albums(self.params, genreids)
+        pk.playback_start(self.params)
+
     def do_play_party(self, line):
         """
         Start a big party!
@@ -424,10 +437,22 @@ class KodiRemote(cmd.Cmd):
             Add the album id to the current playlist. Use the
             albums function to find the id.
         """
-        logger.debug('call function do_playlist_add_album')
+        logger.debug('call function do_playlist_add_albums')
         albumids = []
         albumids.append(int(line))
         pk.playlist_add_albums(self.params, albumids)
+
+    def do_playlist_add_genres(self, line):
+        """
+        Add a genre to the playlist
+        Usage: playlist_add_genres id
+            Add the genre id to the current playlist. Use the
+            genres function to find the id.
+        """
+        logger.debug('call function do_playlist_add_genres')
+        genreids = []
+        genreids.append(int(line))
+        pk.playlist_add_genres(self.params, genreids)
 
     def do_playlist_add_songs(self, line):
         """
