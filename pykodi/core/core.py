@@ -19,6 +19,7 @@ import logging
 # global constants
 
 ALBUMS_FILE = 'albums.pickle'
+GENRES_FILE = 'genres.pickle'
 SONGS_FILE = 'songs.pickle'
 
 ALBUM = 'albumid'
@@ -72,14 +73,21 @@ def is_local_songs():
 def albums_save(albums):
     """Save albums to local files"""
     logger.debug('call function save_albums')
-    f = open('albums.pickle', 'wb')
+    f = open(ALBUMS_FILE, 'wb')
     pickle.dump(albums, f)
+    f.close()
+
+def genres_save(genres):
+    """Save genres to local files"""
+    logger.debug('call function save_genres')
+    f = open(GENRES_FILE, 'wb')
+    pickle.dump(genres, f)
     f.close()
 
 def songs_save(songs):
     """Save songs to local files"""
     logger.debug('call function save_songs')
-    f = open('songs.pickle', 'wb')
+    f = open(SONGS_FILE, 'wb')
     pickle.dump(songs, f)
     f.close()
 
@@ -91,6 +99,14 @@ def albums_read_from_file():
     f.close()
     return albums
 
+def genres_read_from_file():
+    """Load genres from pickle file"""
+    logger.debug('call function genres_read_from_file')
+    f = open(GENRES_FILE, 'rb')
+    genres = pickle.load(f)
+    f.close()
+    return genres
+
 def songs_read_from_file():
     """Load songs from pickle file"""
     logger.debug('call function songs_read_from_file')
@@ -100,17 +116,6 @@ def songs_read_from_file():
     return songs
 
 # sync processes
-
-def genres_extract(albums, genres):
-    """Extract the genres entity from albums"""
-    logger.debug('call function genres_extract')
-    for album in albums:
-        if not albums[album]['genreid']:
-            continue
-        for i, genreid in  enumerate(albums[album]['genreid']):
-            if genreid in genres:
-                continue
-            genres[genreid] = albums[album]['genre'][i]
 
 def albums_sync(params, albums, p_bar):
     """Sync library albums to local"""
@@ -159,6 +164,18 @@ def albums_sync(params, albums, p_bar):
         pbar.finish()
     # persist albums dataset
     albums_save(albums)
+
+def genres_extract(albums, genres):
+    """Extract the genres entity from albums"""
+    logger.debug('call function genres_extract')
+    for album in albums:
+        if not albums[album]['genreid']:
+            continue
+        for i, genreid in  enumerate(albums[album]['genreid']):
+            if genreid in genres:
+                continue
+            genres[genreid] = albums[album]['genre'][i]
+    genres_save(genres)
 
 def songs_sync(params, songs, p_bar):
     """Sync library songs to local"""

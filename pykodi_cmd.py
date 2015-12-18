@@ -124,6 +124,7 @@ class KodiRemote(cmd.Cmd):
             self.genres = {}
         else:
             self.albums = pk.albums_read_from_file()
+            self.genres = pk.genres_read_from_file()
         if not pk.is_local_songs():
             self.songs = {}
         else:
