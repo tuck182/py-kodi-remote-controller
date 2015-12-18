@@ -144,6 +144,17 @@ class KodiRemote(cmd.Cmd):
         pkd.albums_details(albumid, self.albums)
         print
 
+    def do_albums_info(self, line):
+        """
+        Display information on the songs library
+        Usage: songs_info
+            Display info on the songs set like the number of songs
+            or the total duration.
+        """
+        logger.debug('call function do_albums_info')
+        pkd.albums_info(self.albums)
+        print
+
     def do_albums_page(self, line):
         """
         Display a given page of the albums library

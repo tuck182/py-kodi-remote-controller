@@ -17,18 +17,6 @@ logger = logging.getLogger(__name__)
 
 # albums
 
-def albums_index(albumids, albums):
-    """Display albums list from internal index"""
-    logger.debug('call function disp_albums_index')
-    print
-    for albumid in albumids:
-        print "   \"{}\" by {} ({}) [{}]".format(
-            albums[albumid]['title'].encode('UTF-8'),
-            "/".join(albums[albumid]['artist']).encode('UTF-8'),
-            albums[albumid]['year'],
-            albumid
-        )
-
 def albums_details(albumid, albums):
     """Display album details from albumid"""
     logger.debug('call function albums_details')
@@ -41,6 +29,24 @@ def albums_details(albumid, albums):
     print
     print "   Rating:          {}".format(albums[albumid]['rating'])
     print "   MusicBrainz ID:  {}".format(albums[albumid]['musicbrainzalbumid'])
+
+def albums_index(albumids, albums):
+    """Display albums list from internal index"""
+    logger.debug('call function disp_albums_index')
+    print
+    for albumid in albumids:
+        print "   \"{}\" by {} ({}) [{}]".format(
+            albums[albumid]['title'].encode('UTF-8'),
+            "/".join(albums[albumid]['artist']).encode('UTF-8'),
+            albums[albumid]['year'],
+            albumid
+        )
+
+def albums_info(albums):
+    """Display albums information"""
+    logger.debug('call function albums_info')
+    print
+    print "   Total number of albums: {}".format(len(albums))
 
 # genres
 
