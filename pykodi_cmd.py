@@ -222,6 +222,76 @@ class KodiRemote(cmd.Cmd):
         pkd.genres_index(genreids, self.genres)
         print
 
+    # songs functions
+
+    def do_songs_display(self, line):
+        """
+        Display details for a given song
+        Usage songs_display id
+            Display all information about a given song like the playcount
+            or the rating.
+        """
+        logger.debug('call function do_songs_display')
+        songid = int(line)
+        pkd.songs_details(songid, self.songs)
+        print
+
+    def do_songs_info(self, line):
+        """
+        Display information on the songs library
+        Usage: songs_info
+            Display info on the songs set like the number of songs
+            or the total duration.
+        """
+        logger.debug('call function do_songs_info')
+        pkd.songs_info(self.songs)
+        print
+
+    def do_songs_page(self, line):
+        """
+        Display a given page of the songs library
+        Usage: songs_page page
+        """
+        logger.debug('call function do_songs_page')
+        page = int(line)
+        songids = self.songs.keys()[(page - 1) * DISPLAY_NB_LINES:page * DISPLAY_NB_LINES]
+        pkd.songs_index(songids, self.songs)
+        print
+
+    def do_songs_random(self, line):
+        """
+        Display a set of random songs
+        Usage: songs_random
+            Select random songs and display them.
+        """
+        logger.debug('call function do_songs_random')
+        indexes = random.sample(xrange(len(self.songs)), DISPLAY_NB_LINES)
+        songids = [self.songs.keys()[index] for index in indexes]
+        pkd.songs_index(songids, self.songs)
+        print
+
+    def do_songs_search(self, line):
+        """
+        Search into the songs
+        Usage: songs_search string
+            List all songs containing the string in the title or artist.
+        """
+        logger.debug('call function do_songs_search')
+        search_string = line.lower()
+        songids = pk.songs_search(self.songs, search_string)
+        pkd.songs_index(songids, self.songs)
+        print
+
+    def do_songs_sync(self, line):
+        """
+        Sync the Kodi songs library.
+        Usage: library_sync
+        """
+        print
+        f_scan, ru_songids, pcu_songids = pk.songs_sync(self.params, self.songs, self.log_level == 0)
+        pkd.songs_sync(f_scan, ru_songids, pcu_songids)
+        print
+
     # echonest functions
 
     def do_echonest_delete(self, line):
@@ -516,76 +586,6 @@ class KodiRemote(cmd.Cmd):
         pk.playlist_clear(self.params)
         pk.playlist_add_songs(self.params, songids)
         pkd.songs_index(songids, self.songs)
-        print
-
-    # songs functions
-
-    def do_songs_display(self, line):
-        """
-        Display details for a given song
-        Usage songs_display id
-            Display all information about a given song like the playcount
-            or the rating.
-        """
-        logger.debug('call function do_songs_display')
-        songid = int(line)
-        pkd.songs_details(songid, self.songs)
-        print
-
-    def do_songs_info(self, line):
-        """
-        Display information on the songs library
-        Usage: songs_info
-            Display info on the songs set like the number of songs
-            or the total duration.
-        """
-        logger.debug('call function do_songs_info')
-        pkd.songs_info(self.songs)
-        print
-
-    def do_songs_page(self, line):
-        """
-        Display a given page of the songs library
-        Usage: songs_page page
-        """
-        logger.debug('call function do_songs_page')
-        page = int(line)
-        songids = self.songs.keys()[(page - 1) * DISPLAY_NB_LINES:page * DISPLAY_NB_LINES]
-        pkd.songs_index(songids, self.songs)
-        print
-
-    def do_songs_random(self, line):
-        """
-        Display a set of random songs
-        Usage: songs_random
-            Select random songs and display them.
-        """
-        logger.debug('call function do_songs_random')
-        indexes = random.sample(xrange(len(self.songs)), DISPLAY_NB_LINES)
-        songids = [self.songs.keys()[index] for index in indexes]
-        pkd.songs_index(songids, self.songs)
-        print
-
-    def do_songs_search(self, line):
-        """
-        Search into the songs
-        Usage: songs_search string
-            List all songs containing the string in the title or artist.
-        """
-        logger.debug('call function do_songs_search')
-        search_string = line.lower()
-        songids = pk.songs_search(self.songs, search_string)
-        pkd.songs_index(songids, self.songs)
-        print
-
-    def do_songs_sync(self, line):
-        """
-        Sync the Kodi songs library.
-        Usage: library_sync
-        """
-        print
-        f_scan, ru_songids, pcu_songids = pk.songs_sync(self.params, self.songs, self.log_level == 0)
-        pkd.songs_sync(f_scan, ru_songids, pcu_songids)
         print
 
     # volume functions

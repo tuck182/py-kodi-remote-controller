@@ -161,24 +161,30 @@ def audiolibrary_get_songs_limits(server_params, songid_start, songid_end):
 def playlist_add(server_params, item_type, item_id):
     """Add an item to the audio playlist"""
     logger.debug('call function playlist_add')
-    command = {"jsonrpc": "2.0",
-            "method": "Playlist.Add",
-            "params": {
-                "playlistid": 0,
-                "item": {
-                    item_type: item_id } },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'Playlist.Add',
+        'params': {
+            'playlistid': 0,
+            'item': {
+                item_type: item_id }
+        },
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
 
 def playlist_clear(server_params):
     """Clear the audio playlist"""
     logger.debug('call function playlist_clear')
-    command = {"jsonrpc": "2.0",
-            "method": "Playlist.Clear",
-            "params": {
-                "playlistid": 0 },
-            "id": 1}
+    command = {
+        'jsonrpc': '2.0',
+        'method': 'Playlist.Clear',
+        'params': {
+            'playlistid': 0
+        },
+        'id': 1
+    }
     ret = call_api(server_params, command)
     display_result(ret)
 
