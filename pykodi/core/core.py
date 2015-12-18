@@ -101,6 +101,17 @@ def songs_read_from_file():
 
 # sync processes
 
+def genres_extract(albums, genres):
+    """Extract the genres entity from albums"""
+    logger.debug('call function genres_extract')
+    for album in albums:
+        if not albums[album]['genreid']:
+            continue
+        for i, genreid in  enumerate(albums[album]['genreid']):
+            if genreid in genres:
+                continue
+            genres[genreid] = albums[album]['genre'][i]
+
 def albums_sync(params, albums, p_bar):
     """Sync library albums to local"""
     logger.debug('call function albums_sync')

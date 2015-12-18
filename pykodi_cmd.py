@@ -121,6 +121,7 @@ class KodiRemote(cmd.Cmd):
         set_friendly_name(self)
         if not pk.is_local_albums():
             self.albums = {}
+            self.genres = {}
         else:
             self.albums = pk.albums_read_from_file()
         if not pk.is_local_songs():
@@ -194,6 +195,7 @@ class KodiRemote(cmd.Cmd):
         """
         print
         pk.albums_sync(self.params, self.albums, self.log_level == 0)
+        pk.genres_extract(self.albums, self.genres)
         print
 
     # echonest functions
