@@ -210,6 +210,18 @@ class KodiRemote(cmd.Cmd):
         pkd.genres_info(self.genres)
         print
 
+    def do_genres_search(self, line):
+        """
+        Search into the genres
+        Usage: genres_search string
+            List all genres containing the string in the description.
+        """
+        logger.debug('call function do_genres_search')
+        search_string = line.lower()
+        genreids = pk.genres_search(self.genres, search_string)
+        pkd.genres_index(genreids, self.genres)
+        print
+
     # echonest functions
 
     def do_echonest_delete(self, line):

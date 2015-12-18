@@ -44,6 +44,16 @@ def albums_details(albumid, albums):
 
 # genres
 
+def genres_index(genreids, genres):
+    """Display genres list from internal index"""
+    logger.debug('call function genres_index')
+    print
+    for genreid in genreids:
+        print "   {} [{}]".format(
+            genres[genreid].encode('UTF-8'),
+            genreid
+        )
+
 def genres_info(genres):
     """Display genres information"""
     logger.debug('call function genres_info')

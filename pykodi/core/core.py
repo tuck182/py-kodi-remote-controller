@@ -266,6 +266,16 @@ def albums_search(albums, search_string):
     logger.debug('search result by artist: %s', search_result_artist)
     return sorted(list(set(search_result_title + search_result_artist)))
 
+def genres_search(genres, search_string):
+    """Search a string in genres"""
+    logger.debug('call function genres_search')
+    search_result = []
+    for genreid in genres.keys():
+        if search_string in genres[genreid].encode('utf-8').lower():
+            search_result.append(genreid)
+    logger.debug('search result: %s', search_result)
+    return sorted(search_result)
+
 def songs_search(songs, search_string):
     """Search a string in songs"""
     logger.debug('call function songs_search')
