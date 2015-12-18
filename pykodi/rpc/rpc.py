@@ -79,6 +79,8 @@ def audiolibrary_get_albums(server_params, albumid_start, albumid_end):
             'year',
             'rating',
             'musicbrainzalbumid',
+            'genreid',
+            'genre'
         ],
         'limits': {
             'start': albumid_start,
@@ -104,7 +106,9 @@ def audiolibrary_get_songs_full(server_params, songid_start, songid_end):
             'rating',
             'playcount',
             'musicbrainztrackid',
-            'genre'
+            'genre',
+            'albumid',
+            'track'
         ],
         'limits': {
             'start': songid_start,
