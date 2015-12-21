@@ -35,27 +35,44 @@ This part describes how to use the ``cmd`` client. If you are interested in the 
 
 ### General usage
 
-generally use id
+In the ``cmd`` client, albums and songs are identify with their internal ID, respectively ``albumid`` and ``songid``. To play an album, you have to request to play the album's ID. The application provides seach functions to identify easily the items that you want to play. The IDs is also displayed in all outputs in brackets.
 
 ### First start
 
-prompt
+From the repository folder, call the client. You will see the default ``cmd`` prompt, with a banner requesting to enter the Kodi parameters.
 
-enter parameters
+````
+$ python pykodi_cmd.py
+(cmd) 
+````
 
-sync
+Execute the command ``params_inputs`` and type in the parameters as requested. The prompt will change to the Kodi system name, meaning that the client has been able to fetch some information. You can skip the echonest API for this quick start.
+
+````
+(xxx) params_inputs
+````
+
+The next step is to sync the audio library locally. It is not absolutly mandatory, but it will be far more convenient. This has to be done for the songs and the albums. The sync process can take several minutes if your library is large.
+
+````
+(xxx) albums_sync
+(xxx) songs_sync
+````
 
 ### Let's play something
+
+Search for the album '25'.
 
 ### More features
 
 online documentation
 
++ ``params_``
 + ``albums_`` various request in the albums library to find something to listen to
 + ``play_`` start or stop the player
 + ``playlist_`` manage your audio playlist
 
-sync again
+sync again the songs
 
 ### Smart playlist with echonest
 
