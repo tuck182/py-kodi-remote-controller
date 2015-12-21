@@ -3,7 +3,7 @@ py-kodi-remote-controller
 
 Kodi remote controller module written in Python
 
-## summary
+## Summary
 
 Options to remote control Kodi are numerous, you can use mobile apps ([Yatse][yatse] is a great one), web UI (in this category I recommend [chorus][chorus]) and many more way. In some specific context (let's say you are dealing with several terminals), it is great to control it from a terminal, and PyKodi does it. Initially developped as a simple client, it is now a standalone module that could be used to develop new clients in Python. Only the audio controls are covered.
 
@@ -25,100 +25,55 @@ Simple and straightforward, just clone this repository on your workstation. The 
 
 ### Echonest
 
-If you want to release the full potential of PyKodi, you need to [create an account][echonest-register] on the echonest developper web site and request an API key. You also need to upgrade the rate limit to 120 calls by minute. This is absolutly free of charge.
+If you want to release the full potential of PyKodi, you need to [create an account][echonest-register] on the echonest developper web site and request an API key. You also need to upgrade the rate limit to 120 calls by minute (this rate is used by the sync process). The echonest integration relies heavily on clean MusicBrainz metadata. The matching with the echonest database is based on the MusicBrainz ID. Without a proper tagging, you will not be able to use this feature.
+
+This service is absolutly free of charge.
 
 ## Quick start
 
-for the cmd client. read the code to learn how to use the module.
+This part describes how to use the ``cmd`` client. If you are interested in the module only, read the code of the ``cmd`` client which is basically a wrapper of the module. ``cmd`` is a line-oriented command interpreter. Considering reading a [tutorial][cmd-tutorial] or the [Python docs][cmd-docs] to learn more on how to use it. It notably supports online help and auto-completion.
 
-cmd module
+### General usage
 
 generally use id
 
-First step, clone this repository localy. Kodi needs to be configured to accept remote controls. This is done differently based on the transport that you want to use.
+### First start
 
-Note that this will install the version 0.2, considered as an alpha release (under optimized and full of bugs). Go to the releases a select a beta one if you want more stability.
+prompt
+
+enter parameters
+
+sync
+
+### Let's play something
 
 ### More features
 
 online documentation
 
-
-### library updates
-
-delete the local pickles
-
-### HTTP
-
-This type of transport is the default value.  Here is how to launch the script:
-
-```
-$ python pykodi.py 192.168.1.251 -p 8080 -u web_user -pw web_password
-```
-
-### TCP
-
-Here is the link to the [official documentation][tcp]. Launch the script with the IP of your Kodi server as a parameter and the ``--tcp`` switch:
-
-```
-$ python pykodi.py 192.168.1.251 --tcp
-```
-
-### First launch
-
-On the first launch, the program will **sync the Kodi audio library** to local files. This may take some times, but will make further requests in the library very very fast.
-
-If everything runs well, you will now see a prompt with the name of your Kodi server.
-
-From the prompt, use the ``help`` command to have the list of available methods, and help + command to display a usage message. Most of the time, parameters are optional and a random value is used. To play a random album, try:
-
-```
-(Kodi (OpenELEC)) play_album
-```
-
-## Echonest support
-
-This feature is experimental but promising and delivers great results.
-
-Echnonest support is automatically activated if you give an API key to PyKodi with the ``-enk`` switch. Request you own key on the [registration page][echonest-register]. The standard key is limited to 20 calls by minute, which is really low. You can request an upgrade to 120 calls by minute for free.
-
-The song matching relies heavily on MusicBrainz. Your audio files need to be properly tagged with their MusicBrainzID.
-
-## Usage
-
-### Start arguments
-
-The program uses the ``argparse`` module, so all arguments can be displayed using the ``-h`` option. The verbosity has two levels, try ``-v`` or ``-vv``. The default port for TCP calls is used (9090). If you changed it to something else, or for HTTP transport, try ``-p``.
-
-For HTTP transport, if the authentication is required, use the ``-u`` switch for the user and ``-pw`` for the password.
-
-### User interface
-
-Everything is managed using command line with the ``cmd`` module. This module is really powerful and provides a lot of features to make your user life easier, like auto-completion or online usage. Read the [official documentation][cmd-docs] to learn more. 
-
-This [tutorial][cmd-tutorial] is also of a very good value.
-
-### Let's play something
-
-The full list of methods are displayed with the ``help`` command from the prompt. The first part of name of the methods are meaningful:
-
 + ``albums_`` various request in the albums library to find something to listen to
 + ``play_`` start or stop the player
 + ``playlist_`` manage your audio playlist
 
-### Local library update
+sync again
 
-This will be developed in a next version. Just delete the pickle files and start again the program.
+### Smart playlist with echonest
 
-Since the version 0.2, the songs audio library is also stored locally. The playcount and rating of each songs can be synced with ``songs_sync``. 
+Update your tasteprofile with ``echonest_sync``. Create a catalog to scope the recommendation.
 
-### Generate a personalized playlist
+Update regularly.
 
-Update your tasteprofile with ``echonest_sync``. This will be used by echonest to identify your listening preferences.
+This will be used by echonest to identify your listening preferences.
 
-Generate a playlist with ``playlist_tasteprofile`` and play it with ``play_pause``. To improve the recommandations, rate your favorite songs, sync with ``songs_syns`` and update your tasteprofile with ``echonest_sync``.
+make favorite, skip and ban.
+
+### Library updates
+
+delete the local pickles
 
 ## Contributions
+
+An issue in the bug tracker is already great.
 
 ### Hand-on
 
@@ -139,15 +94,21 @@ module structure
 
 ## License
 
+Copyright 2015 Arn-O under the [MIT license][license].
+
 [yatse]: http://yatse.leetzone.org/redmine
 [chorus]: https://github.com/jez500/chorus
+
 [http]: http://kodi.wiki/?title=JSON-RPC_API#HTTP
-[cmd-tutorial]: http://pymotw.com/2/cmd/
 [api-gen]: http://kodi.wiki/?title=JSON-RPC_API
 [api-v6]: http://kodi.wiki/index.php?title=JSON-RPC_API/v6
 [api-example]: http://kodi.wiki/view/JSON-RPC_API/Examples
+
 [python-json]: http://docs.python.org/2/library/json.html
 [cmd-docs]: https://docs.python.org/2/library/cmd.html
+[cmd-tutorial]: http://pymotw.com/2/cmd/
+
 [variogr.am]: http://notes.variogr.am/post/37675885491/how-music-recommendation-works-and-doesnt-work
 [echonest]: http://the.echonest.com/
 [echonest-register]: https://developer.echonest.com/account/register
+[license]: https://github.com/Arn-O/py-kodi-remote-controller/blob/master/LICENSE
