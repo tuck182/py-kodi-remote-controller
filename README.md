@@ -89,40 +89,44 @@ The ``cmd`` module supports online help and autocompletion. You can find documen
 + ``songs_`` songs library management and search
 + ``play_`` player start, stop, information and echonest feedback
 + ``playlist_`` playlist management
++ ``echonest_`` echonest integration management
 
-You can update the local library ``rating`` and ``playcounts`` by syncing again the albums and songs library with ``albms_sync`` and ``songs_sync``.
+You can update the local library ``rating`` and ``playcounts`` metadata by syncing again the albums and songs library with ``albms_sync`` and ``songs_sync``.
 
 ### Smart playlist with echonest
 
-Update your tasteprofile with ``echonest_sync``. Create a catalog to scope the recommendation.
+It is great to listening to music that you like by a simple command. This is done by smart playlist generation.
 
-Update regularly.
+PyKodi has echonest playlists generation enabled. Once your Kodi library has been synced locally,  update your tasteprofile with ``echonest_sync``. At the first call, it will create a catalog, aka a tasteprofile, with all your songs (mind the prerequisites exposed above). Echonest will use this catalog to propose songs that are in your library.
 
-This will be used by echonest to identify your listening preferences.
+The generation of playlist is based on your listening habits and preferences. So you should regulary update your local library, and update your echonest profile afterwards. Only the songs with an update on the ``rating`` and ``playcounts`` will be updated in echonest (delta sync). The first echonest update can be long, but the following one will be really fast.
 
-make favorite, skip and ban.
+You can improve further the recommandation system. When a song is playing, make it a favorite with ``play_favorite``, skip it with ``play_skip`` or ban it with ``play_ban``. The commands will update the song metadata in echonest.
 
 ### Library updates
 
 The built-in syncing process only support updates on the ``rating`` and ``playcounts``. Also, if new albums are detected, a full sync will be triggered.
 
-After a migration, you may scan your music folder from scratch. As a consequence, the **internal Kodi items ID may change** and PyKodi will not detect it. 
+After a migration, you may scan your music folder from scratch. As a consequence, the **internal Kodi items ID may change** and PyKodi will not detect it. In this case, you have to delete all the pickle files except ``params.pickle`` and sync again your library. 
 
 ## Contributions
 
-An issue in the bug tracker is already great.
+Contributions are welcome. You can just post an issue to improve the stability (many improvement items are already logged) or request a new feature, develop a new client, add new features to the module or ine the ``cmd`` client. If the module does not meet your requirement for creating a new client, contact me to see how to make it evolve.
 
 ### Hand-on
 
-Contributions are welcome and easy.
+The code has been deeply refactored to make PyKodi a standalone module. It may not be perfect, but the structure is clean and hopefully readable. The functions interfaces are homogenous.
 
-The code is far from stable, if you face any trouble, post an issue in the GitHub tracking tool. New features can be requested in the bug tracker either. If you want to provide new features by yourself, submit a pull request.
+The module is actually a package with several submodules:
 
-The program can be started in a highly verbose mode with the ``-vv`` argument. All API commands and returns will then be displayed. Use the methods ``call_api`` and ``display_result`` for wrapping new command.
-
-module structure
++ ``core`` all the high-level commands to interact with Kodi, usually there is no output
++ ``rpc`` low-level function to call Kodi API
++ ``echonest`` low-level function to call echonest API
++ ``display`` fancy outputs, translate internal variables from the ``core`` module into user-friendly information
 
 ### Useful links
+
+Some links to learn more on the Kodi API and what you can do with it:
 
 + Kodi wiki, ["JSON-RPC API"][api-gen], some general explanations about the API
 + Kodi wiki, ["JSON-RPC API/v6"][api-v6], the full methods list and description
