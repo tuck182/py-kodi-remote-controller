@@ -5,11 +5,13 @@ Kodi remote controller module written in Python
 
 ## Summary
 
-Options to remote control Kodi are numerous, you can use mobile apps ([Yatse][yatse] is a great one), web UI (in this category I recommend [chorus][chorus]) and many more way. In some specific context (let's say you are dealing with several terminals), it is great to control it from a terminal, and PyKodi does it. Initially developped as a simple client, it is now a standalone module that could be used to develop new clients in Python. Only the audio controls are covered.
+Initially developped as a simple command line client, PyKodi is now a standalone module that could be used to develop Kodi clients in Python. PyKodi allows you to do many operations on your audio library, like searching for songs and albums, creating playlist, starting or stopping the player (only audio controls are provided).
 
-The ``cmd`` client is ready to use. It allows you to do many operations on your audio library, like searching for songs and albums, creating playlist, starting or stopping the player.
+In some specific context, it would be great to control Kodi from a terminal, wouldn't it? Let's say that you are coding something and want to play some background music. The ``cmd`` client is here for that. This client provides a command line interface to the PyKodi module.
 
-The integration with [echonest][echonest] has been introduced with the version 0.2. Echonest is the recommendation engine that powers Spotify. This feature will allow you to create instantly smart playlists, tailored for your tastes. Read [this blog post][variogr.am] to learn more about echonest and how it works.
+![screenshot](https://raw.githubusercontent.com/Arn-O/py-kodi-remote-controller/master/assets/img/screenshot.png)
+
+The integration with [echonest][echonest] has been introduced with the version 0.2. Echonest is the recommendation engine that powers Spotify. This feature will allow you to create instantly smart playlists, tailored to your tastes. Read [this blog post][variogr.am] to learn more about echonest and how it works.
 
 ## Installation and setup
 
@@ -52,27 +54,43 @@ Execute the command ``params_inputs`` and type in the parameters as requested. T
 (xxx) params_inputs
 ````
 
-The next step is to sync the audio library locally. It is not absolutly mandatory, but it will be far more convenient. This has to be done for the songs and the albums. The sync process can take several minutes if your library is large.
+The next step is to sync the audio library locally. It is not absolutly mandatory, but it will be far more convenient. For example, you will be able to search for a string in your library instantly, since all your library will be store in memory. This has to be done for the songs and/or the albums. The sync process can take several minutes if your library is large.
 
 ````
 (xxx) albums_sync
 (xxx) songs_sync
 ````
 
+The library is stored on local files, so the next time that you start the client, there is no need to sync again.
+
 ### Let's play something
 
-Search for the album '25'.
+Search for the string ``yyy`` in the albums library with the following command line:
+
+````
+(xxx) albums_search yyy
+````
+
+The search is done in the albums titles and artists. The list of hits is displayed with the ``albumid`` in bracket. This ID has to be used to play something. Let's say that you want to play the album ``999``:
+
+````
+(xxx) play_albums 999
+````
+
+The album ``999`` should now rock the room!
 
 ### More features
 
-online documentation
+The ``cmd`` module supports online help and autocompletion. You can find documentation from the ``cmd`` application by itself. The functions are organized by prefix. So just enter the prefix and click on ``tab`` to have a list of available functions:
 
-+ ``params_``
-+ ``albums_`` various request in the albums library to find something to listen to
-+ ``play_`` start or stop the player
-+ ``playlist_`` manage your audio playlist
++ ``params_`` Kodi parameters management and echonest API
++ ``albums_`` albums library management and search
++ ``genres_`` albums genres library management and search 
++ ``songs_`` songs library management and search
++ ``play_`` player start, stop, information and echonest feedback
++ ``playlist_`` playlist management
 
-sync again the songs
+You can update the local library ``rating`` and ``playcounts`` by syncing again the albums and songs library with ``albms_sync`` and ``songs_sync``.
 
 ### Smart playlist with echonest
 
@@ -86,7 +104,9 @@ make favorite, skip and ban.
 
 ### Library updates
 
-delete the local pickles
+The built-in syncing process only support updates on the ``rating`` and ``playcounts``. Also, if new albums are detected, a full sync will be triggered.
+
+After a migration, you may scan your music folder from scratch. As a consequence, the **internal Kodi items ID may change** and PyKodi will not detect it. 
 
 ## Contributions
 
@@ -112,9 +132,6 @@ module structure
 ## License
 
 Copyright 2015 Arn-O under the [MIT license][license].
-
-[yatse]: http://yatse.leetzone.org/redmine
-[chorus]: https://github.com/jez500/chorus
 
 [http]: http://kodi.wiki/?title=JSON-RPC_API#HTTP
 [api-gen]: http://kodi.wiki/?title=JSON-RPC_API
