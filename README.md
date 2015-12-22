@@ -45,39 +45,71 @@ From the repository folder, call the client. You will see the default ``cmd`` pr
 
 ````
 $ python pykodi_cmd.py
-(cmd) 
+
+No Kodi params file found, this is probably the first launch. Check
+your Kodi parameters (IP, port, user and password) and create an
+Echonest account: https://developer.echonest.com/account/register
+
+Read the API key on the Echonest account, it will be requested
+later on. When you are ready, try params_create.
+
+(Cmd) 
 ````
 
-Execute the command ``params_inputs`` and type in the parameters as requested. The prompt will change to the Kodi system name, meaning that the client has been able to fetch some information. You can skip the echonest API for this quick start.
+Execute the command ``params_create`` and type in the parameters as requested. The prompt will change to the Kodi system name, meaning that the client has been able to fetch some information. You can skip the echonest API for this quick start.
 
 ````
-(xxx) params_inputs
+(Cmd) params_create
+
+Kodi server IP: 192.168.1.102
+Kodi server port: 8080
+Kodi server user: kodi
+Kodi server password: abcd1234
+Echonest developer key:
+
+(Kodi (OpenELEC)) 
 ````
 
 The next step is to sync the audio library locally. It is not absolutly mandatory, but it will be far more convenient. For example, you will be able to search for a string in your library instantly, since all your library will be store in memory. This has to be done for the songs and/or the albums. The sync process can take several minutes if your library is large.
 
 ````
-(xxx) albums_sync
-(xxx) songs_sync
+(Kodi (OpenELEC)) albums_sync
+
+Albums: 100% [####################################] (1055 in 1055) Time: 0:00:09
+
+(Kodi (OpenELEC)) songs_sync
+
+Songs: 100% [###################################] (15165 in 15165) Time: 0:03:13
+
+   A full scan has been performed.
+
+(Kodi (OpenELEC)) 
 ````
 
 The library is stored on local files, so the next time that you start the client, there is no need to sync again.
 
 ### Let's play something
 
-Search for the string ``yyy`` in the albums library with the following command line:
+Search for the string ``lana`` in the albums library with the following command line:
 
 ````
-(xxx) albums_search yyy
+(Kodi (OpenELEC)) albums_search lana
+
+   "Born to Die: The Paradise Edition" by Lana Del Rey (2012) [478]
+   "Ultraviolence" by Lana Del Rey (2014) [479]
+   "Young & Beautiful (remix)" by Lana Del Rey vs. Cédric Gervais (2013) [480]
+   "Honeymoon" by Lana Del Rey (2015) [1059]
+   
+(Kodi (OpenELEC)) 
 ````
 
-The search is done in the albums titles and artists. The list of hits is displayed with the ``albumid`` in bracket. This ID has to be used to play something. Let's say that you want to play the album ``999``:
+The search is done in the albums titles and artists. The list of hits is displayed with the ``albumid`` in bracket. This ID has to be used to play something. Let's say that you want to play the album ``478``:
 
 ````
-(xxx) play_albums 999
+(Kodi (OpenELEC)) play_albums 478
 ````
 
-The album ``999`` should now rock the room!
+The album ``478`` should now rock the room!
 
 ### More features
 
