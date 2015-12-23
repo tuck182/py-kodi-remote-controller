@@ -5,7 +5,7 @@ Kodi remote controller module written in Python
 
 ## Summary
 
-Initially developped as a simple command line client, PyKodi is now a standalone module that could be used to develop Kodi clients in Python. PyKodi allows you to do many operations on your audio library, like searching for songs and albums, creating playlist, starting or stopping the player (only audio controls are provided).
+Initially developed as a simple command line client, PyKodi is now a standalone module that could be used to develop Kodi clients in Python. PyKodi allows you to do many operations on your audio library, like searching for songs and albums, creating playlist, starting or stopping the player (only audio controls are provided).
 
 In some specific context, it would be great to control Kodi from a terminal, wouldn't it? Let's say that you are coding something and want to play some background music. The ``cmd`` client is here for that. This client provides a command line interface to the PyKodi module.
 
@@ -27,9 +27,9 @@ Simple and straightforward, just clone this repository on your workstation. The 
 
 ### Echonest
 
-If you want to release the full potential of PyKodi, you need to [create an account][echonest-register] on the echonest developper web site and request an API key. You also need to upgrade the rate limit to 120 calls by minute (this rate is used by the sync process). The echonest integration relies heavily on clean MusicBrainz metadata. The matching with the echonest database is based on the MusicBrainz ID. Without a proper tagging, you will not be able to use this feature.
+If you want to release the full potential of PyKodi, you need to [create an account][echonest-register] on the echonest developer web site and request an API key. You also need to upgrade the rate limit to 120 calls by minute (this rate is used by the sync process). The echonest integration relies heavily on clean MusicBrainz metadata. The matching with the echonest database is based on the MusicBrainz ID. Without a proper tagging, you will not be able to use this feature.
 
-This service is absolutly free of charge.
+This service is absolutely free of charge.
 
 ## Quick start
 
@@ -37,7 +37,7 @@ This part describes how to use the ``cmd`` client. If you are interested in the 
 
 ### General usage
 
-In the ``cmd`` client, albums and songs are identify with their internal ID, respectively ``albumid`` and ``songid``. To play an album, you have to request to play the album's ID. The application provides seach functions to identify easily the items that you want to play. The IDs is also displayed in all outputs in brackets.
+In the ``cmd`` client, albums and songs are identify with their internal ID, respectively ``albumid`` and ``songid``. To play an album, you have to request to play the album's ID. The application provides search functions to identify easily the items that you want to play. The IDs is also displayed in all outputs in brackets.
 
 ### First start
 
