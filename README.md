@@ -134,7 +134,23 @@ PyKodi has echonest playlists generation enabled. Once your Kodi library has bee
 The generation of playlist is based on your listening habits and preferences. So you should regulary update your local library, and update your echonest profile afterwards. Only the songs with an update on the ``rating`` and ``playcounts`` will be updated in echonest (delta sync). The first echonest update can be long, but the following one will be really fast.
 
 ````
-(xxx) playlist_tasteprofile
+(Kodi (OpenELEC)) playlist_tasteprofile
+
+   "Postcards From Italy" by Beirut (2006) [1242]
+   "Goodnight Moon" by Shivaree (2004) [14099]
+   "Complainte de la butte" by Rufus Wainwright (2001) [14260]
+   "Heaven Can Wait" by Charlotte Gainsbourg (2009) [2222]
+   "Lover, You Should've Come Over" by Jeff Buckley (2004) [5702]
+   "My Beloved Monster" by EELS (1997) [3269]
+   "Loser" by Beck (1994) [1214]
+   "15 Step" by Radiohead (2009) [9967]
+   "Goshen" by Beirut (2011) [1253]
+   "The Distance" by CAKE (1996) [2128]
+   "Do You Realize??" by The Flaming Lips (2002) [12428]
+   "Orange Crush" by R.E.M. (2011) [9943]
+   "The Universal" by Blur (2000) [1623]
+   "Cherokee" by Cat Power (2012) [2195]
+   "Homeward Bound" by Simon & Garfunkel (1999) [11072]
 ````
 
 You can improve further the recommandation system. When a song is playing, make it a favorite with ``play_favorite``, skip it with ``play_skip`` or ban it with ``play_ban``. The commands will update the song metadata in echonest.
