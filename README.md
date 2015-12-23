@@ -37,7 +37,7 @@ This part describes how to use the ``cmd`` client. If you are interested in the 
 
 ### General usage
 
-In the ``cmd`` client, albums and songs are identify with their internal ID, respectively ``albumid`` and ``songid``. To play an album, you have to request to play the album's ID. The application provides search functions to identify easily the items that you want to play. The IDs is also displayed in all outputs in brackets.
+In the ``cmd`` client, albums and songs are identify with their internal ID, respectively ``albumid`` and ``songid``. To play an album, you have to request to play the album's ID. The application provides search functions to identify easily the items that you want to play. The IDs are also displayed in all outputs in brackets.
 
 ### First start
 
@@ -147,7 +147,7 @@ After a migration, you may scan your music folder from scratch. As a consequence
 
 ## Contributions
 
-Contributions are welcome. You can just post an issue to improve the stability (many improvement items are already logged) or request a new feature, develop a new client, add new features to the module or ine the ``cmd`` client. If the module does not meet your requirement for creating a new client, contact me to see how to make it evolve.
+Contributions are welcome. You can just post an issue to improve the stability (many improvement items are already logged) or request a new feature, develop a new client, add new features to the module or in the ``cmd`` client. If the module does not meet your requirement for creating a new client, contact me to see how to make it evolve.
 
 ### Hand-on
 
@@ -156,8 +156,8 @@ The code has been deeply refactored to make PyKodi a standalone module. It may n
 The module is actually a package with several submodules:
 
 + ``core`` all the high-level commands to interact with Kodi, usually there is no output
-+ ``rpc`` low-level function to call Kodi API
-+ ``echonest`` low-level function to call echonest API
++ ``rpc`` low-level functions to call Kodi API
++ ``echonest`` low-level functions to call echonest API
 + ``display`` fancy outputs, translate internal variables from the ``core`` module into user-friendly information
 
 ### Useful links
