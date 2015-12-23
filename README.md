@@ -133,6 +133,8 @@ PyKodi has echonest playlists generation enabled. Once your Kodi library has bee
 
 The generation of playlist is based on your listening habits and preferences. So you should regulary update your local library, and update your echonest profile afterwards. Only the songs with an update on the ``rating`` and ``playcounts`` will be updated in echonest (delta sync). The first echonest update can be long, but the following one will be really fast.
 
+Let's generate a playlist with the support of echonest: 
+
 ````
 (Kodi (OpenELEC)) playlist_tasteprofile
 
@@ -151,6 +153,8 @@ The generation of playlist is based on your listening habits and preferences. So
    "The Universal" by Blur (2000) [1623]
    "Cherokee" by Cat Power (2012) [2195]
    "Homeward Bound" by Simon & Garfunkel (1999) [11072]
+
+(Kodi (OpenELEC)) 
 ````
 
 You can improve further the recommandation system. When a song is playing, make it a favorite with ``play_favorite``, skip it with ``play_skip`` or ban it with ``play_ban``. The commands will update the song metadata in echonest.
