@@ -495,11 +495,22 @@ def en_playlist(api_key, profile_id):
         songids.append(songid)
     return songids
 
-def en_playlist_seed(api_key, profile_id, songid):
-    """Create a static playlist"""
-    logger.debug('call en_playlist')
+def en_playlist_seed_song(api_key, profile_id, songid):
+    """Create a static playlist with a seed song"""
+    logger.debug('call en_playlist_seed_song')
     song_id = profile_id + ':song:' + str(songid)
-    en_songs = echonest.playlist_static_seed(song_id, api_key, profile_id)
+    en_songs = echonest.playlist_static_seed_song(song_id, api_key, profile_id)
+    songids = []
+    for en_song in en_songs:
+        en_id = en_song['foreign_ids'][0]['foreign_id']
+        songid = int(en_id.replace(profile_id + ':song:', ""))
+        songids.append(songid)
+    return songids
+
+def en_playlist_seed_song_type(api_key, profile_id, song_type):
+    """Create a static playlist with a seed song type"""
+    logger.debug('call en_playlist_seed_song_type')
+    en_songs = echonest.playlist_static_seed_type(song_type, api_key, profile_id)
     songids = []
     for en_song in en_songs:
         en_id = en_song['foreign_ids'][0]['foreign_id']

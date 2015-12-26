@@ -37,15 +37,32 @@ def playlist_static(api_key, profile_id):
     ret = r.json()
     return ret['response']['songs']
 
-def playlist_static_seed(song_id, api_key, profile_id):
+def playlist_static_seed_song(song_id, api_key, profile_id):
     """Create a static playlist with a seed song"""
-    logger.debug('call function playlist_static')
+    logger.debug('call function playlist_static_seed_song')
     url = 'http://developer.echonest.com/api/v4/playlist/static'
     payload = {
         'api_key': api_key,
         'type': 'catalog',
         'seed_catalog': profile_id,
         'song_id': song_id,
+        'bucket': 'id:' + profile_id
+    }
+    r = requests.get(url, params=payload)
+    logger.debug('URL: %s', r.url)
+    logger.debug('return: %s', r.text)
+    ret = r.json()
+    return ret['response']['songs']
+
+def playlist_static_seed_type(song_type, api_key, profile_id):
+    """Create a static playlist with a seed song type"""
+    logger.debug('call function playlist_static_seed_type')
+    url = 'http://developer.echonest.com/api/v4/playlist/static'
+    payload = {
+        'api_key': api_key,
+        'type': 'catalog',
+        'seed_catalog': profile_id,
+        'song_type': song_type,
         'bucket': 'id:' + profile_id
     }
     r = requests.get(url, params=payload)

@@ -582,7 +582,7 @@ class KodiRemote(cmd.Cmd):
         pkd.songs_index(songids, self.songs)
         print
 
-    def do_playlist_taste_seed(self, line):
+    def do_playlist_taste_seed_song(self, line):
         """
         Create a playlist from echonest taste profile seeded by a song
         Usage: playlist_taste_seed songid
@@ -593,7 +593,24 @@ class KodiRemote(cmd.Cmd):
         logger.debug('call function do_playlist_taste_seed')
         songid = int(line)
         profile_id = pk.en_profile_id(self.params['echonest_key'])
-        songids = pk.en_playlist_seed(self.params['echonest_key'], profile_id, songid)
+        songids = pk.en_playlist_seed_song(self.params['echonest_key'], profile_id, songid)
+        pk.playlist_clear(self.params)
+        pk.playlist_add_songs(self.params, songids)
+        pkd.songs_index(songids, self.songs)
+        print
+
+    def do_playlist_taste_seed_type(self, line):
+        """
+        Create a playlist from echonest taste profile seeded by a song type
+        Usage: playlist_taste_seed christmas|live|studio
+            Generate a new playlist based on your echonest taste,
+            profile seeded by a song type. The current playlist is
+            removed before.
+        """
+        logger.debug('call function do_playlist_taste_seed_type')
+        song_type = line
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
+        songids = pk.en_playlist_seed_song_type(self.params['echonest_key'], profile_id, song_type)
         pk.playlist_clear(self.params)
         pk.playlist_add_songs(self.params, songids)
         pkd.songs_index(songids, self.songs)
