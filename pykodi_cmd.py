@@ -115,10 +115,10 @@ class KodiRemote(cmd.Cmd):
             logger.info('no kodi params file')
             display_banner()
             print
-            return
-        logger.debug('kodi params file found')
-        self.params = params_read()
-        set_friendly_name(self)
+        else:
+            logger.debug('kodi params file found')
+            self.params = params_read()
+            set_friendly_name(self)
         if not pk.is_local_albums():
             self.albums = {}
             self.genres = {}
