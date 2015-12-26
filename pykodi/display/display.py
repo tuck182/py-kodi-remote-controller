@@ -150,8 +150,8 @@ def playlist_show(position, songids, songs):
     else:
         print "   [playlist empty]"
 
-def playlist_now_playing(item, properties):
-    """Display the now playing part of play_what"""
+def playlist_now_playing(items, item, properties):
+    """Display what is playing"""
     logger.debug('call function playlist_now_playing')
     print
     if not 'id' in item:
@@ -183,19 +183,22 @@ def playlist_now_playing(item, properties):
         play_totaltime,
         int(properties['percentage'])
     )
-
-def playlist_next_playing(items, item, properties):
-    """Display the next playing part of display_what"""
-    logger.debug('call function playlist_next_playing')
-    if not 'id' in item:
-        return
     print
-    print "({} / {}) - Next: {} - {}".format(
+    position_str = "({} / {}) - Next:".format(
         properties['position'] + 1,
-        len(items),
-        "/".join(items[properties['position'] + 1]['artist']).encode('UTF-8'),
-        items[properties['position'] + 1]['label'].encode('UTF-8')
+        len(items)
     )
+    print position_str,
+    if properties['position'] + 1 == len(items):
+        next_str = '-'
+    else:
+        next_str = "{} - {}".format(
+            "/".join(
+                items[properties['position'] + 1]['artist']
+            ).encode('UTF-8'),
+            items[properties['position'] + 1]['label'].encode('UTF-8')
+        )
+    print next_str
 
 # player
 

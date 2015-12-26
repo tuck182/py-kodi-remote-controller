@@ -515,8 +515,7 @@ class KodiRemote(cmd.Cmd):
         properties = pk.player_properties(self.params)
         item = pk.player_item(self.params)
         items = pk.playlist_items(self.params)
-        pkd.playlist_now_playing(item, properties)
-        pkd.playlist_next_playing(items, item, properties)
+        pkd.playlist_now_playing(items, item, properties)
         print
 
     # playlist functions
