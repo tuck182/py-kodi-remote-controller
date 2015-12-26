@@ -418,6 +418,16 @@ class KodiRemote(cmd.Cmd):
         pkd.play_ban(songid, self.songs)
         print
 
+    def do_play_christmas(self, line):
+        """Play seasonal Christmas songs"""
+        logger.debug('call function do_play_christmas')
+        profile_id = pk.en_profile_id(self.params['echonest_key'])
+        songids = pk.en_playlist_seed_song_type(self.params['echonest_key'], profile_id, 'christmas')
+        pk.playback_stop(self.params)
+        pk.playlist_clear(self.params)
+        pk.playlist_add_songs(self.params, songids)
+        pk.playback_start(self.params)
+
     def do_play_favorite(self, line):
         """
         Like the current song (in your echonest tasteprofile)
