@@ -154,7 +154,7 @@ def playlist_now_playing(item, properties):
     """Display the now playing part of play_what"""
     logger.debug('call function playlist_now_playing')
     print
-    if not item:
+    if not 'id' in item:
         print "   [not playing anything]"
         return
     # build rating display
@@ -184,10 +184,10 @@ def playlist_now_playing(item, properties):
         int(properties['percentage'])
     )
 
-def playlist_next_playing(items, properties):
+def playlist_next_playing(items, item, properties):
     """Display the next playing part of display_what"""
-    logger.debug('call function playlist_show')
-    if not properties:
+    logger.debug('call function playlist_next_playing')
+    if not 'id' in item:
         return
     print
     print "({} / {}) - Next: {} - {}".format(
