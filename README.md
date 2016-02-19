@@ -191,7 +191,7 @@ Some links to learn more on the Kodi API and what you can do with it:
 
 ## License
 
-Copyright 2015 Arn-O under the [MIT license][license].
+Copyright 2016 Arn-O under the [MIT license][license].
 
 [http]: http://kodi.wiki/?title=JSON-RPC_API#HTTP
 [api-gen]: http://kodi.wiki/?title=JSON-RPC_API
