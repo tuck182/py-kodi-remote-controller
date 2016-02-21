@@ -175,7 +175,7 @@ def genres_extract(albums, genres):
         for i, genreid in enumerate(albums[album]['genreid']):
             if genreid in genres:
                 continue
-            if i < len(albums[album]['genre'][i]):
+            if i < len(albums[album]['genre']):
                 genres[genreid] = albums[album]['genre'][i]
     genres_save(genres)
 
