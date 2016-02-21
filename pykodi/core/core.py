@@ -172,10 +172,11 @@ def genres_extract(albums, genres):
     for album in albums:
         if not albums[album]['genreid']:
             continue
-        for i, genreid in  enumerate(albums[album]['genreid']):
+        for i, genreid in enumerate(albums[album]['genreid']):
             if genreid in genres:
                 continue
-            genres[genreid] = albums[album]['genre'][i]
+            if i < len(albums[album]['genre']):
+                genres[genreid] = albums[album]['genre'][i]
     genres_save(genres)
 
 def songs_sync(params, songs, p_bar):

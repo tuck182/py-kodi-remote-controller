@@ -23,7 +23,7 @@ The TCP transport is no longer supported, but could be introduced again later on
 
 ### PyKodi
 
-Simple and straightforward, just clone this repository on your workstation. The code is based on standard modules or best of class external modules (mainly ``requests`` for the API calls).
+Simple and straightforward, just clone this repository on your workstation. The code is based on standard modules or best of class external modules (mainly ``requests`` for the API calls). The only exception is the module ``progressbar``, which is less widespread, but useful during the long synchronisation processes.
 
 ### Echonest
 
@@ -191,7 +191,7 @@ Some links to learn more on the Kodi API and what you can do with it:
 
 ## License
 
-Copyright 2015 Arn-O under the [MIT license][license].
+Copyright 2016 Arn-O under the [MIT license][license].
 
 [http]: http://kodi.wiki/?title=JSON-RPC_API#HTTP
 [api-gen]: http://kodi.wiki/?title=JSON-RPC_API
