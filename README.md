@@ -13,6 +13,8 @@ In some specific context, it would be great to control Kodi from a terminal, wou
 
 The integration with [echonest][echonest] has been introduced with the version 0.2. Echonest is the recommendation engine that powers Spotify. This feature will allow you to create instantly smart playlists, tailored to your tastes. Read [this blog post][variogr.am] to learn more about echonest and how it works.
 
+**UPDATE:** as announced on the Echonest developer portal, the Echonest API is discontinued as of May 31st 2016. The service is moved to the Spotify Web API. The recommendation features of PyKodi are therefore currently broken.
+
 ## Installation and setup
 
 ### Enable JSON-RPC in Kodi
